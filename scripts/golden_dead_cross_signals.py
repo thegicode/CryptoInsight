@@ -1,61 +1,77 @@
-# golden_dead_cross_signals.py
-# python3 scripts/golden_dead_cross_signals.py
-
-import sys
-import os
-
-# 현재 스크립트의 디렉토리 경로를 가져와서 프로젝트 루트 디렉토리를 경로에 추가
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+import time
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 from api.upbit_api import get_daily_candles
-from utils.moving_averages import calculate_short_long_moving_averages
+from dotenv import load_dotenv
+import os
+import asyncio
+import requests
 
-def find_cross_signals(df, short_window=50, long_window=200):
-    print("Finding cross signals...")
+# .env 파일 로드
+load_dotenv()
+
+# 텔레그램 봇 토큰과 채팅 ID 설정
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
+CHAT_ID = os.getenv('CHAT_ID')
+
+# HTTP 요청 타임아웃 설정
+REQUEST_TIMEOUT = 60  # 초 단위로 설정 (예: 60초)
+
+def send_telegram_message(message):
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    data = {
+        "chat_id": CHAT_ID,
+        "text": message
+    }
+    try:
+        response = requests.post(url, data=data, timeout=REQUEST_TIMEOUT)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending message: {e}. Retrying...")
+        time.sleep(5)
+        send_telegram_message(message)
+
+def calculate_moving_averages(df, short_window=5, long_window=20):
+    df['short_mavg'] = df['close'].rolling(window=short_window, min_periods=1).mean()
+    df['long_mavg'] = df['close'].rolling(window=long_window, min_periods=1).mean()
+    return df
+
+def generate_signals(df, short_window):
     df['signal'] = 0
-    df['signal'][short_window:] = np.where(df['short_mavg'][short_window:] > df['long_mavg'][short_window:], 1, 0)
-    df['position'] = df['signal'].diff()
-    
-    golden_cross = df[df['position'] == 1]
-    dead_cross = df[df['position'] == -1]
-    
-    print("Cross signals found:")
-    print(f"Golden Crosses:\n{golden_cross[['close', 'short_mavg', 'long_mavg']]}")
-    print(f"Dead Crosses:\n{dead_cross[['close', 'short_mavg', 'long_mavg']]}")
-    
-    return golden_cross, dead_cross
+    df.loc[df.index[short_window:], 'signal'] = np.where(
+        df.loc[df.index[short_window:], 'short_mavg'] > df.loc[df.index[short_window:], 'long_mavg'], 1, 0)
+    df['positions'] = df['signal'].diff()
+    return df
 
-def plot_candles_and_signals(df, golden_cross, dead_cross, market, short_window, long_window):
-    print(f"Plotting data for {market}...")
-    plt.figure(figsize=(14, 7))
-    plt.plot(df.index, df['close'], label='Closing Price', color='blue')
-    plt.plot(df.index, df['short_mavg'], label=f'Short-term MA ({short_window} days)', color='orange')
-    plt.plot(df.index, df['long_mavg'], label=f'Long-term MA ({long_window} days)', color='green')
-    
-    plt.scatter(dead_cross.index, df.loc[dead_cross.index]['short_mavg'], label='GoldenCross', marker='^', color='red')
-    plt.scatter(golden_cross.index, df.loc[golden_cross.index]['short_mavg'], label='Dead Cross', marker='v', color='green')
-    
-    plt.title(f'{market} Golden Cross & Dead Cross Signals')
-    plt.xlabel('Date')
-    plt.ylabel('Price (KRW)')
-    plt.legend()
-    plt.show()
-    print(f"Plotting complete for {market}.")
+def get_latest_data(market, count=40):
+    df = get_daily_candles(market, count)
+    return df
 
-def analyze_markets(markets, count=200, short_window=50, long_window=200):
-    for market in markets:
-        print(f"Analyzing {market}...")
-        df = get_daily_candles(market, count)
-        print(f"Data retrieved for {market}. Calculating moving averages...")
-        df = calculate_short_long_moving_averages(df, short_window, long_window)
-        print(f"Moving averages calculated for {market}.")
-        golden_cross, dead_cross = find_cross_signals(df, short_window, long_window)
-        plot_candles_and_signals(df, golden_cross, dead_cross, market, short_window, long_window)
-        print(f"Analysis complete for {market}.\n")
+async def check_signals(market, count=40, short_window=5, long_window=20):
+    df = get_latest_data(market, count)
+    df = calculate_moving_averages(df, short_window, long_window)
+    df = generate_signals(df, short_window)
+    
+    latest_signal = df['positions'].iloc[-1]
+    latest_price = df['close'].iloc[-1]
 
-# 사용 예시
-markets = ["KRW-BTC", "KRW-ETH", "KRW-XRP"]  # 원하는 코인 마켓 코드를 여기에 추가
-analyze_markets(markets)
+    if latest_signal == 1:
+        message = f"{market}: Buy signal at {latest_price}"
+    elif latest_signal == -1:
+        message = f"{market}: Sell signal at {latest_price}"
+    else:
+        message = f"{market}: No signal at {latest_price}"
+
+    print(message)
+    send_telegram_message(message)
+
+async def main():
+    markets = ['KRW-AVAX', 'KRW-DOT', 'KRW-POLYX']
+    
+    while True:
+        tasks = [check_signals(market, count=40, short_window=5, long_window=20) for market in markets]
+        await asyncio.gather(*tasks)
+        await asyncio.sleep(3600)  # 1시간 간격으로 실행
+
+if __name__ == "__main__":
+    asyncio.run(main())

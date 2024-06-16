@@ -28,5 +28,5 @@ def get_daily_candles(market: str, count: int = 200):
     df.columns = ['date', 'open', 'high', 'low', 'close', 'volume']
     # 'date' 열을 인덱스로 설정
     df.set_index('date', inplace=True)
-    
+
     return df
