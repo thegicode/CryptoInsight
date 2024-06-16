@@ -1,4 +1,6 @@
-from backtest.golden_dead_cross_backtest import main as backtest_main
+from backtest.golden_dead_cross_backtest import main as golden_dead_cross_backtest
+from backtest.daily_average_backtest import main as daily_average_backtest
 
 if __name__ == "__main__":
-   backtest_main()
+    # golden_dead_cross_backtest()
+    daily_average_backtest()
