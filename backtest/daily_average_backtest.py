@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from api.upbit_api import get_daily_candles
 from dotenv import load_dotenv
-from utils import save_market_backtest_result, save_backtest_results, calculate_win_rate
+from utils import save_market_backtest_result, save_backtest_results, calculate_win_rate, calculate_mdd
 
 # .env 파일 로드
 load_dotenv()
@@ -76,19 +76,6 @@ def calculate_cumulative_return(df, initial_capital):
     cumulative_return_percent = cumulative_return * 100
     return cumulative_return_percent
 
-
-def calculate_mdd(df):
-    """
-    최대 낙폭(MDD)을 계산하는 함수
-
-    :param df: 백테스트 결과가 추가된 데이터프레임
-    :return: 최대 낙폭(MDD)
-    """
-    df['peak'] = df['total'].cummax()
-    df['drawdown'] = df['total'] / df['peak'] - 1
-    mdd = df['drawdown'].min()
-    mdd_percent = mdd * 100
-    return mdd_percent
 
 def run_backtest(market, count, initial_capital, window=5,investment_fraction=0.5):
     """

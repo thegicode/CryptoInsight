@@ -18,3 +18,17 @@ def calculate_win_rate(df):
     else:
         win_rate = wins / total_trades * 100
     return win_rate
+
+
+def calculate_mdd(df):
+    """
+    최대 낙폭(MDD)을 계산하는 함수
+
+    :param df: 백테스트 결과가 추가된 데이터프레임
+    :return: 최대 낙폭(MDD)
+    """
+    df['peak'] = df['total'].cummax()
+    df['drawdown'] = df['total'] / df['peak'] - 1
+    mdd = df['drawdown'].min()
+    mdd_percent = mdd * 100
+    return mdd_percent

@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from api.upbit_api import get_daily_candles
-from utils import save_market_backtest_result, save_backtest_results, calculate_win_rate
+from utils import save_market_backtest_result, save_backtest_results, calculate_win_rate, calculate_mdd
 
 def calculate_moving_averages(df, short_window=5, long_window=20):
     df = df.sort_index()
@@ -46,13 +46,6 @@ def calculate_cumulative_return(df, initial_capital):
     cumulative_return = (final_value / initial_capital) - 1
     cumulative_return_percent = cumulative_return * 100
     return cumulative_return_percent
-
-def calculate_mdd(df):
-    df['peak'] = df['total'].cummax()
-    df['drawdown'] = df['total'] / df['peak'] - 1
-    mdd = df['drawdown'].min()
-    mdd_percent = mdd * 100
-    return mdd_percent
 
 def run_backtest(market, count, initial_capital, short_window=5, long_window=20, investment_fraction=0.5):
     df = get_daily_candles(market, count)
