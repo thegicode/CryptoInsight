@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from api.upbit_api import get_daily_candles
 from dotenv import load_dotenv
-from utils import save_market_backtest_result, save_backtest_results, calculate_win_rate, calculate_mdd
+from utils import save_market_backtest_result, save_backtest_results, calculate_cumulative_return, calculate_mdd, calculate_win_rate
 
 # .env 파일 로드
 load_dotenv()
@@ -61,21 +61,8 @@ def backtest_strategy(df, initial_capital, investment_fraction=0.2):
         df.loc[df.index[i], 'total'] = df.loc[df.index[i], 'holdings'] + df.loc[df.index[i], 'cash']
 
     df['returns'] = df['total'].pct_change()
+
     return df
-
-def calculate_cumulative_return(df, initial_capital):
-    """
-    총 누적 수익률을 계산하는 함수
-
-    :param df: 백테스트 결과가 추가된 데이터프레임
-    :param initial_capital: 초기 자본
-    :return: 총 누적 수익률
-    """
-    final_value = df['total'].iloc[-1]
-    cumulative_return = (final_value / initial_capital) - 1
-    cumulative_return_percent = cumulative_return * 100
-    return cumulative_return_percent
-
 
 def run_backtest(market, count, initial_capital, window=5,investment_fraction=0.5):
     """
