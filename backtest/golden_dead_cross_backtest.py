@@ -1,8 +1,10 @@
 import os
+import time
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from api.upbit_api import get_daily_candles
+from utils import save_market_backtest_result, save_backtest_results
 
 def calculate_moving_averages(df, short_window=5, long_window=20):
     df = df.sort_index()
@@ -66,11 +68,14 @@ def calculate_mdd(df):
     mdd_percent = mdd * 100
     return mdd_percent
 
-def run_backtest(market, count=200, short_window=5, long_window=20, initial_capital=10000, investment_fraction=0.5):
+def run_backtest(market, count, initial_capital, short_window=5, long_window=20, investment_fraction=0.5):
     df = get_daily_candles(market, count)
     df = calculate_moving_averages(df, short_window, long_window)
     df = generate_signals(df, short_window)
     df = backtest_strategy(df, initial_capital, investment_fraction)
+
+    # 결과를 파일로 저장
+    save_market_backtest_result(market, df, count, "golden_dead_cross")
 
     cumulative_return_percent = calculate_cumulative_return(df, initial_capital)
     win_rate = calculate_win_rate(df)
@@ -87,32 +92,18 @@ def run_backtest(market, count=200, short_window=5, long_window=20, initial_capi
     
     return result
 
-def main():
-    markets = ['KRW-BTC', 'KRW-ETH', 'KRW-AVAX', 'KRW-DOGE', 'KRW-BCH', "KRW-SHIB", "KRW-POLYX", "KRW-NEAR", "KRW-DOT", "KRW-THETA", "KRW-TFUEL", "KRW-ZRX"]
+def run_golden_cross_backtests(markets, count=200, initial_capital=10000):
     results = []
 
     for market in markets:
-        print(f"golden_dead_cross_backtest for {market}...")
-        result = run_backtest(market, count=200, short_window=5, long_window=20, initial_capital=10000, investment_fraction=0.2)
+        print(f"Golden dead cross backtest for {market}...")
+        result = run_backtest(market, count, initial_capital, short_window=5, long_window=20,  investment_fraction=1)
         results.append(result)
+        time.sleep(2)  # 각 API 호출 사이에 2초 지연
 
-    results_df = pd.DataFrame(results)
-
-    # Win Rate 기준으로 정렬
-    results_df = results_df.sort_values(by="Win Rate (%)", ascending=False)
-
-    # 결과를 저장할 디렉터리 생성
-    output_dir = 'results'
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = os.path.join(output_dir, 'golden_dead_cross_backtest_result.csv')
-
-    # CSV 파일로 저장
-    results_df.to_csv(output_file, index=False)
-    print(f"Backtest results saved to '{output_file}'.")
-
-    # CSV 파일 읽기
-    result_df = pd.read_csv(output_file)
+    result_df = save_backtest_results(results, count, "golden_dead_cross")
+    
     print(result_df)
 
 if __name__ == "__main__":
-    main()
+    run_golden_cross_backtests()

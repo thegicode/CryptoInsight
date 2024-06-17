@@ -1,8 +1,9 @@
-import os
+import time
 import pandas as pd
 import numpy as np
 from api.upbit_api import get_daily_candles
 from dotenv import load_dotenv
+from utils import save_market_backtest_result, save_backtest_results
 
 # .env 파일 로드
 load_dotenv()
@@ -60,7 +61,6 @@ def backtest_strategy(df, initial_capital, investment_fraction=0.2):
         df.loc[df.index[i], 'total'] = df.loc[df.index[i], 'holdings'] + df.loc[df.index[i], 'cash']
 
     df['returns'] = df['total'].pct_change()
-
     return df
 
 def calculate_cumulative_return(df, initial_capital):
@@ -108,7 +108,7 @@ def calculate_mdd(df):
     mdd_percent = mdd * 100
     return mdd_percent
 
-def run_backtest(market, count=200, window=5, initial_capital=10000, investment_fraction=0.5):
+def run_backtest(market, count, initial_capital, window=5,investment_fraction=0.5):
     """
     백테스트를 실행하는 메인 함수
 
@@ -119,16 +119,14 @@ def run_backtest(market, count=200, window=5, initial_capital=10000, investment_
     :param investment_fraction: 매수 시 투자 비율
     :return: 백테스트 결과 딕셔너리
     """
+
     df = get_daily_candles(market, count)
     df = calculate_moving_average(df, window)
     df = generate_signals(df)
     df = backtest_strategy(df, initial_capital, investment_fraction)
 
     # 결과를 파일로 저장
-    output_dir = 'results'
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = os.path.join(output_dir, f'daily_average_backtest_result_{market}.csv')
-    df.to_csv(output_file, index=True)
+    save_market_backtest_result(market, df, count, "daily_average")
 
     cumulative_return_percent = calculate_cumulative_return(df, initial_capital)
     win_rate = calculate_win_rate(df)
@@ -145,33 +143,18 @@ def run_backtest(market, count=200, window=5, initial_capital=10000, investment_
     
     return result
 
-def main():
-    # markets = [ "KRW-DOT", "KRW-THETA", "KRW-TFUEL", "KRW-ZRX"]
-    markets = ['KRW-BTC', 'KRW-ETH', 'KRW-AVAX', 'KRW-DOGE', 'KRW-BCH', "KRW-SHIB", "KRW-POLYX", "KRW-NEAR", "KRW-DOT", "KRW-THETA", "KRW-TFUEL", "KRW-ZRX"]
+def run_daily_average_backtest(markets, count=200, initial_capital=10000):
     results = []
 
     for market in markets:
-        print(f"daily_average_backtest for {market}...")
-        result = run_backtest(market, count=200, window=5, initial_capital=10000, investment_fraction=0.2)
+        print(f"Daily average backtest for {market}...")
+        result = run_backtest(market, count, initial_capital, window=5, investment_fraction=1)
         results.append(result)
+        time.sleep(2)  # 각 API 호출 사이에 2초 지연
 
-    results_df = pd.DataFrame(results)
+    result_df = save_backtest_results(results, count, "daily_average")
 
-    # Win Rate 기준으로 정렬
-    results_df = results_df.sort_values(by="Win Rate (%)", ascending=False)
-
-    # 결과를 저장할 디렉터리 생성
-    output_dir = 'results'
-    os.makedirs(output_dir, exist_ok=True)
-    output_file = os.path.join(output_dir, 'daily_average_backtest_result.csv')
-
-    # CSV 파일로 저장
-    results_df.to_csv(output_file, index=False)
-    print(f"Backtest results saved to '{output_file}'.")
-
-    # CSV 파일 읽기
-    result_df = pd.read_csv(output_file)
     print(result_df)
 
 if __name__ == "__main__":
-    main()
+    run_daily_average_backtest()
