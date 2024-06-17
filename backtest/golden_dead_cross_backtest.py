@@ -1,10 +1,9 @@
-import os
 import time
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from api.upbit_api import get_daily_candles
-from utils import save_market_backtest_result, save_backtest_results
+from utils import save_market_backtest_result, save_backtest_results, calculate_win_rate
 
 def calculate_moving_averages(df, short_window=5, long_window=20):
     df = df.sort_index()
@@ -47,19 +46,6 @@ def calculate_cumulative_return(df, initial_capital):
     cumulative_return = (final_value / initial_capital) - 1
     cumulative_return_percent = cumulative_return * 100
     return cumulative_return_percent
-
-def calculate_win_rate(df):
-    df_trades = df[df['positions'] != 0].copy()
-    df_trades['trade_returns'] = df_trades['total'].diff()
-    sell_trades = df_trades[df_trades['positions'] == -1]
-    wins = sell_trades[sell_trades['trade_returns'] > 0].shape[0]
-    total_trades = sell_trades.shape[0]
-    
-    if total_trades == 0:
-        win_rate = 0
-    else:
-        win_rate = wins / total_trades * 100
-    return win_rate
 
 def calculate_mdd(df):
     df['peak'] = df['total'].cummax()
