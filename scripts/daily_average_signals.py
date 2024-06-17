@@ -1,9 +1,7 @@
 import numpy as np
-from api.upbit_api import get_daily_candles
 import asyncio
-import requests
 
-from utils import send_telegram_message
+from utils import fetch_latest_data_with_retry, send_telegram_message
 
 def calculate_moving_average(df, window=5):
     df = df.sort_index()  # 오래된 데이터가 위로 오게 정렬
@@ -16,21 +14,8 @@ def generate_signals(df):
     df['positions'] = df['signal'].diff()
     return df
 
-async def get_latest_data(market, count, delay=2):
-    for _ in range(3):  # 최대 3번 재시도
-        try:
-            df = get_daily_candles(market, count)
-            return df
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 429:  # Too Many Requests
-                print(f"Rate limit exceeded for {market}. Retrying in {delay} seconds...")
-                await asyncio.sleep(delay)
-            else:
-                raise e
-    raise Exception(f"Failed to retrieve data for {market} after 3 retries.")
-
 async def check_signals(market, count, window=5):
-    df = await get_latest_data(market, count)
+    df = await fetch_latest_data_with_retry(market, count)
     df = calculate_moving_average(df, window)
     df = generate_signals(df)
 
@@ -57,6 +42,6 @@ async def daily_average_signals():
         title = "\n[ Daily Average Signals ]\n"
         all_signals_message = title + "\n".join(signals)
         print(all_signals_message)
-        send_telegram_message(all_signals_message)
+        # send_telegram_message(all_signals_message)
 
         await asyncio.sleep(3600)  # 1시간 간격으로 실행
