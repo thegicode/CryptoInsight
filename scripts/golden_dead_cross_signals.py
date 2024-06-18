@@ -1,12 +1,15 @@
 import asyncio
 import numpy as np
 
-from utils import fetch_latest_data_with_retry, send_telegram_message
+from utils import fetch_latest_data_with_retry
+# , send_telegram_message
 
 
 def calculate_moving_averages(df, short_window=5, long_window=20):
+    df = df.sort_index()  # 오래된 데이터가 위로 오게 정렬
     df['short_mavg'] = df['close'].rolling(window=short_window, min_periods=1).mean()
     df['long_mavg'] = df['close'].rolling(window=long_window, min_periods=1).mean()
+
     return df
 
 
@@ -17,6 +20,7 @@ def generate_signals(df, short_window):
         1, 0
     )
     df['positions'] = df['signal'].diff()
+
     return df
 
 
@@ -27,13 +31,14 @@ async def check_signals(market, count=40, short_window=5, long_window=20):
 
     latest_signal = df['positions'].iloc[-1]
     latest_price = df['close'].iloc[-1]
+    latest_date = df.index[-1].strftime('%Y-%m-%d')
 
     if latest_signal == 1:
-        message = f"{market}: Buy signal at {latest_price}"
+        message = f"{market}: Buy signal at {latest_price} on {latest_date}"
     elif latest_signal == -1:
-        message = f"{market}: Sell signal at {latest_price}"
+        message = f"{market}: Sell signal at {latest_price} on {latest_date}"
     else:
-        message = f"{market}: No signal at {latest_price}"
+        message = f"{market}: No signal at {latest_price} on {latest_date}"
 
     return message
 
@@ -49,6 +54,10 @@ async def golden_dead_cross_signals():
         title = "\n[ Golden Cross Signals ]\n"
         all_signals_message = title + "\n".join(signals)
         print(all_signals_message)
-        send_telegram_message(all_signals_message)
+        # send_telegram_message(all_signals_message)
 
         await asyncio.sleep(3600)  # 1시간 간격으로 실행
+
+
+if __name__ == "__main__":
+    asyncio.run(golden_dead_cross_signals())
