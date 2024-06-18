@@ -51,6 +51,19 @@ export PYTHONPATH="${PYTHONPATH}:/Users/aaa/Documents/코딩/project-my
 
 <br>
 
+## 테스트
+
+-   pytest {path}
+-   print 적용 : 코드 pytest.main(['-s']), 터미널 pytest -s {path}
+-   assert는 일반적인 조건 검증에 사용 : 기본값만 비교
+    np.testing.assert_array_equal은 주로 배열의 값, 형태, 데이터 타입 등을 비교할 때 사용 : 배열의 데이터 타입, 형상, 값 등을 포괄적으로 비교
+
+<br>
+
+---
+
+<br>
+
 ## 각 파일 및 폴더 설명
 
 ### data/
