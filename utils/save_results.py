@@ -1,11 +1,13 @@
 import os
 import pandas as pd
 
+
 def save_market_backtest_result(market, df, count, name) :
     output_dir = f'results/{name}_backtest'
     os.makedirs(output_dir, exist_ok=True)
     output_file = os.path.join(output_dir, f'{name}_{market}_{count}.csv')
-    df.to_csv(output_file, index=True) 
+    df.to_csv(output_file, index=True)
+
 
 def save_backtest_results(results, count, name):
     """
@@ -31,5 +33,4 @@ def save_backtest_results(results, count, name):
 
     # CSV 파일 읽기
     result_df = pd.read_csv(output_file)
-    
     return result_df

@@ -1,5 +1,4 @@
 import time
-import pandas as pd
 import numpy as np
 from api.upbit_api import get_daily_candles
 from dotenv import load_dotenv
@@ -21,6 +20,7 @@ def calculate_moving_average(df, window=5):
     df['moving_avg'] = df['close'].rolling(window=window, min_periods=1).mean()
     return df
 
+
 def generate_signals(df):
     """
     매수 및 매도 신호 생성 함수
@@ -32,6 +32,7 @@ def generate_signals(df):
     df['signal'] = np.where(df['close'] > df['moving_avg'], 1, 0)
     df['positions'] = df['signal'].diff()
     return df
+
 
 def backtest_strategy(df, initial_capital, investment_fraction=0.2):
     """
@@ -64,7 +65,8 @@ def backtest_strategy(df, initial_capital, investment_fraction=0.2):
 
     return df
 
-def run_backtest(market, count, initial_capital, window=5,investment_fraction=0.5):
+
+def run_backtest(market, count, initial_capital, window=5, investment_fraction=0.5):
     """
     백테스트를 실행하는 메인 함수
 
@@ -87,7 +89,7 @@ def run_backtest(market, count, initial_capital, window=5,investment_fraction=0.
     cumulative_return_percent = calculate_cumulative_return(df, initial_capital)
     win_rate = calculate_win_rate(df)
     mdd_percent = calculate_mdd(df)
-    
+
     result = {
         "Market": market,
         "Count": count,
@@ -96,8 +98,9 @@ def run_backtest(market, count, initial_capital, window=5,investment_fraction=0.
         "Win Rate (%)": win_rate,
         "Max Drawdown (MDD) (%)": mdd_percent
     }
-    
+
     return result
+
 
 def run_daily_average_backtest(markets, count=200, initial_capital=10000):
     results = []
@@ -111,6 +114,7 @@ def run_daily_average_backtest(markets, count=200, initial_capital=10000):
     result_df = save_backtest_results(results, count, "daily_average")
 
     print(result_df)
+
 
 if __name__ == "__main__":
     run_daily_average_backtest()

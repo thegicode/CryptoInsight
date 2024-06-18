@@ -1,8 +1,10 @@
 
 import time
-from dotenv import load_dotenv
 import os
 import requests
+
+from dotenv import load_dotenv
+
 
 # .env 파일 로드
 load_dotenv()
@@ -14,8 +16,6 @@ CHAT_ID = os.getenv('CHAT_ID')
 
 # HTTP 요청 타임아웃 설정
 REQUEST_TIMEOUT = 60  # 초 단위로 설정 (예: 60초)
-
-
 
 
 def send_telegram_message(message):

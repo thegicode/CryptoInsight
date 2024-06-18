@@ -1,9 +1,8 @@
 import time
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from api.upbit_api import get_daily_candles
 from utils import save_market_backtest_result, save_backtest_results, calculate_cumulative_return, calculate_mdd, calculate_win_rate
+
 
 def calculate_moving_averages(df, short_window=5, long_window=20):
     df = df.sort_index()
@@ -11,12 +10,14 @@ def calculate_moving_averages(df, short_window=5, long_window=20):
     df['long_mavg'] = df['close'].rolling(window=long_window, min_periods=1).mean()
     return df
 
+
 def generate_signals(df, short_window):
     df['signal'] = 0
     df.loc[df.index[short_window:], 'signal'] = np.where(
         df.loc[df.index[short_window:], 'short_mavg'] > df.loc[df.index[short_window:], 'long_mavg'], 1, 0)
     df['positions'] = df['signal'].diff()
     return df
+
 
 def backtest_strategy(df, initial_capital, investment_fraction=0.2):
     cash = initial_capital
@@ -41,6 +42,7 @@ def backtest_strategy(df, initial_capital, investment_fraction=0.2):
 
     return df
 
+
 def run_backtest(market, count, initial_capital, short_window=5, long_window=20, investment_fraction=0.5):
     df = get_daily_candles(market, count)
     df = calculate_moving_averages(df, short_window, long_window)
@@ -53,7 +55,7 @@ def run_backtest(market, count, initial_capital, short_window=5, long_window=20,
     cumulative_return_percent = calculate_cumulative_return(df, initial_capital)
     win_rate = calculate_win_rate(df)
     mdd_percent = calculate_mdd(df)
-    
+
     result = {
         "Market": market,
         "Count": count,
@@ -62,21 +64,23 @@ def run_backtest(market, count, initial_capital, short_window=5, long_window=20,
         "Win Rate (%)": win_rate,
         "Max Drawdown (MDD) (%)": mdd_percent
     }
-    
+
     return result
+
 
 def run_golden_cross_backtests(markets, count=200, initial_capital=10000):
     results = []
 
     for market in markets:
         print(f"Golden dead cross backtest for {market}...")
-        result = run_backtest(market, count, initial_capital, short_window=5, long_window=20,  investment_fraction=1)
+        result = run_backtest(market, count, initial_capital, short_window=5, long_window=20, investment_fraction=1)
         results.append(result)
         time.sleep(2)  # 각 API 호출 사이에 2초 지연
 
     result_df = save_backtest_results(results, count, "golden_dead_cross")
-    
+ 
     print(result_df)
+
 
 if __name__ == "__main__":
     run_golden_cross_backtests()

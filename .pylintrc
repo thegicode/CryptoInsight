@@ -1,0 +1,13 @@
+[MESSAGES CONTROL]
+disable=C0114,C0115,C0116
+disable=trailing-whitespace
+
+[FORMAT]
+max-line-length=150
+
+[DESIGN]
+max-args=5
+max-locals=15
+max-returns=4
+max-branches=12
+max-statements=50

@@ -1,5 +1,3 @@
-import pandas as pd
-
 
 def calculate_cumulative_return(df, initial_capital):
     """
@@ -41,7 +39,7 @@ def calculate_win_rate(df):
     sell_trades = df_trades[df_trades['positions'] == -1]
     wins = sell_trades[sell_trades['trade_returns'] > 0].shape[0]
     total_trades = sell_trades.shape[0]
-    
+
     if total_trades == 0:
         win_rate = 0
     else:
