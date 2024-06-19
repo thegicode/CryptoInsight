@@ -105,6 +105,8 @@ def run_backtest(market, count, initial_capital, window=5, investment_fraction=0
 def run_daily_average_backtest(markets, count=200, initial_capital=10000):
     results = []
 
+    print("\n{ Daily Average Backtest }",)
+
     for market in markets:
         print(f"Daily average backtest for {market}...")
         result = run_backtest(market, count, initial_capital, window=5, investment_fraction=1)

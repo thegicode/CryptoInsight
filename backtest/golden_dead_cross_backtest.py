@@ -69,7 +69,10 @@ def run_backtest(market, count, initial_capital, short_window=5, long_window=20,
 
 
 def run_golden_cross_backtests(markets, count=200, initial_capital=10000):
+    # 책에서는 long_window가 60이지만 코인에서 적용해보니 20일이 수익률이 좋다.
     results = []
+
+    print("\n{ Golden Dead Cross Backtest }")
 
     for market in markets:
         print(f"Golden dead cross backtest for {market}...")
@@ -78,7 +81,7 @@ def run_golden_cross_backtests(markets, count=200, initial_capital=10000):
         time.sleep(2)  # 각 API 호출 사이에 2초 지연
 
     result_df = save_backtest_results(results, count, "golden_dead_cross")
- 
+
     print(result_df)
 
 

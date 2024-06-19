@@ -6,10 +6,9 @@ from utils import fetch_latest_data_with_retry
 
 
 def calculate_moving_averages(df, short_window=5, long_window=20):
-    df = df.sort_index()  # 오래된 데이터가 위로 오게 정렬
+    df = df.sort_index()
     df['short_mavg'] = df['close'].rolling(window=short_window, min_periods=1).mean()
     df['long_mavg'] = df['close'].rolling(window=long_window, min_periods=1).mean()
-
     return df
 
 
@@ -20,7 +19,6 @@ def generate_signals(df, short_window):
         1, 0
     )
     df['positions'] = df['signal'].diff()
-
     return df
 
 
@@ -44,7 +42,9 @@ async def check_signals(market, count=40, short_window=5, long_window=20):
 
 
 async def golden_dead_cross_signals():
-    markets = ['KRW-AVAX', 'KRW-DOT', 'KRW-POLYX']
+    markets = ['KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-AVAX', 'KRW-DOGE', 'KRW-BCH',
+               "KRW-SHIB", "KRW-POLYX", "KRW-NEAR", "KRW-DOT",
+               "KRW-THETA", "KRW-TFUEL", "KRW-ZRX"]
 
     while True:
         tasks = [check_signals(market, count=40, short_window=5, long_window=20) for market in markets]

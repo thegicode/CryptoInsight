@@ -19,8 +19,8 @@ def save_backtest_results(results, count, name):
     """
     results_df = pd.DataFrame(results)
 
-    # Win Rate 기준으로 정렬
-    results_df = results_df.sort_values(by="Win Rate (%)", ascending=False)
+    # MDD 기준으로 정렬
+    results_df = results_df.sort_values(by="Max Drawdown (MDD) (%)", ascending=False)
 
     # 결과를 저장할 디렉터리 생성
     output_dir = 'results'
@@ -29,7 +29,7 @@ def save_backtest_results(results, count, name):
 
     # CSV 파일로 저장
     results_df.to_csv(output_file, index=False)
-    print(f"Backtest [{name}] results saved to '{output_file}'.")
+    print(f"Backtest results saved to '{output_file}'.")
 
     # CSV 파일 읽기
     result_df = pd.read_csv(output_file)

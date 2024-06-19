@@ -9,6 +9,7 @@ def calculate_cumulative_return(df, initial_capital):
     """
     final_value = df['total'].iloc[-1]
     cumulative_return = (final_value / initial_capital) - 1
+
     cumulative_return_percent = cumulative_return * 100
     return cumulative_return_percent
 
