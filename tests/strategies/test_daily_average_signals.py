@@ -1,4 +1,4 @@
-from scripts.daily_average_signals import calculate_moving_average, generate_signals, check_signals
+from strategies.daily_average_signals import calculate_moving_average, generate_signals, check_signals
 
 import sys
 import os

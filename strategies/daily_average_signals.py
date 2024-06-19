@@ -1,7 +1,8 @@
 import asyncio
 import numpy as np
 
-from utils import fetch_latest_data_with_retry, send_telegram_message
+from utils import fetch_latest_data_with_retry
+# send_telegram_message
 
 
 def calculate_moving_average(df, window=5):
@@ -49,6 +50,6 @@ async def daily_average_signals():
         title = "\n[ Daily Average Signals ]\n"
         all_signals_message = title + "\n".join(signals)
         print(all_signals_message)
-        send_telegram_message(all_signals_message)
+        # send_telegram_message(all_signals_message)
 
         await asyncio.sleep(3600)  # 1시간 간격으로 실행

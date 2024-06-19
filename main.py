@@ -1,5 +1,5 @@
 import asyncio
-from scripts import golden_dead_cross_signals, daily_average_signals, volatility_adjusted_moving_average_strategy
+from strategies import golden_dead_cross_signals, daily_average_signals, volatility_adjusted_moving_average_strategy
 
 
 async def main():
