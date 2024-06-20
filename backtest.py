@@ -1,5 +1,6 @@
 from backtest.golden_dead_cross_backtest import run_golden_cross_backtests
 from backtest.daily_average_backtest import run_daily_average_backtest
+from backtest.volatility_backtest import run_volatility_backtest
 
 if __name__ == "__main__":
     markets = ['KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-AVAX', 'KRW-DOGE', 'KRW-BCH',
@@ -9,3 +10,4 @@ if __name__ == "__main__":
     INTITAL_CAPITAL = 10000
     run_golden_cross_backtests(markets, COUNT, INTITAL_CAPITAL)
     run_daily_average_backtest(markets, COUNT, INTITAL_CAPITAL)
+    run_volatility_backtest(markets, COUNT, INTITAL_CAPITAL)
