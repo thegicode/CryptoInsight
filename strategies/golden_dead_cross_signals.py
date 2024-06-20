@@ -41,11 +41,7 @@ async def check_signals(market, count=40, short_window=5, long_window=20):
     return message
 
 
-async def golden_dead_cross_signals():
-    markets = ['KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-AVAX', 'KRW-DOGE', 'KRW-BCH',
-               "KRW-SHIB", "KRW-POLYX", "KRW-NEAR", "KRW-DOT",
-               "KRW-THETA", "KRW-TFUEL", "KRW-ZRX"]
-
+async def golden_dead_cross_signals(markets):
     while True:
         tasks = [check_signals(market, count=40, short_window=5, long_window=20) for market in markets]
         signals = await asyncio.gather(*tasks)

@@ -11,3 +11,4 @@ if __name__ == "__main__":
     run_golden_cross_backtests(markets, COUNT, INTITAL_CAPITAL)
     run_daily_average_backtest(markets, COUNT, INTITAL_CAPITAL)
     run_volatility_backtest(markets, COUNT, INTITAL_CAPITAL)
+    run_volatility_backtest(markets, COUNT, INTITAL_CAPITAL, check_ma=True)

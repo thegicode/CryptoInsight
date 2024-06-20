@@ -14,15 +14,34 @@ def calculate_range(df):
     return df
 
 
-def generate_signals(df, k=0.5):
+def calculate_moving_average(df, window=5):
+    """
+    이동 평균을 계산하는 함수
+    :param df: 데이터프레임 (OHLCV)
+    :param window: 이동 평균 윈도우 크기 (기본값 5)
+    :return: 이동 평균이 추가된 데이터프레임
+    """
+    df[f'mavg_{window}'] = df['close'].rolling(window=window, min_periods=1).mean()
+    return df
+
+
+def generate_signals(df, k=0.5, check_ma=False, ma_window=5):
     """
     변동성 돌파 전략을 사용하여 매수 신호를 생성하는 함수
     :param df: 데이터프레임 (OHLCV)
     :param k: 변동성 비율 (기본값 0.5)
+    :param check_ma: 이동 평균값 확인 여부 (기본값 False)
+    :param ma_window: 이동 평균 윈도우 크기 (기본값 5)
     :return: 매수 신호가 추가된 데이터프레임
     """
-    df['target'] = df['open'] + df['range'] * k
-    df['signal'] = np.where(df['close'] >= df['target'], 1, 0)
+    if check_ma:
+        df = calculate_moving_average(df, window=ma_window)
+        df['target'] = df['open'] + df['range'] * k
+        df['signal'] = np.where((df['close'] >= df['target']) & (df['close'] > df[f'mavg_{ma_window}']), 1, 0)
+    else:
+        df['target'] = df['open'] + df['range'] * k
+        df['signal'] = np.where(df['close'] >= df['target'], 1, 0)
+
     df['positions'] = df['signal'].diff()
     return df
 
@@ -51,19 +70,19 @@ def backtest_strategy(df, initial_capital, investment_fraction=0.2):
     return df
 
 
-def run_backtest(market, count, initial_capital, k=0.5, investment_fraction=0.2):
+def run_backtest(market, count, initial_capital, k=0.5, investment_fraction=0.2, check_ma=False, ma_window=5):
     df = get_daily_candles(market, count)
 
     # 오래된 데이터부터 정렬
     df = df.sort_index()
 
     df = calculate_range(df)
-    df = generate_signals(df, k)
+    df = generate_signals(df, k, check_ma, ma_window)
     df = backtest_strategy(df, initial_capital, investment_fraction)
 
     # 결과를 파일로 저장
     if count == 200:
-        save_market_backtest_result(market, df, count, "volatility")
+        save_market_backtest_result(market, df, count, "volatility", check_ma=check_ma)
 
     cumulative_return_percent = calculate_cumulative_return(df, initial_capital)
     win_rate = calculate_win_rate(df)
@@ -81,18 +100,22 @@ def run_backtest(market, count, initial_capital, k=0.5, investment_fraction=0.2)
     return result
 
 
-def run_volatility_backtest(markets, count=200, initial_capital=10000):
+def run_volatility_backtest(markets, count=200, initial_capital=10000, check_ma=False):
     results = []
 
-    print("\n{ Volatility Backtest }")
+    title = "\n{ Volatility Backtest"
+    if check_ma:
+        title += " with Moving Average Check"
+    title += " }\n"
+    print(title)
 
     for market in markets:
         print(f"Volatility backtest for {market}...")
-        result = run_backtest(market, count, initial_capital, k=0.5, investment_fraction=1)
+        result = run_backtest(market, count, initial_capital, k=0.5, investment_fraction=1, check_ma=check_ma)
         results.append(result)
         time.sleep(2)  # 각 API 호출 사이에 2초 지연
 
-    result_df = save_backtest_results(results, count, "volatility")
+    result_df = save_backtest_results(results, count, "volatility" + ("_checkMA" if check_ma else ""))
 
     print(result_df)
 
