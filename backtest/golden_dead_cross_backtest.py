@@ -50,7 +50,8 @@ def run_backtest(market, count, initial_capital, short_window=5, long_window=20,
     df = backtest_strategy(df, initial_capital, investment_fraction)
 
     # 결과를 파일로 저장
-    save_market_backtest_result(market, df, count, "golden_dead_cross")
+    if count == 200 :
+        save_market_backtest_result(market, df, count, "golden_dead_cross")
 
     cumulative_return_percent = calculate_cumulative_return(df, initial_capital)
     win_rate = calculate_win_rate(df)

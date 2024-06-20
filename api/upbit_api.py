@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 
+
 def get_daily_candles(market: str, count: int = 200):
     """
     업비트 API를 사용하여 일봉 데이터를 가져오는 함수.
@@ -9,7 +10,7 @@ def get_daily_candles(market: str, count: int = 200):
     :param count: 가져올 일봉 데이터의 수
     :return: Pandas DataFrame으로 변환된 일봉 데이터
     """
-    url = f"https://api.upbit.com/v1/candles/days"
+    url = "https://api.upbit.com/v1/candles/days"
     params = {
         "market": market,
         "count": count
@@ -17,7 +18,7 @@ def get_daily_candles(market: str, count: int = 200):
     response = requests.get(url, params=params)
     response.raise_for_status()  # 요청이 실패하면 예외를 발생시킴
     data = response.json()
-    
+
     # JSON 데이터를 DataFrame으로 변환
     df = pd.DataFrame(data)
     # 날짜 형식을 datetime 객체로 변환

@@ -23,6 +23,8 @@ async def check_signals(market, count, window=5):
     df = calculate_moving_average(df, window)
     df = generate_signals(df)
 
+    print(df)
+
     latest_signal = df['positions'].iloc[-1]
     latest_price = df['close'].iloc[-1]
 
@@ -37,10 +39,9 @@ async def check_signals(market, count, window=5):
 
 
 async def daily_average_signals():
-    markets = [
-        'KRW-SHIB', 'KRW-BTC', 'KRW-ETH', 'KRW-BCH', 'KRW-NEAR',
-        "KRW-DOT", "KRW-TFUEL", "KRW-ZRX", "KRW-DOGE"
-    ]
+    markets = ['KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-AVAX', 'KRW-DOGE', 'KRW-BCH',
+               "KRW-SHIB", "KRW-POLYX", "KRW-NEAR", "KRW-DOT",
+               "KRW-THETA", "KRW-TFUEL", "KRW-ZRX"]
 
     while True:
         tasks = [check_signals(market, count=10, window=5) for market in markets]
