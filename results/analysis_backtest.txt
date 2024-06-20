@@ -7,10 +7,10 @@ Volatility Breakout (MA Check)              21.560212     46.666667             
 
 === KRW-ETH ===
                       Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-                 Daily Average              44.996228     32.000000              -18.656204
+                 Daily Average              44.340137     32.000000              -18.656204
                   Golden Cross              32.166428     33.333333              -25.356957
-           Volatility Breakout              21.982796     60.000000               -9.909142
-Volatility Breakout (MA Check)              21.003518     60.606061               -6.948513
+           Volatility Breakout              21.454524     60.000000               -9.909142
+Volatility Breakout (MA Check)              20.503406     60.606061               -6.948513
 
 === KRW-SOL ===
                       Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)

@@ -1,0 +1,62 @@
+Execution Date: 2024-06-20 17:52:23
+
+
+[ Golden Cross Signals ]
+KRW-AVAX: No signal at 39610.0 on 2024-06-20
+KRW-BCH: No signal at 557600.0 on 2024-06-20
+KRW-BTC: No signal at 92477000.0 on 2024-06-20
+KRW-DOGE: No signal at 176.9 on 2024-06-20
+KRW-DOT: No signal at 8320.0 on 2024-06-20
+KRW-ETH: No signal at 5056000.0 on 2024-06-20
+KRW-NEAR: No signal at 7615.0 on 2024-06-20
+KRW-POLYX: No signal at 499.9 on 2024-06-20
+KRW-SHIB: No signal at 0.02632 on 2024-06-20
+KRW-SOL: No signal at 193000.0 on 2024-06-20
+KRW-THETA: No signal at 2208.0 on 2024-06-20
+KRW-TFUEL: No signal at 104.1 on 2024-06-20
+KRW-ZRX: No signal at 519.1 on 2024-06-20
+
+[ Daily Average Signals ]
+KRW-AVAX: Buy signal at 39610.0
+KRW-BCH: No signal at 557600.0
+KRW-BTC: No signal at 92478000.0
+KRW-DOGE: No signal at 176.9
+KRW-DOT: No signal at 8320.0
+KRW-ETH: No signal at 5056000.0
+KRW-NEAR: Buy signal at 7615.0
+KRW-POLYX: Buy signal at 499.9
+KRW-SHIB: No signal at 0.02632
+KRW-SOL: No signal at 193000.0
+KRW-THETA: Buy signal at 2208.0
+KRW-TFUEL: Buy signal at 104.1
+KRW-ZRX: No signal at 519.1
+
+[ Volatility Breakout Signals ]
+KRW-AVAX: Buy signal at 39610.0
+KRW-BCH: No signal at 557600.0
+KRW-BTC: Buy signal at 92478000.0
+KRW-DOGE: No signal at 176.9
+KRW-DOT: No signal at 8320.0
+KRW-ETH: Sell signal at 5056000.0
+KRW-NEAR: Buy signal at 7615.0
+KRW-POLYX: Buy signal at 499.9
+KRW-SHIB: Buy signal at 0.0263
+KRW-SOL: No signal at 193000.0
+KRW-THETA: Buy signal at 2208.0
+KRW-TFUEL: Buy signal at 104.1
+KRW-ZRX: No signal at 519.1
+
+[ Volatility Breakout Signals with Moving Average Check ]
+KRW-AVAX: Buy signal at 39610.0
+KRW-BCH: No signal at 557700.0
+KRW-BTC: No signal at 92478000.0
+KRW-DOGE: No signal at 176.9
+KRW-DOT: No signal at 8320.0
+KRW-ETH: Sell signal at 5056000.0
+KRW-NEAR: Buy signal at 7615.0
+KRW-POLYX: Buy signal at 499.9
+KRW-SHIB: No signal at 0.02632
+KRW-SOL: No signal at 193000.0
+KRW-THETA: Buy signal at 2208.0
+KRW-TFUEL: Buy signal at 104.3
+KRW-ZRX: No signal at 519.1

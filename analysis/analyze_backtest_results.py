@@ -62,10 +62,10 @@ def analyze_coin(coin, daily_average_df, golden_cross_df, volatility_df, volatil
 
 
 # 분석할 코인 리스트
-coins = ['KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-AVAX', 'KRW-DOGE', 'KRW-BCH', "KRW-SHIB", "KRW-POLYX", "KRW-NEAR", "KRW-DOT", "KRW-THETA", "KRW-TFUEL", "KRW-ZRX"]
+coins = ['KRW-AVAX', 'KRW-BCH', 'KRW-BTC', 'KRW-DOGE', 'KRW-DOT', 'KRW-ETH', 'KRW-NEAR', 'KRW-POLYX', 'KRW-SHIB', 'KRW-SOL', 'KRW-THETA', 'KRW-TFUEL', 'KRW-ZRX']
 
 # 텍스트 파일 경로
-output_file = os.path.join(output_dir, 'backtest_analysis.txt')
+output_file = os.path.join(output_dir, 'analysis_backtest.txt')
 
 # 기존 텍스트 파일 삭제 (이미 존재할 경우)
 if os.path.exists(output_file):

@@ -111,7 +111,9 @@ async def volatility_strategy(markets, check_ma=False):
         print(all_signals_message)
         # send_telegram_message(all_signals_message)
 
-        await asyncio.sleep(3600)  # 1시간 간격으로 실행
+        return all_signals_message
+
+        # await asyncio.sleep(3600)  # 1시간 간격으로 실행
 
 
 if __name__ == "__main__":

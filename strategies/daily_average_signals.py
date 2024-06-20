@@ -47,4 +47,6 @@ async def daily_average_signals(markets):
         print(all_signals_message)
         # send_telegram_message(all_signals_message)
 
-        await asyncio.sleep(3600)  # 1시간 간격으로 실행
+        return all_signals_message
+
+        # await asyncio.sleep(3600)  # 1시간 간격으로 실행
