@@ -2,16 +2,16 @@ import pandas as pd
 import os
 
 # CSV 파일 경로
-daily_average_csv_path = 'results/daily_average_backtest_200.csv'
-golden_cross_csv_path = 'results/golden_dead_cross_backtest_200.csv'
-volatility_csv_path = 'results/volatility_backtest_200.csv'
-volatility_ma_csv_path = 'results/volatility_checkMA_backtest_200.csv'
+CSV_PATHS = {
+    'daily_average': 'results/daily_average_backtest_200.csv',
+    'golden_cross': 'results/golden_dead_cross_backtest_200.csv',
+    'volatility': 'results/volatility_backtest_200.csv',
+    'volatility_ma': 'results/volatility_checkMA_backtest_200.csv',
+    'volatility_volume': 'results/volatility_checkMA_checkVolume_backtest_200.csv'
+}
 
 # CSV 파일 불러오기
-daily_average_df = pd.read_csv(daily_average_csv_path)
-golden_cross_df = pd.read_csv(golden_cross_csv_path)
-volatility_df = pd.read_csv(volatility_csv_path)
-volatility_ma_df = pd.read_csv(volatility_ma_csv_path)
+dataframes = {name: pd.read_csv(path) for name, path in CSV_PATHS.items()}
 
 # 결과 저장 디렉토리 생성
 output_dir = 'results'
@@ -19,33 +19,28 @@ os.makedirs(output_dir, exist_ok=True)
 
 
 # 코인별로 분석하고 결과를 텍스트 파일로 저장하는 함수
-def analyze_coin(coin, daily_average_df, golden_cross_df, volatility_df, volatility_ma_df, output_file):
-    # 필터링하여 해당 코인의 데이터 가져오기
-    daily_average_coin_df = daily_average_df[daily_average_df['Market'] == coin]
-    golden_cross_coin_df = golden_cross_df[golden_cross_df['Market'] == coin]
-    volatility_coin_df = volatility_df[volatility_df['Market'] == coin]
-    volatility_ma_coin_df = volatility_ma_df[volatility_ma_df['Market'] == coin]
+def analyze_coin(coin, dataframes, output_file):
+    backtests = ['daily_average', 'golden_cross', 'volatility', 'volatility_ma', 'volatility_volume']
+    backtest_names = ['Daily Average', 'Golden Cross', 'Volatility Breakout',
+                      '+ (MA Check)', '+ (Volume Check)']
 
     # 결과를 하나의 데이터프레임으로 합치기
     combined_df = pd.DataFrame({
-        'Backtest': ['Daily Average', 'Golden Cross', 'Volatility Breakout', 'Volatility Breakout (MA Check)'],
+        'Backtest': backtest_names,
         'Cumulative Return (%)': [
-            daily_average_coin_df['Cumulative Return (%)'].values[0] if not daily_average_coin_df.empty else None,
-            golden_cross_coin_df['Cumulative Return (%)'].values[0] if not golden_cross_coin_df.empty else None,
-            volatility_coin_df['Cumulative Return (%)'].values[0] if not volatility_coin_df.empty else None,
-            volatility_ma_coin_df['Cumulative Return (%)'].values[0] if not volatility_ma_coin_df.empty else None
+            dataframes[bt][dataframes[bt]['Market'] == coin]['Cumulative Return (%)'].values[0]
+            if not dataframes[bt][dataframes[bt]['Market'] == coin].empty else None
+            for bt in backtests
         ],
         'Win Rate (%)': [
-            daily_average_coin_df['Win Rate (%)'].values[0] if not daily_average_coin_df.empty else None,
-            golden_cross_coin_df['Win Rate (%)'].values[0] if not golden_cross_coin_df.empty else None,
-            volatility_coin_df['Win Rate (%)'].values[0] if not volatility_coin_df.empty else None,
-            volatility_ma_coin_df['Win Rate (%)'].values[0] if not volatility_ma_coin_df.empty else None
+            dataframes[bt][dataframes[bt]['Market'] == coin]['Win Rate (%)'].values[0]
+            if not dataframes[bt][dataframes[bt]['Market'] == coin].empty else None
+            for bt in backtests
         ],
         'Max Drawdown (MDD) (%)': [
-            daily_average_coin_df['Max Drawdown (MDD) (%)'].values[0] if not daily_average_coin_df.empty else None,
-            golden_cross_coin_df['Max Drawdown (MDD) (%)'].values[0] if not golden_cross_coin_df.empty else None,
-            volatility_coin_df['Max Drawdown (MDD) (%)'].values[0] if not volatility_coin_df.empty else None,
-            volatility_ma_coin_df['Max Drawdown (MDD) (%)'].values[0] if not volatility_ma_coin_df.empty else None
+            dataframes[bt][dataframes[bt]['Market'] == coin]['Max Drawdown (MDD) (%)'].values[0]
+            if not dataframes[bt][dataframes[bt]['Market'] == coin].empty else None
+            for bt in backtests
         ]
     })
 
@@ -73,4 +68,4 @@ if os.path.exists(output_file):
 
 # 각 코인별로 결과 분석 및 텍스트 파일 저장
 for coin in coins:
-    analyze_coin(coin, daily_average_df, golden_cross_df, volatility_df, volatility_ma_df, output_file)
+    analyze_coin(coin, dataframes, output_file)

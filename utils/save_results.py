@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 
-def save_market_backtest_result(market, df, count, name, check_ma=False) :
+def save_market_backtest_result(market, df, count, name, check_ma=False, check_volume=False) :
     """
     시장 백테스트 결과를 CSV 파일로 저장하는 함수.
 
@@ -11,14 +11,10 @@ def save_market_backtest_result(market, df, count, name, check_ma=False) :
     :param count: 데이터 수
     :param name: 백테스트 이름
     :param check_ma: 이동 평균 확인 여부
+    :param check_volume: 거래량 평균 확인 여부
     """
 
-    # if (check_ma) :
-    #     output_dir = f'results/{name}_checkMA_backtest'
-    # else :
-    #     output_dir = f'results/{name}_backtest'
-
-    output_dir = f'results/{name}_{"checkMA_" if check_ma else ""}backtest'
+    output_dir = f'results/{name}_{"checkMA_" if check_ma else ""}{"checkVolumne_" if check_volume else ""}backtest'
 
     os.makedirs(output_dir, exist_ok=True)
     output_file = os.path.join(output_dir, f'{name}_{market}_{count}.csv')
