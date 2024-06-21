@@ -28,8 +28,9 @@ async def main():
         task2 = asyncio.create_task(daily_average_signals(markets))
         task3 = asyncio.create_task(volatility_strategy(markets))
         task3_ma = asyncio.create_task(volatility_strategy(markets, check_ma=True))
+        task3_ma_volume = asyncio.create_task(volatility_strategy(markets, check_ma=True, check_volume=True))
 
-        results = await asyncio.gather(task1, task2, task3, task3_ma)
+        results = await asyncio.gather(task1, task2, task3, task3_ma, task3_ma_volume)
 
         # 각 결과를 파일에 기록
         for result in results:

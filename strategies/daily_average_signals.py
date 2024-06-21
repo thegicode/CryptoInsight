@@ -44,7 +44,7 @@ async def daily_average_signals(markets):
         # 모든 신호를 모아서 한꺼번에 출력하고 텔레그램으로 발송
         title = "\n[ Daily Average Signals ]\n"
         all_signals_message = title + "\n".join(signals)
-        print(all_signals_message)
+        # print(all_signals_message)
         # send_telegram_message(all_signals_message)
 
         return all_signals_message

@@ -5,7 +5,7 @@
 1. **터미널을 열고 프로젝트 디렉토리로 이동합니다:**
 
     ```
-    cd /Users/deokim/Documents/코딩/project-my/trade
+    cd /Users/deokim/Documents/코딩/project-my/CryptoInsight
     ```
 
 2. 가상 환경을 생성하고 활성화합니다:
@@ -20,7 +20,7 @@
 5. .vscode/settings.json 파일을 설정하여 가상 환경을 명시합니다:
 
 {
-"python.pythonPath": "/Users/aaa/Documents/코딩/project-my/trade/venv/bin/python"
+"python.pythonPath": "/Users/aaa/Documents/코딩/project-my/CryptoInsight/venv/bin/python"
 }
 
 6. 필요한 패키지를 설치합니다:
