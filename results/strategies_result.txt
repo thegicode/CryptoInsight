@@ -1,77 +1,85 @@
-Execution Date: 2024-06-21 19:22:00
+Execution Date: 2024-06-21 21:08:03
 
 
 [ Golden Cross Signals ]
-KRW-AVAX: No signal at 39270.0 on 2024-06-21
-KRW-BCH: No signal at 552600.0 on 2024-06-21
-KRW-BTC: No signal at 90300000.0 on 2024-06-21
-KRW-DOGE: No signal at 175.7 on 2024-06-21
-KRW-DOT: No signal at 7985.0 on 2024-06-21
-KRW-ETH: No signal at 4946000.0 on 2024-06-21
-KRW-NEAR: No signal at 7550.0 on 2024-06-21
-KRW-POLYX: No signal at 502.0 on 2024-06-21
-KRW-SHIB: No signal at 0.0254 on 2024-06-21
-KRW-SOL: No signal at 186550.0 on 2024-06-21
-KRW-THETA: No signal at 2154.0 on 2024-06-21
-KRW-TFUEL: No signal at 101.8 on 2024-06-21
-KRW-ZRX: No signal at 515.4 on 2024-06-21
+KRW-AVAX: No signal at 39100.0 on 2024-06-21
+KRW-BCH: No signal at 548600.0 on 2024-06-21
+KRW-BTC: No signal at 89909000.0 on 2024-06-21
+KRW-DOGE: No signal at 175.2 on 2024-06-21
+KRW-DOT: No signal at 8017.0 on 2024-06-21
+KRW-ETH: No signal at 4934000.0 on 2024-06-21
+KRW-NEAR: No signal at 7495.0 on 2024-06-21
+KRW-POLYX: No signal at 496.5 on 2024-06-21
+KRW-SHIB: No signal at 0.02525 on 2024-06-21
+KRW-SOL: No signal at 186000.0 on 2024-06-21
+KRW-THETA: No signal at 2150.0 on 2024-06-21
+KRW-TFUEL: No signal at 101.2 on 2024-06-21
+KRW-ZRX: No signal at 511.7 on 2024-06-21
 
 [ Daily Average Signals ]
-KRW-AVAX: Buy signal at 39270.0
-KRW-BCH: No signal at 552600.0
-KRW-BTC: No signal at 90301000.0
-KRW-DOGE: Buy signal at 175.7
-KRW-DOT: No signal at 7985.0
-KRW-ETH: No signal at 4946000.0
-KRW-NEAR: No signal at 7550.0
-KRW-POLYX: Buy signal at 502.0
-KRW-SHIB: No signal at 0.0254
-KRW-SOL: No signal at 186550.0
-KRW-THETA: No signal at 2154.0
-KRW-TFUEL: Buy signal at 101.8
-KRW-ZRX: Buy signal at 515.4
+KRW-AVAX: Buy signal at 39100.0
+KRW-BCH: No signal at 548500.0
+KRW-BTC: No signal at 89902000.0
+KRW-DOGE: No signal at 175.2
+KRW-DOT: No signal at 8017.0
+KRW-ETH: No signal at 4934000.0
+KRW-NEAR: No signal at 7495.0
+KRW-POLYX: Buy signal at 496.5
+KRW-SHIB: No signal at 0.02525
+KRW-SOL: No signal at 186000.0
+KRW-THETA: No signal at 2150.0
+KRW-TFUEL: Buy signal at 101.2
+KRW-ZRX: Buy signal at 511.7
 
 [ Volatility Breakout Signals ]
-KRW-AVAX: Sell signal at 39270.0
-KRW-BCH: No signal at 552600.0
-KRW-BTC: No signal at 90301000.0
-KRW-DOGE: No signal at 175.7
-KRW-DOT: No signal at 7985.0
-KRW-ETH: No signal at 4946000.0
-KRW-NEAR: No signal at 7550.0
-KRW-POLYX: No signal at 502.5
-KRW-SHIB: No signal at 0.0254
-KRW-SOL: No signal at 186500.0
-KRW-THETA: No signal at 2154.0
-KRW-TFUEL: Sell signal at 101.8
-KRW-ZRX: No signal at 515.4
+KRW-AVAX: Sell signal at 39100.0
+KRW-BCH: No signal at 548600.0
+KRW-BTC: No signal at 89909000.0
+KRW-DOGE: No signal at 175.2
+KRW-DOT: No signal at 8017.0
+KRW-ETH: No signal at 4934000.0
+KRW-NEAR: No signal at 7499.0
+KRW-POLYX: No signal at 496.5
+KRW-SHIB: No signal at 0.02525
+KRW-SOL: No signal at 186000.0
+KRW-THETA: No signal at 2150.0
+KRW-TFUEL: Sell signal at 101.2
+KRW-ZRX: No signal at 511.7
 
 [ Volatility Breakout Signals with Moving Average Check ]
-KRW-AVAX: No signal at 39270.0
-KRW-BCH: No signal at 552600.0
-KRW-BTC: No signal at 90302000.0
-KRW-DOGE: No signal at 175.7
-KRW-DOT: No signal at 7985.0
-KRW-ETH: No signal at 4949000.0
-KRW-NEAR: No signal at 7550.0
-KRW-POLYX: No signal at 502.7
-KRW-SHIB: No signal at 0.0254
-KRW-SOL: No signal at 186500.0
-KRW-THETA: No signal at 2154.0
-KRW-TFUEL: No signal at 101.8
-KRW-ZRX: No signal at 515.4
+KRW-AVAX: No signal at 39100.0
+KRW-BCH: No signal at 548600.0
+KRW-BTC: No signal at 89909000.0
+KRW-DOGE: No signal at 175.2
+KRW-DOT: No signal at 8017.0
+KRW-ETH: No signal at 4934000.0
+KRW-NEAR: No signal at 7495.0
+KRW-POLYX: No signal at 496.5
+KRW-SHIB: No signal at 0.02525
+KRW-SOL: No signal at 186000.0
+KRW-THETA: No signal at 2150.0
+KRW-TFUEL: No signal at 101.2
+KRW-ZRX: No signal at 511.7
 
 [ Volatility Breakout Signals with Moving Average Check with Volume Check ]
-KRW-AVAX: No signal at 39270.0
-KRW-BCH: No signal at 552600.0
-KRW-BTC: No signal at 90299000.0
-KRW-DOGE: No signal at 175.7
-KRW-DOT: No signal at 7985.0
-KRW-ETH: No signal at 4946000.0
-KRW-NEAR: No signal at 7550.0
-KRW-POLYX: No signal at 502.7
-KRW-SHIB: No signal at 0.0254
-KRW-SOL: No signal at 186500.0
-KRW-THETA: No signal at 2154.0
-KRW-TFUEL: No signal at 101.8
-KRW-ZRX: No signal at 515.4
+KRW-AVAX: No signal at 39100.0
+KRW-BCH: No signal at 548500.0
+KRW-BTC: No signal at 89902000.0
+KRW-DOGE: No signal at 175.2
+KRW-DOT: No signal at 8017.0
+KRW-ETH: No signal at 4934000.0
+KRW-NEAR: No signal at 7495.0
+KRW-POLYX: No signal at 496.5
+KRW-SHIB: No signal at 0.02525
+KRW-SOL: No signal at 186000.0
+KRW-THETA: No signal at 2150.0
+KRW-TFUEL: No signal at 101.2
+KRW-ZRX: No signal at 511.7
+
+[ Noise Strategy ]
+Top 7 stocks with the lowest noise values:
+KRW-ZRX: 0.506414
+KRW-NEAR: 0.509840
+KRW-THETA: 0.510501
+KRW-SOL: 0.544316
+

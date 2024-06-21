@@ -1,0 +1,28 @@
+Execution Date: 2024-06-21 20:59:08
+
+Top 10 stocks with the lowest noise values:
+KRW-ZRX: 0.505013
+KRW-NEAR: 0.509401
+KRW-THETA: 0.511135
+KRW-DOT: 0.545846
+KRW-SOL: 0.546059
+
+Execution Date: 2024-06-21 20:59:32
+
+Top 7 stocks with the lowest noise values:
+KRW-ZRX: 0.505013
+KRW-THETA: 0.508596
+KRW-NEAR: 0.509401
+KRW-SOL: 0.545623
+KRW-DOT: 0.545846
+
+Execution Date: 2024-06-21 21:01:41
+
+Top 7 stocks with the lowest noise values:
+KRW-ZRX: 0.504173
+KRW-THETA: 0.508596
+KRW-NEAR: 0.509181
+KRW-SOL: 0.545623
+KRW-DOT: 0.548783
+KRW-TFUEL: 0.549729
+

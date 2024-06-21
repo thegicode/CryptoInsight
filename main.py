@@ -1,7 +1,7 @@
 import asyncio
 import datetime
 import os
-from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy
+from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy, noise_strategy
 
 
 async def main():
@@ -29,8 +29,9 @@ async def main():
         task3 = asyncio.create_task(volatility_strategy(markets))
         task3_ma = asyncio.create_task(volatility_strategy(markets, check_ma=True))
         task3_ma_volume = asyncio.create_task(volatility_strategy(markets, check_ma=True, check_volume=True))
+        task4 = asyncio.create_task(noise_strategy(markets))
 
-        results = await asyncio.gather(task1, task2, task3, task3_ma, task3_ma_volume)
+        results = await asyncio.gather(task1, task2, task3, task3_ma, task3_ma_volume, task4)
 
         # 각 결과를 파일에 기록
         for result in results:
