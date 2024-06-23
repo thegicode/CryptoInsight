@@ -1,22 +1,22 @@
 === KRW-AVAX ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average               1.797963     29.166667              -41.963725
-       Golden Cross              38.755841     80.000000              -22.893712
-Volatility Breakout               6.537764     48.484848              -19.210657
-       + (MA Check)               5.438714     48.387097              -19.210657
+      Daily Average             -16.688419     28.000000              -45.563804
+       Golden Cross              35.266970     80.000000              -22.893712
+Volatility Breakout               5.977558     50.000000              -19.210657
+       + (MA Check)               5.643336     50.000000              -19.210657
    + (Volume Check)              -2.982524     44.444444               -8.685467
 
 === KRW-BCH ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average             105.196442     30.000000              -22.156923
+      Daily Average             117.937159     28.571429              -22.156923
        Golden Cross              20.250727     33.333333              -33.386222
-Volatility Breakout              45.591140     46.428571              -15.400845
-       + (MA Check)              45.591140     46.428571              -15.400845
+Volatility Breakout              43.542411     44.827586              -15.400845
+       + (MA Check)              43.542411     44.827586              -15.400845
    + (Volume Check)              76.722479     62.500000               -5.633670
 
 === KRW-BTC ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average              43.595289     31.818182              -12.298755
+      Daily Average              39.126033     33.333333              -12.298755
        Golden Cross              54.793225     50.000000              -14.190637
 Volatility Breakout              22.568286     45.161290              -11.968233
        + (MA Check)              21.384867     44.827586              -11.560234
@@ -24,39 +24,39 @@ Volatility Breakout              22.568286     45.161290              -11.968233
 
 === KRW-DOGE ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average              37.786577     26.923077              -35.216370
-       Golden Cross              42.025495     50.000000              -34.451399
+      Daily Average              31.469307     26.923077              -35.216370
+       Golden Cross              57.666032     66.666667              -34.451399
 Volatility Breakout              11.448997     34.285714              -21.624358
        + (MA Check)              18.611519     37.500000              -21.624358
-   + (Volume Check)              -6.442261     50.000000              -11.436340
+   + (Volume Check)              -8.476125     45.454545              -11.436340
 
 === KRW-DOT ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average              18.837340     33.333333              -30.663922
-       Golden Cross              46.416635     50.000000              -21.049457
-Volatility Breakout              33.549945     58.064516              -14.398065
-       + (MA Check)              33.549945     58.064516              -14.398065
+      Daily Average               6.790014     29.166667              -30.663922
+       Golden Cross              18.869001     40.000000              -23.344445
+Volatility Breakout              33.960868     59.375000              -14.398065
+       + (MA Check)              33.960868     59.375000              -14.398065
    + (Volume Check)              10.227179     66.666667               -4.756368
 
 === KRW-ETH ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average              44.436806     32.000000              -18.656204
-       Golden Cross              32.372103     33.333333              -25.356957
-Volatility Breakout              21.583923     58.823529               -9.909142
-       + (MA Check)              20.584110     59.375000               -6.948513
+      Daily Average              51.675097     33.333333              -18.656204
+       Golden Cross              36.580465     40.000000              -25.356957
+Volatility Breakout              22.037735     60.606061               -9.909142
+       + (MA Check)              21.034191     61.290323               -6.948513
    + (Volume Check)               8.846772     66.666667               -2.060838
 
 === KRW-NEAR ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average             169.091906     28.000000              -34.128018
-       Golden Cross              90.013079     28.571429              -43.493648
+      Daily Average             175.913453     29.166667              -34.128018
+       Golden Cross             104.286362     28.571429              -43.493648
 Volatility Breakout             -22.505879     31.578947              -48.986252
        + (MA Check)             -11.273399     31.428571              -41.592002
    + (Volume Check)             -10.326909     25.000000              -23.054702
 
 === KRW-POLYX ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average             -11.055348     25.925926              -43.534881
+      Daily Average             -13.836572     25.000000              -45.300498
        Golden Cross              30.169263     60.000000              -34.531618
 Volatility Breakout              44.497953     46.428571              -16.491503
        + (MA Check)              43.382139     44.444444              -16.491503
@@ -64,40 +64,40 @@ Volatility Breakout              44.497953     46.428571              -16.491503
 
 === KRW-SHIB ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average             135.291408     34.615385              -35.446922
-       Golden Cross              82.266109     16.666667              -46.739004
+      Daily Average             126.827688     34.615385              -35.446922
+       Golden Cross              96.146279     33.333333              -46.739004
 Volatility Breakout              31.566846     43.333333              -22.673084
        + (MA Check)              51.232665     50.000000              -11.958735
    + (Volume Check)              35.074507     50.000000               -6.909502
 
 === KRW-SOL ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average             112.858260     43.478261              -27.513709
-       Golden Cross             102.716912    100.000000              -28.934714
-Volatility Breakout               3.783013     41.463415              -27.757643
-       + (MA Check)              10.577111     45.945946              -23.591152
-   + (Volume Check)              12.812578     57.894737              -15.948439
+      Daily Average              77.809059     39.130435              -27.513709
+       Golden Cross             116.306475    100.000000              -28.934714
+Volatility Breakout              -5.675821     39.024390              -27.757643
+       + (MA Check)               0.499060     43.243243              -23.591152
+   + (Volume Check)               2.530786     55.555556              -15.948439
 
 === KRW-THETA ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average              35.679282     20.000000              -48.390926
-       Golden Cross             102.793341     20.000000              -38.464660
-Volatility Breakout              -0.521627     45.714286              -18.219565
-       + (MA Check)               6.292404     45.454545              -21.848049
+      Daily Average              38.148480     20.000000              -48.968909
+       Golden Cross             117.359787     40.000000              -38.464660
+Volatility Breakout              -1.020607     44.444444              -18.629773
+       + (MA Check)               5.759245     44.117647              -22.240056
    + (Volume Check)              -2.444878     50.000000              -16.262209
 
 === KRW-TFUEL ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average              56.779785     34.782609              -32.001493
-       Golden Cross              68.784516     33.333333              -29.677857
-Volatility Breakout             -32.373194     44.117647              -41.482224
+      Daily Average              67.231770     34.782609              -32.001493
+       Golden Cross              78.176341     50.000000              -29.677857
+Volatility Breakout             -32.507508     44.117647              -41.598446
        + (MA Check)             -25.138148     46.666667              -32.867993
-   + (Volume Check)             -14.210092     33.333333              -23.100175
+   + (Volume Check)             -13.309748     40.000000              -23.100175
 
 === KRW-ZRX ===
            Backtest  Cumulative Return (%)  Win Rate (%)  Max Drawdown (MDD) (%)
-      Daily Average             120.807809     30.000000              -26.161188
-       Golden Cross             127.782383     40.000000              -38.362283
+      Daily Average             122.375366     30.000000              -26.161188
+       Golden Cross             154.217476     50.000000              -38.362283
 Volatility Breakout              58.787101     54.545455              -16.868909
        + (MA Check)              79.427094     63.157895               -9.541176
    + (Volume Check)              17.254117     66.666667               -7.476622

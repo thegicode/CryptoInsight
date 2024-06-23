@@ -53,7 +53,8 @@ async def get_lowest_noise_stocks(markets, count=30, top_n=5):
 
 
 async def noise_strategy(markets):
-    top_n = 7  # 노이즈 값이 가장 작은 종목 5개 선정
+
+    top_n = 7  # 노이즈 값이 가장 작은 종목 7개 선정
 
     selected_stocks = await get_lowest_noise_stocks(markets, count=30, top_n=top_n)
 

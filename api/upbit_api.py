@@ -31,3 +31,20 @@ def get_daily_candles(market: str, count: int = 200):
     df.set_index('date', inplace=True)
 
     return df
+
+
+def get_markets():
+    url = "https://api.upbit.com/v1/market/all"
+    headers = {"Accept": "application/json"}
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()  # 요청 실패 시 예외 발생
+
+    markets = response.json()
+
+    # "market_warning"이 존재하고 "NONE"인 경우 및 "KRW"로 시작하는 마켓만 필터링
+    filtered_markets = [
+        market['market'] for market in markets
+        if market.get('market_warning', 'NONE') == "NONE" and market['market'].startswith("KRW")
+    ]
+
+    return filtered_markets
