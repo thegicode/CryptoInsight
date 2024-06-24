@@ -4,6 +4,7 @@ import os
 import subprocess
 import json
 from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy, noise_strategy
+from coins import coin_list
 
 def run_analysis_script(coin_list):
     """
@@ -24,12 +25,6 @@ async def main():
     """
     Main function to execute the trading strategies and save the results.
     """
-    # List of coins to analyze
-    coin_list = [
-        'KRW-AVAX', 'KRW-BCH', 'KRW-BTC', 'KRW-DOGE', 'KRW-DOT',
-        'KRW-ETH', 'KRW-NEAR', 'KRW-POLYX', 'KRW-SHIB', 'KRW-SOL',
-        'KRW-THETA', 'KRW-TFUEL', 'KRW-ZRX'
-    ]
 
     # Run the analysis script and generate the strategy-to-markets mapping
     run_analysis_script(coin_list)

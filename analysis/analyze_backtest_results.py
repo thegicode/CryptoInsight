@@ -1,5 +1,11 @@
-import pandas as pd
+# analysis/analyze_backtest_results.py
+
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import pandas as pd
+from coins import coin_list
 
 # CSV 파일 경로
 CSV_PATHS = {
@@ -57,7 +63,7 @@ def analyze_coin(coin, dataframes, output_file):
 
 
 # 분석할 코인 리스트
-coins = ['KRW-AVAX', 'KRW-BCH', 'KRW-BTC', 'KRW-DOGE', 'KRW-DOT', 'KRW-ETH', 'KRW-NEAR', 'KRW-POLYX', 'KRW-SHIB', 'KRW-SOL', 'KRW-THETA', 'KRW-TFUEL', 'KRW-ZRX']
+# coins = ['KRW-AVAX', 'KRW-AQT', 'KRW-BCH', 'KRW-BTC', 'KRW-DOGE', 'KRW-DOT', 'KRW-ETH', 'KRW-NEAR', 'KRW-POLYX', 'KRW-SHIB', 'KRW-SOL', 'KRW-THETA', 'KRW-TFUEL', 'KRW-ZRX']
 
 # 텍스트 파일 경로
 output_file = os.path.join(output_dir, 'analysis_backtest.txt')
@@ -67,5 +73,5 @@ if os.path.exists(output_file):
     os.remove(output_file)
 
 # 각 코인별로 결과 분석 및 텍스트 파일 저장
-for coin in coins:
+for coin in coin_list:
     analyze_coin(coin, dataframes, output_file)
