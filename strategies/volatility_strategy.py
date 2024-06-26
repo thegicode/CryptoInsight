@@ -1,7 +1,3 @@
-import numpy as np
-import asyncio
-from utils import fetch_latest_data_with_retry
-# , send_telegram_message
 
 """ 변동성 돌파 전략
 
@@ -22,6 +18,12 @@ from utils import fetch_latest_data_with_retry
         각 화폐의 전일 거래량이 5일 거래량 이동평균보다 많은지 여부 파악
         둘 중 하나라도 낮을 경우 그날 투자 대상에서 제외
  """
+
+
+import numpy as np
+import asyncio
+from utils import fetch_latest_data_with_retry
+# , send_telegram_message
 
 
 def calculate_range(df):

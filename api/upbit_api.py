@@ -32,6 +32,32 @@ def get_daily_candles(market: str, count: int = 200):
 
     return df
 
+def get_minute_candles(market, interval, count, to):
+    url = f"https://api.upbit.com/v1/candles/minutes/{interval}"
+    params = {
+        "market": market,
+        "count": count,
+        "to": to
+    }
+    headers = {"accept": "application/json"}
+    response = requests.get(url, headers=headers, params=params)
+    response.raise_for_status()  # 요청이 실패하면 예외를 발생시킴
+    data = response.json()
+
+
+    # JSON 데이터를 DataFrame으로 변환
+    df = pd.DataFrame(data)
+    df['candle_date_time_kst'] = pd.to_datetime(df['candle_date_time_kst'])
+     # 필요한 열만 선택
+    df = df[['candle_date_time_kst', 'opening_price', 'high_price', 'low_price', 'trade_price', 'candle_acc_trade_volume']]
+    # 열 이름을 더 간단하게 변경
+    df.columns = ['date', 'open', 'high', 'low', 'close', 'volume']
+    # 'date' 열을 인덱스로 설정
+    df.set_index('date', inplace=True)
+
+    return df
+
+
 
 def get_markets():
     url = "https://api.upbit.com/v1/market/all"

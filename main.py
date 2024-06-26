@@ -3,7 +3,7 @@ import datetime
 import os
 import subprocess
 import json
-from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy, noise_strategy
+from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy, noise_strategy, afternoon_strategy
 from coins import coin_list
 
 def run_analysis_script(coin_list):
@@ -19,7 +19,6 @@ def run_analysis_script(coin_list):
     script_path = os.path.join('analysis', 'best_strategy_analysis.py')
     result = subprocess.run(['python3', script_path, ','.join(coin_list)], capture_output=True, text=True)
     return result.stdout
-
 
 async def main():
     """
@@ -63,6 +62,7 @@ async def main():
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
+            asyncio.create_task(afternoon_strategy(coin_list)),
             asyncio.create_task(noise_strategy(coin_list))
         ]
 
@@ -71,7 +71,6 @@ async def main():
         # Write each result to the output file
         for result in results:
             print_and_save(result)
-
 
 if __name__ == "__main__":
     asyncio.run(main())
