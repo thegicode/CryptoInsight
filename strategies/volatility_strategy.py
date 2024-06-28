@@ -95,12 +95,12 @@ async def check_signals(market, count=40, k=0.5, check_ma=False, check_volume=Fa
     df = calculate_range(df)
     df = generate_signals(df, k, check_ma, check_volume)
 
-    latest_signal = df['positions'].iloc[-1]
+    latest_positions = df['positions'].iloc[-1]
     latest_price = df['close'].iloc[-1]
 
-    if latest_signal == 1:
+    if latest_positions == 1:
         message = f"{market}: Buy signal at {latest_price}"
-    elif latest_signal == -1:
+    elif latest_positions == -1:
         message = f"{market}: Sell signal at {latest_price}"
     else:
         message = f"{market}: No signal at {latest_price}"

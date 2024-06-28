@@ -1,24 +1,26 @@
-Execution Date: 2024-06-24 17:10:11
+Execution Date: 2024-06-28 10:43:10
 
 
 [ Golden Cross Signals ]
-KRW-AVAX: No signal at 34100.0 on 2024-06-24
-KRW-BTC: No signal at 88071000.0 on 2024-06-24
-KRW-DOGE: No signal at 166.6 on 2024-06-24
-KRW-SOL: No signal at 176400.0 on 2024-06-24
-KRW-THETA: No signal at 2078.0 on 2024-06-24
-KRW-TFUEL: No signal at 99.31 on 2024-06-24
-KRW-ZRX: No signal at 477.3 on 2024-06-24
+KRW-AVAX: No signal at 39550.0 on 2024-06-28
+KRW-BTC: No signal at 87430000.0 on 2024-06-28
+KRW-DOGE: No signal at 180.0 on 2024-06-28
+KRW-DOT: No signal at 8857.0 on 2024-06-28
+KRW-THETA: No signal at 2228.0 on 2024-06-28
+KRW-TFUEL: No signal at 109.0 on 2024-06-28
+KRW-ZRX: No signal at 528.0 on 2024-06-28
 
 [ Daily Average Signals ]
-KRW-BCH: No signal at 521000.0
-KRW-ETH: No signal at 4740000.0
-KRW-NEAR: Buy signal at 7432.0
-KRW-SHIB: No signal at 0.02385
+KRW-BCH: Hold signal at 552800.0
+KRW-ETH: Hold signal at 4902000.0
+KRW-NEAR: No signal at 7369.0
+KRW-SHIB: Hold signal at 0.02485
+KRW-SOL: Hold signal at 210850.0
+KRW-MED: Hold signal at 11.61
 
 [ Volatility Breakout Signals ]
-KRW-DOT: No signal at 7897.0
-KRW-POLYX: No signal at 437.8
+KRW-POLYX: No signal at 412.0
+KRW-ONG: No signal at 513.8
 
 [ Volatility Breakout Signals with Moving Average Check ]
 
@@ -28,11 +30,8 @@ KRW-POLYX: No signal at 437.8
 
 [ Noise Strategy ]
 Top 7 stocks with the lowest noise values:
-KRW-ZRX: 0.494311
-KRW-THETA: 0.497323
-KRW-NEAR: 0.517517
-KRW-AVAX: 0.523578
-KRW-DOT: 0.537936
-KRW-SOL: 0.541333
-KRW-TFUEL: 0.546005
+KRW-ZRX: 0.498469
+KRW-NEAR: 0.529785
+KRW-THETA: 0.537583
+KRW-MED: 0.546901
 

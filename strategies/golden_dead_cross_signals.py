@@ -27,14 +27,17 @@ async def check_signals(market, count=40, short_window=5, long_window=20):
     df = calculate_moving_averages(df, short_window, long_window)
     df = generate_signals(df, short_window)
 
-    latest_signal = df['positions'].iloc[-1]
+    latest_positions = df['positions'].iloc[-1]
     latest_price = df['close'].iloc[-1]
     latest_date = df.index[-1].strftime('%Y-%m-%d')
+    latest_signal = df['signal'].iloc[-1]
 
-    if latest_signal == 1:
+    if latest_positions == 1:
         message = f"{market}: Buy signal at {latest_price} on {latest_date}"
-    elif latest_signal == -1:
+    elif latest_positions == -1:
         message = f"{market}: Sell signal at {latest_price} on {latest_date}"
+    elif latest_positions == 0 and latest_signal == 1:
+        message = f"{market}: Hold signal at {latest_price} on {latest_date}"
     else:
         message = f"{market}: No signal at {latest_price} on {latest_date}"
 
