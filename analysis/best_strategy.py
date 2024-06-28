@@ -1,24 +1,26 @@
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import pandas as pd
 import json
-import sys
+from coins import coin_list
 
 # CSV file paths
 CSV_PATHS = {
-    'daily_average': 'results/daily_average_backtest_200.csv',
-    'golden_cross': 'results/golden_dead_cross_backtest_200.csv',
-    'volatility': 'results/volatility_backtest_200.csv',
-    'volatility_ma': 'results/volatility_checkMA_backtest_200.csv',
-    'volatility_volume': 'results/volatility_checkMA_checkVolume_backtest_200.csv'
+    'daily_average': 'results/backtest/daily_average_backtest_200.csv',
+    'golden_cross': 'results/backtest/golden_dead_cross_backtest_200.csv',
+    'volatility': 'results/backtest/volatility_backtest_200.csv',
+    'volatility_ma': 'results/backtest/volatility_checkMA_backtest_200.csv',
+    'volatility_volume': 'results/backtest/volatility_checkMA_checkVolume_backtest_200.csv'
 }
 
 # Load CSV files into dataframes
 dataframes_dict = {name: pd.read_csv(path) for name, path in CSV_PATHS.items()}
 
 # Create results directory if it doesn't exist
-OUTPUT_DIR = 'results'
+OUTPUT_DIR = 'results/analysis'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-
 
 def analyze_single_coin(coin_symbol, df_dict):
     """
@@ -59,7 +61,6 @@ def analyze_single_coin(coin_symbol, df_dict):
 
     return best_strategy_result
 
-
 def analyze_coins(coin_list):
     """
     Analyze multiple coins and determine the best strategy for each.
@@ -78,14 +79,17 @@ def analyze_coins(coin_list):
 
     return strategy_to_coins
 
-
 if __name__ == "__main__":
-    # Get coin list from command line arguments
-    coin_list = sys.argv[1].split(',')
-    result = analyze_coins(coin_list)
+    if len(sys.argv) > 1:
+        markets = sys.argv[1].split(',')
+    else:
+        # 기본 코인 리스트를 설정합니다
+        markets = coin_list
+
+    result = analyze_coins(markets)
 
     # Save the results to a text file
-    output_file_path = os.path.join(OUTPUT_DIR, 'best_strategy_analysis.txt')
+    output_file_path = os.path.join(OUTPUT_DIR, 'best_strategy.txt')
     with open(output_file_path, 'w', encoding='utf-8') as f:
         for strategy_name, coins in result.items():
             f.write(f"{strategy_name} : {json.dumps(coins)}\n")

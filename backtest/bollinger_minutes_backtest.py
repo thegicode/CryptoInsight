@@ -120,7 +120,7 @@ def main(market, days, interval, initial_capital=10000):
     df = calculate_bollinger_bands(df)
     df = bollinger_bands_backtest(df, initial_capital=initial_capital)
 
-    save_results(df)
+    # save_results(df)
     print(df[['close', 'SMA', 'upper_band', 'lower_band', 'signal', 'positions', 'holdings', 'cash', 'total']])
 
     # Calculate performance metrics

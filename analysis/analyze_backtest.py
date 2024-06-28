@@ -1,4 +1,4 @@
-# analysis/analyze_backtest_results.py
+# analysis/analyze_backtest.py
 
 import os
 import sys
@@ -9,18 +9,18 @@ from coins import coin_list
 
 # CSV 파일 경로
 CSV_PATHS = {
-    'daily_average': 'results/daily_average_backtest_200.csv',
-    'golden_cross': 'results/golden_dead_cross_backtest_200.csv',
-    'volatility': 'results/volatility_backtest_200.csv',
-    'volatility_ma': 'results/volatility_checkMA_backtest_200.csv',
-    'volatility_volume': 'results/volatility_checkMA_checkVolume_backtest_200.csv'
+    'daily_average': 'results/backtest/daily_average_backtest_200.csv',
+    'golden_cross': 'results/backtest/golden_dead_cross_backtest_200.csv',
+    'volatility': 'results/backtest/volatility_backtest_200.csv',
+    'volatility_ma': 'results/backtest/volatility_checkMA_backtest_200.csv',
+    'volatility_volume': 'results/backtest/volatility_checkMA_checkVolume_backtest_200.csv'
 }
 
 # CSV 파일 불러오기
 dataframes = {name: pd.read_csv(path) for name, path in CSV_PATHS.items()}
 
 # 결과 저장 디렉토리 생성
-output_dir = 'results'
+output_dir = 'results/analysis'
 os.makedirs(output_dir, exist_ok=True)
 
 
