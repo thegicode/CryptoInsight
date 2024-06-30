@@ -1,5 +1,6 @@
 """
 backtest/afternoon_backtest.py
+
 투자전략:
     - 오전 0시에 가상화폐의 전일 오후(12시 ~ 24시) 수익률과 거래량 체크
     - 매수: 전일 오후 수익률 > 0, 전일 오후 거래량 > 오전 거래량
@@ -29,13 +30,29 @@ def calculate_candle_return_rate(candles):
     close_price = candles.iloc[-1]['close']
     return (close_price - open_price) / open_price
 
-async def fetch_candles(ticker, count):
+async def fetch_candles(ticker, count, save_path):
     """ 과거 데이터를 가져옵니다 """
+    print(f"Fetching for {ticker}...")
+
     now = datetime.datetime.now(pytz.timezone('Asia/Seoul'))
     end = now.replace(hour=0, minute=0, second=0, microsecond=0)
     start = end - datetime.timedelta(days=count)
 
     df_list = []
+    if os.path.exists(save_path):
+        existing_data = pd.read_csv(save_path, index_col=0, parse_dates=True)
+        last_date = existing_data.index[-1]
+        if last_date.tzinfo is None:
+            last_date = last_date.tz_localize('Asia/Seoul')
+        else:
+            last_date = last_date.tz_convert('Asia/Seoul')
+
+        if last_date >= end:
+            return existing_data
+
+        start = last_date + datetime.timedelta(hours=1)
+        df_list.append(existing_data)
+
     while start < end:
         try:
             df = get_minute_candles(ticker, 60, 24, start.isoformat())
@@ -50,7 +67,9 @@ async def fetch_candles(ticker, count):
             else:
                 raise
 
-    return pd.concat(df_list)
+    full_df = pd.concat(df_list)
+    full_df.to_csv(save_path)
+    return full_df
 
 def check_signal(morning_data, afternoon_data):
     """ 매수 신호 체크 """
@@ -107,9 +126,12 @@ def backtest_strategy(df, initial_capital, investment_fraction):
             investment = cash * investment_fraction
             shares += investment / df['close'].iloc[i]
             cash -= investment
-        elif df['positions'].iloc[i] == -1:  # 매도 신호
-            noon_close = df['noon_close'].iloc[i+1]
+        elif df['positions'].iloc[i] == -1 and i < len(df) - 1:  # 매도 신호
+            noon_close = df['noon_close'].iloc[i + 1]
             cash += shares * noon_close
+            shares = 0
+        elif df['positions'].iloc[i] == -1 and i == len(df) - 1:  # 마지막 매도
+            cash += shares * df['close'].iloc[i]
             shares = 0
         df.loc[df.index[i], 'holdings'] = shares * df['close'].iloc[i]
         df.loc[df.index[i], 'cash'] = cash
@@ -134,8 +156,8 @@ async def run_backtest(market, count, initial_capital, investment_fraction):
     :return: 백테스트 결과 딕셔너리
     """
     print(f"Afternoon backtest for {market}...")
-
-    candle_df = await fetch_candles(market, count)
+    save_path = os.path.join("data", f"minutes_candles_{market}_{count}.csv")
+    candle_df = await fetch_candles(market, count, save_path)
     df = generate_signal(candle_df)
     df = backtest_strategy(df, initial_capital, investment_fraction)
 
@@ -161,7 +183,7 @@ async def run_backtest(market, count, initial_capital, investment_fraction):
 async def run_afternoon_backtest(markets=None, count=200, initial_capital=10000, investment_fraction=1):
     """ 백테스트 실행 """
     if markets is None:
-        markets = ["KRW-BTC", "KRW-ETH", "KRW-XRP"]
+        markets = ["KRW-BTC", "KRW-ETH", "KRW-SOL"]
 
     print("\n{ Afternoon Backtest }")
 

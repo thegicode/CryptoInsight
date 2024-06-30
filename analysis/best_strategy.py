@@ -1,5 +1,9 @@
+# analysis/best_strategy.py
+
 import os
 import sys
+import datetime
+import shutil
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pandas as pd
@@ -12,7 +16,8 @@ CSV_PATHS = {
     'golden_cross': 'results/backtest/golden_dead_cross_backtest_200.csv',
     'volatility': 'results/backtest/volatility_backtest_200.csv',
     'volatility_ma': 'results/backtest/volatility_checkMA_backtest_200.csv',
-    'volatility_volume': 'results/backtest/volatility_checkMA_checkVolume_backtest_200.csv'
+    'volatility_volume': 'results/backtest/volatility_checkMA_checkVolume_backtest_200.csv',
+    'afternoon': 'results/backtest/afternoon_backtest_200.csv'
 }
 
 # Load CSV files into dataframes
@@ -79,6 +84,19 @@ def analyze_coins(coin_list):
 
     return strategy_to_coins
 
+def backup_existing_file(file_path):
+    """
+    백업할 파일이 이미 존재하는 경우 파일을 날짜를 포함한 이름으로 백업합니다.
+
+    Parameters:
+    file_path (str): 백업할 파일의 경로.
+    """
+    if os.path.exists(file_path):
+        current_date = datetime.datetime.now().strftime("%Y%m%d")
+        backup_file_path = file_path.replace(".txt", f"_{current_date}.txt")
+        shutil.copy(file_path, backup_file_path)
+        print(f"Existing file backed up as '{backup_file_path}'.")
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         markets = sys.argv[1].split(',')
@@ -90,6 +108,10 @@ if __name__ == "__main__":
 
     # Save the results to a text file
     output_file_path = os.path.join(OUTPUT_DIR, 'best_strategy.txt')
+
+    # 백업 기존 파일
+    backup_existing_file(output_file_path)
+
     with open(output_file_path, 'w', encoding='utf-8') as f:
         for strategy_name, coins in result.items():
             f.write(f"{strategy_name} : {json.dumps(coins)}\n")

@@ -2,6 +2,7 @@
 
 import os
 import sys
+import datetime
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pandas as pd
@@ -13,7 +14,8 @@ CSV_PATHS = {
     'golden_cross': 'results/backtest/golden_dead_cross_backtest_200.csv',
     'volatility': 'results/backtest/volatility_backtest_200.csv',
     'volatility_ma': 'results/backtest/volatility_checkMA_backtest_200.csv',
-    'volatility_volume': 'results/backtest/volatility_checkMA_checkVolume_backtest_200.csv'
+    'volatility_volume': 'results/backtest/volatility_checkMA_checkVolume_backtest_200.csv',
+    'afternoon': 'results/backtest/afternoon_backtest_200.csv'
 }
 
 # CSV 파일 불러오기
@@ -26,9 +28,9 @@ os.makedirs(output_dir, exist_ok=True)
 
 # 코인별로 분석하고 결과를 텍스트 파일로 저장하는 함수
 def analyze_coin(coin, dataframes, output_file):
-    backtests = ['daily_average', 'golden_cross', 'volatility', 'volatility_ma', 'volatility_volume']
+    backtests = ['daily_average', 'golden_cross', 'volatility', 'volatility_ma', 'volatility_volume', 'afternoon']
     backtest_names = ['Daily Average', 'Golden Cross', 'Volatility Breakout',
-                      '+ (MA Check)', '+ (Volume Check)']
+                      '+ (MA Check)', '+ (Volume Check)', 'Afternoon']
 
     # 결과를 하나의 데이터프레임으로 합치기
     combined_df = pd.DataFrame({
@@ -62,11 +64,11 @@ def analyze_coin(coin, dataframes, output_file):
     print("\n")
 
 
-# 분석할 코인 리스트
-# coins = ['KRW-AVAX', 'KRW-AQT', 'KRW-BCH', 'KRW-BTC', 'KRW-DOGE', 'KRW-DOT', 'KRW-ETH', 'KRW-NEAR', 'KRW-POLYX', 'KRW-SHIB', 'KRW-SOL', 'KRW-THETA', 'KRW-TFUEL', 'KRW-ZRX']
+# 현재 날짜를 가져와 형식에 맞게 변환
+current_date = datetime.datetime.now().strftime("%Y%m%d")
 
-# 텍스트 파일 경로
-output_file = os.path.join(output_dir, 'analysis_backtest.txt')
+# 텍스트 파일 경로에 날짜 추가
+output_file = os.path.join(output_dir, f'analysis_backtest_{current_date}.txt')
 
 # 기존 텍스트 파일 삭제 (이미 존재할 경우)
 if os.path.exists(output_file):
