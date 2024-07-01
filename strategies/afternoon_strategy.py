@@ -27,18 +27,15 @@ def calculate_candle_return_rate(candles):
     close_price = candles.iloc[-1]['close']
     return (close_price - open_price) / open_price
 
+
 def check_signal(morning_data, afternoon_data):
     """ 매수 신호 체크 """
     afternoon_return = calculate_candle_return_rate(afternoon_data)
     morning_volume = morning_data['volume'].sum()
     afternoon_volume = afternoon_data['volume'].sum()
 
-    if afternoon_return > 0 and afternoon_volume > morning_volume:
-        message = "Buy signal"
-    else:
-        message = "Sell signal, 정오에 매도"
+    return 1 if afternoon_return > 0 and afternoon_volume > morning_volume else 0
 
-    return message
 
 def check_sell_signal():
     """ 매도 신호 체크 - 매일 정오에 매도 """
@@ -70,21 +67,22 @@ async def fetch_data(ticker):
 
 async def afternoon_strategy(tickers):
     """ 거래 실행 """
-    signals = []
+    results = []
     for ticker in tickers:
         # 데이터 가져오기
         morning_data, afternoon_data = await fetch_data(ticker)
 
         # 신호 체크
-        message = check_signal(morning_data, afternoon_data)
-        signals.append(f"{ticker} : {message}")
+        signal =  check_signal(morning_data, afternoon_data)
+        message = "Buy signal" if signal == 1 else "Sell signal, 정오에 매도"
+        results.append(f"{ticker} : {message}")
 
         # 요청 간에 지연 시간을 추가하여 API 속도 제한을 피함
         await asyncio.sleep(1.5)  # 1.5초 지연
 
     title = "\n[ Afternoon Strategy ]\n"
-    all_signals_message = title + "\n".join(signals)
-    return all_signals_message
+    all_message = title + "\n".join(results)
+    return all_message
 
 if __name__ == "__main__":
     asyncio.run(afternoon_strategy())

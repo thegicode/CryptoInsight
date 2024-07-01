@@ -1,0 +1,6 @@
+daily_average : ["KRW-SOL", "KRW-BCH", "KRW-ETH", "KRW-NEAR", "KRW-SHIB", "KRW-BTG", "KRW-SC"]
+golden_cross : ["KRW-BTC", "KRW-DOT", "KRW-THETA", "KRW-ZRX", "KRW-STX", "KRW-GRT", "KRW-GLM", "KRW-CRO", "KRW-HIFI", "KRW-ADA", "KRW-IQ"]
+volatility : ["KRW-POLYX"]
+volatility_ma : []
+volatility_volume : []
+afternoon : ["KRW-DOGE", "KRW-TFUEL"]

@@ -15,6 +15,7 @@ import pytz
 import asyncio
 import pandas as pd
 from requests.exceptions import HTTPError
+from strategies.afternoon_strategy import check_signal
 from utils import save_market_backtest_result, save_backtest_results, calculate_cumulative_return, calculate_mdd, calculate_win_rate
 
 # 현재 파일의 위치를 기준으로 상위 디렉토리를 sys.path에 추가
@@ -23,12 +24,6 @@ parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
 from api.upbit_api import get_minute_candles
-
-def calculate_candle_return_rate(candles):
-    """ 전일 수익률 계산 """
-    open_price = candles.iloc[0]['open']
-    close_price = candles.iloc[-1]['close']
-    return (close_price - open_price) / open_price
 
 async def fetch_candles(ticker, count, save_path):
     """ 과거 데이터를 가져옵니다 """
@@ -71,13 +66,6 @@ async def fetch_candles(ticker, count, save_path):
     full_df.to_csv(save_path)
     return full_df
 
-def check_signal(morning_data, afternoon_data):
-    """ 매수 신호 체크 """
-    afternoon_return = calculate_candle_return_rate(afternoon_data)
-    morning_volume = morning_data['volume'].sum()
-    afternoon_volume = afternoon_data['volume'].sum()
-
-    return 1 if afternoon_return > 0 and afternoon_volume > morning_volume else 0
 
 def generate_signal(df):
     daily_results = []
