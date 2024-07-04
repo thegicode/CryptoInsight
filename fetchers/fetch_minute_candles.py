@@ -24,6 +24,7 @@ async def fetch_and_save_minutes_candles(markets, count):
         end = now.replace(hour=0, minute=0, second=0, microsecond=0)
         start = end - datetime.timedelta(days=count)
 
+
         df_list = []
         if os.path.exists(save_path):
             existing_data = pd.read_csv(save_path, index_col=0, parse_dates=True)
@@ -40,8 +41,7 @@ async def fetch_and_save_minutes_candles(markets, count):
             start = last_date + datetime.timedelta(hours=1)
             df_list.append(existing_data)
 
-        while start < end:
-
+        while start <= end:
             try:
                 df = get_minute_candles(market, 60, 24, start.isoformat())
                 df = df.sort_index()  # 인덱스를 기준으로 오래된 시간 순으로 정렬
