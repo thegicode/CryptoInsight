@@ -11,13 +11,13 @@ from requests.exceptions import HTTPError
 
 from api.upbit_api import get_minute_candles
 
-async def fetch_and_save_minutes_candles(markets, count):
+async def fetch_and_save_minutes_candles(markets, unit, count):
     """ 여러 시장의 과거 분봉 데이터를 가져와 저장합니다 """
     save_dir = "data/minutes_candles"
     os.makedirs(save_dir, exist_ok=True)
 
     for market in markets:
-        save_path = os.path.join(save_dir, f"minutes_candles_{market}_{count}.csv")
+        save_path = os.path.join(save_dir, f"minutes_candles_{market}_{unit}.csv")
         print(f"Fetching minute candles for {market}...")
 
         now = datetime.datetime.now(pytz.timezone('Asia/Seoul'))
@@ -43,7 +43,7 @@ async def fetch_and_save_minutes_candles(markets, count):
 
         while start <= end:
             try:
-                df = get_minute_candles(market, 60, 24, start.isoformat())
+                df = get_minute_candles(market, unit, int(1440/60), start.isoformat())
                 df = df.sort_index()  # 인덱스를 기준으로 오래된 시간 순으로 정렬
                 df_list.append(df)
                 start += datetime.timedelta(hours=24)

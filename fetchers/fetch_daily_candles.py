@@ -17,7 +17,7 @@ async def fetch_and_save_daily_candles(markets, count):
     os.makedirs(save_dir, exist_ok=True)
 
     for market in markets:
-        save_path = os.path.join(save_dir, f"daily_candles_{market}_{count}.csv")
+        save_path = os.path.join(save_dir, f"daily_candles_{market}.csv")
         print(f"Fetching daily candles for {market}...")
 
         now = datetime.datetime.now(pytz.timezone('Asia/Seoul'))
