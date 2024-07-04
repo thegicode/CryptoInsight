@@ -21,7 +21,7 @@ async def fetch_and_save_daily_candles(markets, count):
         print(f"Fetching daily candles for {market}...")
 
         now = datetime.datetime.now(pytz.timezone('Asia/Seoul'))
-        end = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        end = now.replace(hour=9, minute=0, second=0, microsecond=0)
         start = end - datetime.timedelta(days=count)
 
         df_list = []
@@ -42,7 +42,7 @@ async def fetch_and_save_daily_candles(markets, count):
 
         while start < end:
             try:
-                df = get_daily_candles(market, min(count, (end - start).days))
+                df = get_daily_candles(market, min(count, (end - start).days + 1))
                 df = df.sort_index()  # 인덱스를 기준으로 오래된 시간 순으로 정렬
                 df_list.append(df)
                 start += datetime.timedelta(days=min(count, (end - start).days))
