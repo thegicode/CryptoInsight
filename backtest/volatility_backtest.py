@@ -2,6 +2,7 @@ import time
 import numpy as np
 from api.upbit_api import get_daily_candles
 from utils import save_market_backtest_result, save_backtest_results, calculate_cumulative_return, calculate_mdd, calculate_win_rate
+from utils.data_utils import get_recent_candles
 
 
 def calculate_range(df):
@@ -78,7 +79,8 @@ def backtest_strategy(df, initial_capital, investment_fraction=0.2):
 
 
 def run_backtest(market, count, initial_capital, k=0.5, investment_fraction=0.2, check_ma=False, check_volume=False, ma_window=5, vol_window=5):
-    df = get_daily_candles(market, count)
+    # df = get_daily_candles(market, count)
+    df = get_recent_candles(market, count)
 
     # 오래된 데이터부터 정렬
     df = df.sort_index()

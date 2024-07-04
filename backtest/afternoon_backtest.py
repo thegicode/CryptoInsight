@@ -17,55 +17,26 @@ import pandas as pd
 from requests.exceptions import HTTPError
 from strategies.afternoon_strategy import check_signal
 from utils import save_market_backtest_result, save_backtest_results, calculate_cumulative_return, calculate_mdd, calculate_win_rate
+from utils.data_utils import get_minute_candles_from_file
 
 # 현재 파일의 위치를 기준으로 상위 디렉토리를 sys.path에 추가
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.insert(0, parent_dir)
 
-from api.upbit_api import get_minute_candles
-
-async def fetch_candles(ticker, count, save_path):
-    """ 과거 데이터를 가져옵니다 """
-    print(f"Fetching for {ticker}...")
+async def fetch_candles_from_file(ticker, count):
+    """ 파일에서 과거 데이터를 가져옵니다 """
+    print(f"Fetching for {ticker} from file...")
 
     now = datetime.datetime.now(pytz.timezone('Asia/Seoul'))
     end = now.replace(hour=0, minute=0, second=0, microsecond=0)
     start = end - datetime.timedelta(days=count)
 
-    df_list = []
-    if os.path.exists(save_path):
-        existing_data = pd.read_csv(save_path, index_col=0, parse_dates=True)
-        last_date = existing_data.index[-1]
-        if last_date.tzinfo is None:
-            last_date = last_date.tz_localize('Asia/Seoul')
-        else:
-            last_date = last_date.tz_convert('Asia/Seoul')
+    file_path = os.path.join("data", f"minutes_candles_{ticker}_{count}.csv")
 
-        if last_date >= end:
-            return existing_data
+    df = get_minute_candles_from_file(ticker, count, start)
 
-        start = last_date + datetime.timedelta(hours=1)
-        df_list.append(existing_data)
-
-    while start < end:
-        try:
-            df = get_minute_candles(ticker, 60, 24, start.isoformat())
-            df = df.sort_index()  # 인덱스를 기준으로 오래된 시간 순으로 정렬
-            df_list.append(df)
-            start += datetime.timedelta(hours=24)
-            await asyncio.sleep(1)  # 요청 간 지연 시간 추가
-        except HTTPError as http_err:
-            if http_err.response.status_code == 429:
-                print(f"HTTPError: {http_err}. Too many requests, sleeping for 10 seconds.")
-                await asyncio.sleep(10)
-            else:
-                raise
-
-    full_df = pd.concat(df_list)
-    full_df.to_csv(save_path)
-    return full_df
-
+    return df
 
 def generate_signal(df):
     daily_results = []
@@ -144,8 +115,7 @@ async def run_backtest(market, count, initial_capital, investment_fraction):
     :return: 백테스트 결과 딕셔너리
     """
     print(f"Afternoon backtest for {market}...")
-    save_path = os.path.join("data", f"minutes_candles_{market}_{count}.csv")
-    candle_df = await fetch_candles(market, count, save_path)
+    candle_df = await fetch_candles_from_file(market, count)
     df = generate_signal(candle_df)
     df = backtest_strategy(df, initial_capital, investment_fraction)
 

@@ -74,7 +74,7 @@ async def afternoon_strategy(tickers):
 
         # 신호 체크
         signal =  check_signal(morning_data, afternoon_data)
-        message = "Buy signal" if signal == 1 else "Sell signal, 정오에 매도"
+        message = "Buy or Hold signal" if signal == 1 else "Sell or Reserve"
         results.append(f"{ticker} : {message}")
 
         # 요청 간에 지연 시간을 추가하여 API 속도 제한을 피함

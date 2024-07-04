@@ -2,6 +2,7 @@ import time
 import numpy as np
 from api.upbit_api import get_daily_candles
 from utils import save_market_backtest_result, save_backtest_results, calculate_cumulative_return, calculate_mdd, calculate_win_rate
+from utils.data_utils import get_recent_candles
 
 
 def calculate_moving_averages(df, short_window=5, long_window=20):
@@ -44,7 +45,8 @@ def backtest_strategy(df, initial_capital, investment_fraction=0.2):
 
 
 def run_backtest(market, count, initial_capital, short_window=5, long_window=20, investment_fraction=0.5):
-    df = get_daily_candles(market, count)
+    # df = get_daily_candles(market, count)
+    df = get_recent_candles(market, count)
     df = calculate_moving_averages(df, short_window, long_window)
     df = generate_signals(df, short_window)
     df = backtest_strategy(df, initial_capital, investment_fraction)

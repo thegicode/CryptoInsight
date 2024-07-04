@@ -14,6 +14,7 @@ from .backtest_metrics import (
     calculate_mdd,
     calculate_win_rate
 )
+from .data_utils import get_recent_candles, get_minute_candles_from_file
 from .save_results import save_market_backtest_result, save_backtest_results
 from .telegram import send_telegram_message
 
@@ -23,6 +24,9 @@ __all__ = [
 
     # backtest_metrics
     "calculate_cumulative_return", "calculate_mdd", "calculate_win_rate",
+
+    # data_utils
+    "get_recent_candles", "get_minute_candles_from_file"
 
     # save_results
     "save_market_backtest_result", "save_backtest_results",

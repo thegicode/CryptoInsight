@@ -3,6 +3,7 @@ import numpy as np
 from api.upbit_api import get_daily_candles
 from dotenv import load_dotenv
 from utils import save_market_backtest_result, save_backtest_results, calculate_cumulative_return, calculate_mdd, calculate_win_rate
+from utils.data_utils import get_recent_candles
 
 # .env 파일 로드
 load_dotenv()
@@ -78,7 +79,8 @@ def run_backtest(market, count, initial_capital, window=5, investment_fraction=0
     :return: 백테스트 결과 딕셔너리
     """
 
-    df = get_daily_candles(market, count)
+    # df = get_daily_candles(market, count)
+    df = get_recent_candles(market, count)
     df = calculate_moving_average(df, window)
     df = generate_signals(df)
     df = backtest_strategy(df, initial_capital, investment_fraction)
