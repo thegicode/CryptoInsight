@@ -16,7 +16,10 @@ def run_analysis_script(coin_list):
     Returns:
     str: The output of the analysis script.
     """
-    script_path = os.path.join('analysis', 'best_strategy_analysis.py')
+
+    print(coin_list)
+
+    script_path = os.path.join('analysis', 'best_strategy.py')
     result = subprocess.run(['python3', script_path, ','.join(coin_list)], capture_output=True, text=True)
     return result.stdout
 
@@ -29,7 +32,7 @@ async def main():
     run_analysis_script(coin_list)
 
     # Read the results from the generated file
-    with open('results/best_strategy_analysis.txt', 'r', encoding='utf-8') as f:
+    with open('results/analysis/best_strategy.txt', 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
     # Create a dictionary mapping strategies to their respective markets
@@ -62,8 +65,8 @@ async def main():
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
-            asyncio.create_task(afternoon_strategy(coin_list)),
-            asyncio.create_task(noise_strategy(coin_list))
+            asyncio.create_task(afternoon_strategy(strategy_to_markets.get('afternoon', []))),
+            asyncio.create_task(noise_strategy(coin_list)),
         ]
 
         results = await asyncio.gather(*tasks)
