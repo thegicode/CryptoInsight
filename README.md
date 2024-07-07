@@ -3,13 +3,17 @@
 ## 거래 실행 순서
 
 ```
-python3 fetchers.py
+
+python3 -m fetchers
 python3 backtest.py
 
 python3 analysis/analyze_backtest.py  (확인용)
 
 python3 main.py
 
+
+
+python3 analysis/process_strategies_and_signals.py
 
 ```
 

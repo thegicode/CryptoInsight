@@ -1,8 +1,5 @@
 
 
-from api.upbit_api import get_markets
-
-
 coin_list = [
         'KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-TRX',
         'KRW-BCH', 'KRW-BTG',
@@ -16,7 +13,6 @@ coin_list = [
         # 'KRW-TFUEL', 'KRW-THETA',
         # 'KRW-ZRX'
     ]
-
 
 
 #  'KRW-BCH', 'KRW-BTC', 'KRW-BTG', 'KRW-CRO', 'KRW-DOGE',

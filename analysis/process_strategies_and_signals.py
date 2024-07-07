@@ -1,6 +1,4 @@
-"""
-analysis/process_strategies_and_signals.py
-"""
+# analysis/process_strategies_and_signals.py
 
 import datetime
 import sys
@@ -8,22 +6,21 @@ import os
 import asyncio
 
 # 프로젝트 루트 경로를 sys.path에 추가
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(current_dir))
 
 from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy, afternoon_strategy
 from analyze_backtest import analyze_backtest
 from coins import coin_list
+from fetchers.fetchers import fetchers
 
 # backtest.py 파일의 경로를 추가하고 backtest 함수를 가져옴
 import importlib.util
 
-backtest_spec = importlib.util.spec_from_file_location("backtest", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "backtest.py"))
+backtest_path = os.path.join(os.path.dirname(current_dir), "backtest.py")
+backtest_spec = importlib.util.spec_from_file_location("backtest", backtest_path)
 backtest = importlib.util.module_from_spec(backtest_spec)
 backtest_spec.loader.exec_module(backtest)
-
-fetchers_spec = importlib.util.spec_from_file_location("fetchers", os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fetchers.py"))
-fetchers = importlib.util.module_from_spec(fetchers_spec)
-fetchers_spec.loader.exec_module(fetchers)
 
 # 문자열 신호를 파싱하여 딕셔너리로 변환하는 함수
 def parse_signals(signal_str):
@@ -49,7 +46,7 @@ def backup_file(file_path):
 
 async def process_strategies_and_signals():
     # fetchers 실행
-    await fetchers.fetchers()
+    await fetchers()
 
     # backtest 실행
     await backtest.backtest()
