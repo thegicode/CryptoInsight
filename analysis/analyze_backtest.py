@@ -27,7 +27,7 @@ os.makedirs(output_dir, exist_ok=True)
 
 
 # 코인별로 분석하고 결과를 텍스트 파일로 저장하는 함수
-def analyze_coin(coin, dataframes, output_file):
+def analyze_coin(ticker, dataframes):
     backtests = ['daily_average', 'golden_cross', 'volatility', 'volatility_ma', 'volatility_volume', 'afternoon']
     backtest_names = ['Daily Average', 'Golden Cross', 'Volatility Breakout',
                       '+ (MA Check)', '+ (Volume Check)', 'Afternoon']
@@ -36,44 +36,57 @@ def analyze_coin(coin, dataframes, output_file):
     combined_df = pd.DataFrame({
         'Backtest': backtest_names,
         'Cumulative Return (%)': [
-            dataframes[bt][dataframes[bt]['Market'] == coin]['Cumulative Return (%)'].values[0]
-            if not dataframes[bt][dataframes[bt]['Market'] == coin].empty else None
+            dataframes[bt][dataframes[bt]['Market'] == ticker]['Cumulative Return (%)'].values[0]
+            if not dataframes[bt][dataframes[bt]['Market'] == ticker].empty else None
             for bt in backtests
         ],
         'Win Rate (%)': [
-            dataframes[bt][dataframes[bt]['Market'] == coin]['Win Rate (%)'].values[0]
-            if not dataframes[bt][dataframes[bt]['Market'] == coin].empty else None
+            dataframes[bt][dataframes[bt]['Market'] == ticker]['Win Rate (%)'].values[0]
+            if not dataframes[bt][dataframes[bt]['Market'] == ticker].empty else None
             for bt in backtests
         ],
         'Max Drawdown (MDD) (%)': [
-            dataframes[bt][dataframes[bt]['Market'] == coin]['Max Drawdown (MDD) (%)'].values[0]
-            if not dataframes[bt][dataframes[bt]['Market'] == coin].empty else None
+            dataframes[bt][dataframes[bt]['Market'] == ticker]['Max Drawdown (MDD) (%)'].values[0]
+            if not dataframes[bt][dataframes[bt]['Market'] == ticker].empty else None
             for bt in backtests
         ]
     })
 
+    return combined_df
+
+
+def print_and_save_result(ticker, combined_df, output_file):
     # 결과를 텍스트 파일로 저장
     with open(output_file, 'a') as f:
-        f.write(f"=== {coin} ===\n")
+        f.write(f"=== {ticker} ===\n")
         f.write(combined_df.to_string(index=False))
         f.write("\n\n")
 
     # 결과 출력
-    print(f"=== {coin} ===")
+    print(f"=== {ticker} ===")
     print(combined_df)
     print("\n")
 
+def backup_file(output_file):
 
-# 현재 날짜를 가져와 형식에 맞게 변환
-current_date = datetime.datetime.now().strftime("%Y%m%d")
+    if os.path.exists(output_file):
+        current_datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") # 현재 날짜를 가져와 형식에 맞게 변환
+        backup_file = os.path.join(output_dir, f'analysis_backtest_{current_datetime}.txt')
+        os.rename(output_file, backup_file)
+        print(f"기존 파일을 {backup_file}로 백업했습니다.")
 
-# 텍스트 파일 경로에 날짜 추가
-output_file = os.path.join(output_dir, f'analysis_backtest_{current_date}.txt')
 
-# 기존 텍스트 파일 삭제 (이미 존재할 경우)
-if os.path.exists(output_file):
-    os.remove(output_file)
+def analyze_backtest():
+    # 텍스트 파일 경로에 날짜 추가
+    output_file = os.path.join(output_dir, 'analysis_backtest.txt')
 
-# 각 코인별로 결과 분석 및 텍스트 파일 저장
-for coin in coin_list:
-    analyze_coin(coin, dataframes, output_file)
+    # 기존 파일이 있을 경우 백업 (이 경우는 거의 없겠지만, 안전을 위해 유지)
+    backup_file(output_file)
+
+    # 각 코인별로 결과 분석 및 텍스트 파일 저장
+    for ticker in coin_list:
+        df = analyze_coin(ticker, dataframes)
+        print_and_save_result(ticker, df, output_file)
+
+if __name__ == "__main__":
+    analyze_backtest()

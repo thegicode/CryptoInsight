@@ -45,6 +45,7 @@ async def fetch_and_save_minutes_candles(markets, unit, count):
             try:
                 df = get_minute_candles(market, unit, int(1440/60), start.isoformat())
                 df = df.sort_index()  # 인덱스를 기준으로 오래된 시간 순으로 정렬
+                print(df)
                 df_list.append(df)
                 start += datetime.timedelta(hours=24)
                 await asyncio.sleep(1)  # 요청 간 지연 시간 추가
