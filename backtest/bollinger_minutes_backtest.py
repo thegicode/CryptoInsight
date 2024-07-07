@@ -135,7 +135,7 @@ def main(market, days, interval, initial_capital=10000):
         "Initial Capital": initial_capital,
         "Cumulative Return (%)": cumulative_return_percent,
         "Win Rate (%)": win_rate,
-        "Max Drawdown (MDD) (%)": mdd
+        "Max Drawdown (%)": mdd
     }
 
     print(result)

@@ -4,18 +4,20 @@ from api.upbit_api import get_markets
 
 
 coin_list = [
-        'KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-TRX', 'KRW-ADA',
+        'KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-TRX',
         'KRW-BCH', 'KRW-BTG',
         'KRW-DOGE', 'KRW-DOT',
-        'KRW-GLM','KRW-GRT',
-        'KRW-HIFI',
-        'KRW-IQ',
-        'KRW-NEAR',
-        'KRW-POLYX',
-        'KRW-SC', 'KRW-SHIB', 'KRW-STX',
-        'KRW-TFUEL', 'KRW-THETA',
-        'KRW-ZRX'
+        # 'KRW-GLM','KRW-GRT',
+        # 'KRW-HIFI',
+        # 'KRW-IQ',
+        # 'KRW-NEAR',
+        # 'KRW-POLYX',
+        # 'KRW-SC', 'KRW-SHIB', 'KRW-STX',
+        # 'KRW-TFUEL', 'KRW-THETA',
+        # 'KRW-ZRX'
     ]
+
+
 
 #  'KRW-BCH', 'KRW-BTC', 'KRW-BTG', 'KRW-CRO', 'KRW-DOGE',
 #         'KRW-DOT', 'KRW-ETH', 'KRW-GLM', 'KRW-GRT', 'KRW-HIFI',

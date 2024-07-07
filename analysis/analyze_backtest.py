@@ -1,5 +1,6 @@
 # analysis/analyze_backtest.py
 
+import json
 import os
 import sys
 import datetime
@@ -33,8 +34,8 @@ def analyze_coin(ticker, dataframes):
                       '+ (MA Check)', '+ (Volume Check)', 'Afternoon']
 
     # 결과를 하나의 데이터프레임으로 합치기
-    combined_df = pd.DataFrame({
-        'Backtest': backtest_names,
+    df = pd.DataFrame({
+        'Name': backtest_names,
         'Cumulative Return (%)': [
             dataframes[bt][dataframes[bt]['Market'] == ticker]['Cumulative Return (%)'].values[0]
             if not dataframes[bt][dataframes[bt]['Market'] == ticker].empty else None
@@ -45,30 +46,29 @@ def analyze_coin(ticker, dataframes):
             if not dataframes[bt][dataframes[bt]['Market'] == ticker].empty else None
             for bt in backtests
         ],
-        'Max Drawdown (MDD) (%)': [
-            dataframes[bt][dataframes[bt]['Market'] == ticker]['Max Drawdown (MDD) (%)'].values[0]
+        'Max Drawdown (%)': [
+            dataframes[bt][dataframes[bt]['Market'] == ticker]['Max Drawdown (%)'].values[0]
             if not dataframes[bt][dataframes[bt]['Market'] == ticker].empty else None
             for bt in backtests
         ]
     })
 
-    return combined_df
+    return df
 
 
-def print_and_save_result(ticker, combined_df, output_file):
+def print_and_save_result(ticker, df, output_file):
     # 결과를 텍스트 파일로 저장
     with open(output_file, 'a') as f:
         f.write(f"=== {ticker} ===\n")
-        f.write(combined_df.to_string(index=False))
+        f.write(df.to_string(index=False))
         f.write("\n\n")
 
     # 결과 출력
     print(f"=== {ticker} ===")
-    print(combined_df)
+    print(df)
     print("\n")
 
 def backup_file(output_file):
-
     if os.path.exists(output_file):
         current_datetime = datetime.datetime.now().strftime("%Y%m%d_%H%M%S") # 현재 날짜를 가져와 형식에 맞게 변환
         backup_file = os.path.join(output_dir, f'analysis_backtest_{current_datetime}.txt')
@@ -84,9 +84,14 @@ def analyze_backtest():
     backup_file(output_file)
 
     # 각 코인별로 결과 분석 및 텍스트 파일 저장
+    results = {}
     for ticker in coin_list:
         df = analyze_coin(ticker, dataframes)
         print_and_save_result(ticker, df, output_file)
+        results[ticker] = df
+
+    return results
+
 
 if __name__ == "__main__":
     analyze_backtest()

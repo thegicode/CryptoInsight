@@ -24,6 +24,7 @@ def generate_signals(df, short_window):
 
 async def check_signals(market, count=40, short_window=5, long_window=20):
     df = await fetch_latest_data_with_retry(market, count)
+
     df = calculate_moving_averages(df, short_window, long_window)
     df = generate_signals(df, short_window)
 
@@ -33,13 +34,13 @@ async def check_signals(market, count=40, short_window=5, long_window=20):
     latest_signal = df['signal'].iloc[-1]
 
     if latest_positions == 1:
-        message = f"{market}: Buy signal at {latest_price} on {latest_date}"
+        message = f"{market}: Buy signal at {latest_price}"
     elif latest_positions == -1:
-        message = f"{market}: Sell signal at {latest_price} on {latest_date}"
+        message = f"{market}: Sell signal at {latest_price}"
     elif latest_positions == 0 and latest_signal == 1:
-        message = f"{market}: Hold signal at {latest_price} on {latest_date}"
+        message = f"{market}: Hold signal at {latest_price}"
     else:
-        message = f"{market}: No signal at {latest_price} on {latest_date}"
+        message = f"{market}: No signal at {latest_price}"
 
     return message
 

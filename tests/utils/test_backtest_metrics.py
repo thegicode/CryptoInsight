@@ -31,7 +31,7 @@ def test_calculate_mdd():
     expected_result = -14.285714285714286  # ((9000 / 10500) - 1) * 100
     # 실제 최저점은 9000이므로, 피크인 10500과 비교해야 함
 
-    print(f"Max Drawdown (MDD): {result}%")  # 중간 결과 출력
+    print(f"Max Drawdown : {result}%")  # 중간 결과 출력
 
     # 오차 범위를 1e-6으로 설정
     assert np.isclose(result, expected_result, atol=1e-6)

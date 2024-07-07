@@ -36,6 +36,7 @@ async def fetch_candles_from_file(ticker, count):
 
     df = get_minute_candles_from_file(ticker, count, start)
 
+
     return df
 
 def generate_signal(df):
@@ -133,7 +134,7 @@ async def run_backtest(market, count, initial_capital, investment_fraction):
         "Investment Fraction": investment_fraction,
         "Cumulative Return (%)": cumulative_return_percent,
         "Win Rate (%)": win_rate,
-        "Max Drawdown (MDD) (%)": mdd_percent
+        "Max Drawdown (%)": mdd_percent
     }
 
     return result

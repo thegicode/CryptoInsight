@@ -53,8 +53,8 @@ def analyze_single_coin(coin_symbol, df_dict):
             if not df_dict[bt][df_dict[bt]['Market'] == coin_symbol].empty else None
             for bt in backtests
         ],
-        'Max Drawdown (MDD) (%)': [
-            df_dict[bt][df_dict[bt]['Market'] == coin_symbol]['Max Drawdown (MDD) (%)'].values[0]
+        'Max Drawdown (%)': [
+            df_dict[bt][df_dict[bt]['Market'] == coin_symbol]['Max Drawdown (%)'].values[0]
             if not df_dict[bt][df_dict[bt]['Market'] == coin_symbol].empty else None
             for bt in backtests
         ]

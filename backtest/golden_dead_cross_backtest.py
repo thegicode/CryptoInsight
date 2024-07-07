@@ -65,7 +65,7 @@ def run_backtest(market, count, initial_capital, short_window=5, long_window=20,
         "Investment Fraction": investment_fraction,
         "Cumulative Return (%)": cumulative_return_percent,
         "Win Rate (%)": win_rate,
-        "Max Drawdown (MDD) (%)": mdd_percent
+        "Max Drawdown (%)": mdd_percent
     }
 
     return result

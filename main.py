@@ -43,7 +43,7 @@ async def main():
 
     # Get the current execution date and time
     execution_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    output_file = 'results/strategies_result.txt'
+    output_file = 'results/trade/strategies.txt'
 
     # Remove the existing output file if it exists
     if os.path.exists(output_file):

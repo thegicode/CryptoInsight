@@ -1,5 +1,18 @@
 # trade
 
+## 거래 실행 순서
+
+```
+python3 fetchers.py
+python3 backtest.py
+
+python3 analysis/analyze_backtest.py  (확인용)
+
+python3 main.py
+
+
+```
+
 ## 설치 및 실행
 
 1. **터미널을 열고 프로젝트 디렉토리로 이동합니다:**
