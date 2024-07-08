@@ -5,6 +5,7 @@ import sys
 import os
 import asyncio
 
+
 # 프로젝트 루트 경로를 sys.path에 추가
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(current_dir))
@@ -13,6 +14,8 @@ from strategies import golden_dead_cross_signals, daily_average_signals, volatil
 from analyze_backtest import analyze_backtest
 from coins import coin_list
 from fetchers.fetchers import fetchers
+from utils.telegram import get_chat_ids, send_telegram_message
+
 
 # backtest.py 파일의 경로를 추가하고 backtest 함수를 가져옴
 import importlib.util
@@ -81,6 +84,7 @@ async def process_strategies_and_signals():
     # 파일 백업
     backup_file(output_file)
 
+    messages = ""
     with open(output_file, 'w') as f:
         # 신호를 백테스트 결과에 추가
         for ticker, df in backtest_results.items():
@@ -96,16 +100,23 @@ async def process_strategies_and_signals():
                 signals_for_ticker.append(ticker_signal)
 
             df['Signal'] = signals_for_ticker
-            f.write(f"\n=== {ticker} ===\n")
-            f.write(df.to_string(index=False))
+
+            title = f"\n=== {ticker} ===\n"
+            df_string = df.to_string(index=False)
+            last = "\n\n"
+
+            f.write(title)
+            f.write(df_string)
             f.write("\n\n")
 
-            print(f"\n=== {ticker} ===\n")
-            print(df.to_string(index=False))
-            print("\n\n")
+            messages += title
+            messages += df_string
+            messages += last
 
-
+    print(messages)
     print(f"Results saved to {output_file}")
+
+
 
 if __name__ == "__main__":
     asyncio.run(process_strategies_and_signals())

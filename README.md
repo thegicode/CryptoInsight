@@ -11,8 +11,6 @@ python3 analysis/analyze_backtest.py  (확인용)
 
 python3 main.py
 
-
-
 python3 analysis/process_strategies_and_signals.py
 
 ```
@@ -158,3 +156,14 @@ project/
 ### 패키지 목록 저장:
 
 pip freeze > requirements.txt
+
+## Crontab
+
+crontab -e
+"ESC", ":wq"
+crontab -l
+
+0 9 \* \* _ /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 /Users/deokim/Documents/코딩/project-my/CryptoInsight/results/trade/process_strategies_and_signall
+s.txt >> //Users/deokim/Documents/코딩/project-my/CryptoInsight/logs/cron.log 2>&1
+0 0 _ \* \* /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 /Users/deokim/Documents/코딩/project-my/CryptoInsight/results/trade/process_strategies_and_signall
+s.txt >> //Users/deokim/Documents/코딩/project-my/CryptoInsight/logs/cron.log 2>&1

@@ -5,6 +5,9 @@ import subprocess
 import json
 from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy, noise_strategy, afternoon_strategy
 from coins import coin_list
+from utils.telegram import get_chat_ids, send_telegram_message
+
+chat_group_id = get_chat_ids()
 
 def run_analysis_script(coin_list):
     """
@@ -56,7 +59,8 @@ async def main():
             f.write(msg + "\n")
 
         # Write the execution date and time to the file
-        print_and_save(f"Execution Date: {execution_datetime}\n")
+        date_str = f"Execution Date: {execution_datetime}\n"
+        print_and_save(date_str)
 
         # Gather the results of each strategy asynchronously
         tasks = [
@@ -74,6 +78,12 @@ async def main():
         # Write each result to the output file
         for result in results:
             print_and_save(result)
+
+        # results 내용을 문자열로 변환합니다.
+        results_str = date_str
+        results_str += '\n'.join(map(str, results))
+        send_telegram_message(results_str) #chat_group_id
+
 
 if __name__ == "__main__":
     asyncio.run(main())
