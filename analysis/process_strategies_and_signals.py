@@ -46,10 +46,10 @@ def backup_file(file_path):
 
 async def process_strategies_and_signals():
     # fetchers 실행
-    await fetchers()
+    # await fetchers()
 
     # backtest 실행
-    await backtest.backtest()
+    # await backtest.backtest()
 
     # analyze_backtest 실행
     backtest_results = analyze_backtest()
@@ -84,9 +84,9 @@ async def process_strategies_and_signals():
     with open(output_file, 'w') as f:
         # 신호를 백테스트 결과에 추가
         for ticker, df in backtest_results.items():
-            f.write(f"Processing {ticker}...\n")
-            signals_for_ticker = []
+            # print(f"Processing {ticker}...\n")
 
+            signals_for_ticker = []
             for index, row in df.iterrows():
                 strategy_name = row['Name']
                 strategy_signals = signal_map.get(strategy_name, {})
@@ -96,9 +96,14 @@ async def process_strategies_and_signals():
                 signals_for_ticker.append(ticker_signal)
 
             df['Signal'] = signals_for_ticker
-            f.write(f"{ticker}\n")
+            f.write(f"\n=== {ticker} ===\n")
             f.write(df.to_string(index=False))
             f.write("\n\n")
+
+            print(f"\n=== {ticker} ===\n")
+            print(df.to_string(index=False))
+            print("\n\n")
+
 
     print(f"Results saved to {output_file}")
 
