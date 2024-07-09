@@ -1,7 +1,7 @@
 
 
 coin_list = [
-        'KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-TRX',
+        'KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-SHIB',  'KRW-NEAR', 'KRW-ADA',
         'KRW-BCH', 'KRW-BTG',
         'KRW-DOGE', 'KRW-DOT',
         # 'KRW-GLM','KRW-GRT',

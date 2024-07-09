@@ -53,6 +53,9 @@ def analyze_coin(ticker, dataframes):
         ]
     })
 
+    # 모든 수치 결과를 소숫점 두 자리로 포맷
+    df = df.round(2)
+
     return df
 
 

@@ -27,10 +27,32 @@ def send_telegram_message(message, chat_id = CHAT_ID):
     try:
         response = requests.post(url, data=data, timeout=REQUEST_TIMEOUT)
         response.raise_for_status()
+
     except requests.exceptions.RequestException as e:
         print(f"Error sending message: {e}. Retrying...")
         time.sleep(5)
-        send_telegram_message(message)
+        send_telegram_message(message, chat_id)
+
+
+def send_telegram_image(image_path, chat_id = CHAT_ID):
+    url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendPhoto'
+    data = {
+        "chat_id": chat_id,
+    }
+    try:
+        # response = requests.post(url, data=data, timeout=REQUEST_TIMEOUT)
+        # response.raise_for_status()
+        with open(image_path, 'rb') as image_file:
+            files = {'photo': image_file}
+            data = {'chat_id': chat_id}
+            response = requests.post(url, data=data, files=files)
+            # response = requests.post(url, data=data, timeout=REQUEST_TIMEOUT)
+            response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending image: {e}. Retrying...")
+        time.sleep(5)
+        send_telegram_image(image_path, chat_id)
+
 
 
 def get_chat_ids():

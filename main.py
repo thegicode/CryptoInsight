@@ -26,6 +26,8 @@ def run_analysis_script(coin_list):
     result = subprocess.run(['python3', script_path, ','.join(coin_list)], capture_output=True, text=True)
     return result.stdout
 
+
+
 async def main():
     """
     Main function to execute the trading strategies and save the results.
@@ -64,14 +66,20 @@ async def main():
 
         # Gather the results of each strategy asynchronously
         tasks = [
-            asyncio.create_task(golden_dead_cross_signals(strategy_to_markets.get('golden_cross', []))),
-            asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average', []))),
-            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
-            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
-            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
-            asyncio.create_task(afternoon_strategy(strategy_to_markets.get('afternoon', []))),
-            asyncio.create_task(noise_strategy(coin_list)),
+            asyncio.create_task(daily_average_signals(coin_list)),
+            asyncio.create_task(golden_dead_cross_signals(coin_list)),
+            asyncio.create_task(volatility_strategy(coin_list)),
         ]
+
+        # tasks = [
+        #     asyncio.create_task(golden_dead_cross_signals(strategy_to_markets.get('golden_cross', []))),
+        #     asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average', []))),
+        #     asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
+        #     asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
+        #     asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
+        #     asyncio.create_task(afternoon_strategy(strategy_to_markets.get('afternoon', []))),
+        #     asyncio.create_task(noise_strategy(coin_list)),
+        # ]
 
         results = await asyncio.gather(*tasks)
 
