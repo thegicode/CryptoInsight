@@ -15,8 +15,9 @@ async def backtest():
 
     # coin_list = ["KRW-SOL"]
 
-    run_golden_cross_backtests(coin_list, COUNT, INITIAL_CAPITAL)
     run_daily_average_backtest(coin_list, COUNT, INITIAL_CAPITAL)
+    run_daily_average_backtest(coin_list, COUNT, INITIAL_CAPITAL, 120)
+    run_golden_cross_backtests(coin_list, COUNT, INITIAL_CAPITAL)
     run_volatility_backtest(coin_list, COUNT, INITIAL_CAPITAL)
     run_volatility_backtest(coin_list, COUNT, INITIAL_CAPITAL, check_ma=True)
     run_volatility_backtest(coin_list, COUNT, INITIAL_CAPITAL, check_ma=True, check_volume=True)

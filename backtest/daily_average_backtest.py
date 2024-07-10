@@ -86,7 +86,7 @@ def run_backtest(market, count, initial_capital, window=5, investment_fraction=0
     df = backtest_strategy(df, initial_capital, investment_fraction)
 
     # 결과를 파일로 저장
-    save_market_backtest_result(market, df, count, "daily_average")
+    save_market_backtest_result(market, df, count, f"daily_average_{window}")
 
     cumulative_return_percent = calculate_cumulative_return(df, initial_capital)
     win_rate = calculate_win_rate(df)
@@ -104,18 +104,18 @@ def run_backtest(market, count, initial_capital, window=5, investment_fraction=0
     return result
 
 
-def run_daily_average_backtest(markets, count=200, initial_capital=10000):
+def run_daily_average_backtest(markets, count=200, initial_capital=10000, window=5, investment_fraction=1):
     results = []
 
-    print("\n{ Daily Average Backtest }",)
+    print(f"\n[ Daily Average Backtest - window: {window} ]",)
 
     for market in markets:
         print(f"Daily average backtest for {market}...")
-        result = run_backtest(market, count, initial_capital, window=5, investment_fraction=1)
+        result = run_backtest(market, count, initial_capital, window, investment_fraction)
         results.append(result)
         time.sleep(2)  # 각 API 호출 사이에 2초 지연
 
-    result_df = save_backtest_results(results, count, "daily_average")
+    result_df = save_backtest_results(results, count, f"daily_average_{window}")
 
     print(result_df)
 

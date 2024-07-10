@@ -8,7 +8,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
-from dotenv import load_dotenv
 
 # 프로젝트 루트 경로를 sys.path에 추가
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -20,11 +19,6 @@ from coins import coin_list
 from fetchers.fetchers import fetchers
 from utils.telegram import get_chat_ids, send_telegram_image, send_telegram_message
 
-# .env 파일 로드
-load_dotenv()
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-CHAT_ID = os.getenv('CHAT_ID')
-
 # backtest.py 파일의 경로를 추가하고 backtest 함수를 가져옴
 import importlib.util
 
@@ -32,6 +26,8 @@ backtest_path = os.path.join(os.path.dirname(current_dir), "backtest.py")
 backtest_spec = importlib.util.spec_from_file_location("backtest", backtest_path)
 backtest = importlib.util.module_from_spec(backtest_spec)
 backtest_spec.loader.exec_module(backtest)
+
+chat_group_id = get_chat_ids()
 
 # 모든 수치 결과를 소수점 두 자리까지 포맷
 pd.options.display.float_format = '{:.2f}'.format
@@ -69,10 +65,10 @@ def save_dataframe_as_image(df, filename, title):
 
 async def process_strategies_and_signals():
     # fetchers 실행
-    # await fetchers()
+    await fetchers()
 
     # backtest 실행
-    # await backtest.backtest()
+    await backtest.backtest()
 
     # analyze_backtest 실행
     backtest_results = analyze_backtest()
@@ -128,14 +124,14 @@ async def process_strategies_and_signals():
         save_dataframe_as_image(df, image_filename, title)
 
         # 이미지를 텔레그램으로 전송
-        send_telegram_image(image_filename)
+        send_telegram_image(image_filename, chat_group_id)
 
     print(messages)
 
     # 메시지 길이가 너무 길면 나누어 전송
-    MAX_MESSAGE_LENGTH = 4096  # 텔레그램 메시지 길이 제한
-    for i in range(0, len(messages), MAX_MESSAGE_LENGTH):
-        send_telegram_message(messages[i:i+MAX_MESSAGE_LENGTH])
+    # MAX_MESSAGE_LENGTH = 4096  # 텔레그램 메시지 길이 제한
+    # for i in range(0, len(messages), MAX_MESSAGE_LENGTH):
+    #     send_telegram_message(messages[i:i+MAX_MESSAGE_LENGTH])
 
     print(f"Results saved to {output_file}")
 

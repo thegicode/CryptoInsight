@@ -12,7 +12,7 @@ from coins import coin_list
 
 # CSV file paths
 CSV_PATHS = {
-    'daily_average': 'results/backtest/daily_average_backtest_200.csv',
+    'daily_average': 'results/backtest/daily_average_5_backtest_200.csv',
     'golden_cross': 'results/backtest/golden_dead_cross_backtest_200.csv',
     'volatility': 'results/backtest/volatility_backtest_200.csv',
     'volatility_ma': 'results/backtest/volatility_checkMA_backtest_200.csv',

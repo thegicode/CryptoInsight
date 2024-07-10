@@ -65,21 +65,22 @@ async def main():
         print_and_save(date_str)
 
         # Gather the results of each strategy asynchronously
-        tasks = [
-            asyncio.create_task(daily_average_signals(coin_list)),
-            asyncio.create_task(golden_dead_cross_signals(coin_list)),
-            asyncio.create_task(volatility_strategy(coin_list)),
-        ]
-
         # tasks = [
-        #     asyncio.create_task(golden_dead_cross_signals(strategy_to_markets.get('golden_cross', []))),
-        #     asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average', []))),
-        #     asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
-        #     asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
-        #     asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
-        #     asyncio.create_task(afternoon_strategy(strategy_to_markets.get('afternoon', []))),
-        #     asyncio.create_task(noise_strategy(coin_list)),
+        #     asyncio.create_task(daily_average_signals(coin_list, 120)),
+        #     asyncio.create_task(daily_average_signals(coin_list)),
+        #     asyncio.create_task(golden_dead_cross_signals(coin_list)),
+        #     asyncio.create_task(volatility_strategy(coin_list)),
         # ]
+
+        tasks = [
+            asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average', []))),
+            asyncio.create_task(golden_dead_cross_signals(strategy_to_markets.get('golden_cross', []))),
+            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
+            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
+            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
+            asyncio.create_task(afternoon_strategy(strategy_to_markets.get('afternoon', []))),
+            asyncio.create_task(noise_strategy(coin_list)),
+        ]
 
         results = await asyncio.gather(*tasks)
 
@@ -90,7 +91,7 @@ async def main():
         # results 내용을 문자열로 변환합니다.
         results_str = date_str
         results_str += '\n'.join(map(str, results))
-        send_telegram_message(results_str) #chat_group_id
+        # send_telegram_message(results_str, chat_group_id) #chat_group_id
 
 
 if __name__ == "__main__":
