@@ -14,17 +14,16 @@ sys.path.append(os.path.dirname(current_dir))
 
 from utils.api_helpers import fetch_latest_data_with_retry
 
-def calculate_moving_averages(df, windows=[5, 20, 60, 120, 200]):
+
+def calculate_moving_averages(df, windows):
     df = df.sort_index()  # 오래된 데이터가 위로 오게 정렬
     for window in windows:
         df[f'MA_{window}'] = df['close'].rolling(window=window, min_periods=1).mean()
     return df
 
-def calculate_investment_ratio(df):
-    df = calculate_moving_averages(df)
-
+def calculate_score(df, windows):
     # 각 이동평균에 대한 비교 점수 계산
-    for ma in [5, 20, 60, 120, 200]:
+    for ma in windows:
         df[f'score_MA_{ma}'] = (df['close'] > df[f'MA_{ma}']).astype(float) * 0.2
 
     # 총 점수 계산
@@ -37,9 +36,10 @@ def generate_signals(df):
     return df
 
 
-async def check_signals(market, investment_amount):
-    df = await fetch_latest_data_with_retry(market, 201)
-    df = calculate_investment_ratio(df)
+async def check_signals(market, windows, investment_amount):
+    df = await fetch_latest_data_with_retry(market, windows[-1] + 1)
+    df = calculate_moving_averages(df, windows)
+    df = calculate_score(df, windows)
     df = generate_signals(df)
 
     latest_data = df.iloc[-1]
@@ -55,17 +55,14 @@ async def check_signals(market, investment_amount):
     elif latest_positions == -1:
         message = f"{market}: Sell signal at {latest_price}"
     elif latest_positions == 0 and latest_signal == 1:
-        message = f"{market}: Add buy signal at {latest_price}, , investment: {investment}"
+        message = f"{market}: Hold or Add buy signal at {latest_price}, investment: {investment}"
     else:
         message = f"{market}: No signal at {latest_price}"
     return message
 
 
-async def average_MA_strategy(markets=None, investment_amount = 10000):
-    if markets is None:
-        markets = ["KRW-BTC", "KRW-ETH", "KRW-SOL"]
-
-    tasks = [check_signals(market, investment_amount) for market in markets]
+async def average_MA_strategy(markets=["KRW-BTC"], windows = [5, 20, 60, 120, 200], investment_amount = 10000):
+    tasks = [check_signals(market, windows, investment_amount) for market in markets]
     signals = await asyncio.gather(*tasks)
 
     # 모든 신호를 모아서 한꺼번에 출력하고 텔레그램으로 발송
@@ -79,4 +76,4 @@ async def average_MA_strategy(markets=None, investment_amount = 10000):
 
 if __name__ == "__main__":
     result = asyncio.run(average_MA_strategy())
-    print(result)
+    # print(result)
