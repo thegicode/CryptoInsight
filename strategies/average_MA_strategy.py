@@ -48,13 +48,14 @@ async def check_signals(market, investment_amount):
     latest_signal = latest_data['signal']
     latest_score = latest_data['total_score']
 
+    investment = latest_score * investment_amount
+
     if latest_positions == 1:
-        investment = latest_score * investment_amount
         message = f"{market}: Buy signal at {latest_price}, investment: {investment}"
     elif latest_positions == -1:
         message = f"{market}: Sell signal at {latest_price}"
     elif latest_positions == 0 and latest_signal == 1:
-        message = f"{market}: Hold signal at {latest_price}"
+        message = f"{market}: Add buy signal at {latest_price}, , investment: {investment}"
     else:
         message = f"{market}: No signal at {latest_price}"
     return message
