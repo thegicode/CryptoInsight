@@ -11,7 +11,8 @@ from coins import coin_list
 
 # CSV 파일 경로
 CSV_PATHS = {
-    'daily_average': 'results/backtest/daily_average_5_backtest_200.csv',
+    'daily_average_5': 'results/backtest/daily_average_5_backtest_200.csv',
+    'daily_average_120': 'results/backtest/daily_average_120_backtest_200.csv',
     'golden_cross': 'results/backtest/golden_dead_cross_backtest_200.csv',
     'volatility': 'results/backtest/volatility_backtest_200.csv',
     'volatility_ma': 'results/backtest/volatility_checkMA_backtest_200.csv',
@@ -29,8 +30,8 @@ os.makedirs(output_dir, exist_ok=True)
 
 # 코인별로 분석하고 결과를 텍스트 파일로 저장하는 함수
 def analyze_coin(ticker, dataframes):
-    backtests = ['daily_average', 'golden_cross', 'volatility', 'volatility_ma', 'volatility_volume', 'afternoon']
-    backtest_names = ['Daily Average', 'Golden Cross', 'Volatility Breakout',
+    backtests = ['daily_average_5', 'daily_average_120', 'golden_cross', 'volatility', 'volatility_ma', 'volatility_volume', 'afternoon']
+    backtest_names = ['Daily Average 5', 'Daily Average 120', 'Golden Cross', 'Volatility Breakout',
                       '+ (MA Check)', '+ (Volume Check)', 'Afternoon']
 
     # 결과를 하나의 데이터프레임으로 합치기

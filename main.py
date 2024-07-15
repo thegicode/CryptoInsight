@@ -20,7 +20,7 @@ def run_analysis_script(coin_list):
     str: The output of the analysis script.
     """
 
-    print(coin_list)
+    # print(coin_list)
 
     script_path = os.path.join('analysis', 'best_strategy.py')
     result = subprocess.run(['python3', script_path, ','.join(coin_list)], capture_output=True, text=True)
@@ -73,7 +73,8 @@ async def main():
         # ]
 
         tasks = [
-            asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average', []))),
+            asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average_5', []))),
+            asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average_120', []), 120)),
             asyncio.create_task(golden_dead_cross_signals(strategy_to_markets.get('golden_cross', []))),
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
             asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
@@ -91,7 +92,7 @@ async def main():
         # results 내용을 문자열로 변환합니다.
         results_str = date_str
         results_str += '\n'.join(map(str, results))
-        # send_telegram_message(results_str, chat_group_id) #chat_group_id
+        # send_telegram_message(results_str) #chat_group_id
 
 
 if __name__ == "__main__":
