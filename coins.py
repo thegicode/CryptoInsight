@@ -1,17 +1,22 @@
 
 
 coin_list = [
-        'KRW-BTC', 'KRW-ETH', 'KRW-SOL', 'KRW-SHIB',  'KRW-NEAR', 'KRW-ADA',
-        'KRW-BCH', 'KRW-BTG',
-        'KRW-DOGE', 'KRW-DOT',
-        # 'KRW-GLM','KRW-GRT',
-        # 'KRW-HIFI',
-        # 'KRW-IQ',
-        # 'KRW-NEAR',
-        # 'KRW-POLYX',
-        # 'KRW-SC', 'KRW-SHIB', 'KRW-STX',
-        # 'KRW-TFUEL', 'KRW-THETA',
-        # 'KRW-ZRX'
+        # 주
+        'KRW-BTC', 'KRW-ETH',
+
+        # 알트 고정
+        'KRW-SOL', 'KRW-DOGE', 'KRW-SHIB',
+
+        # AI
+        'KRW-NEAR', 'KRW-TFUEL', 'KRW-THETA', 'KRW-GRT',
+
+        # 듀얼 모멘텀
+        'KRW-XRP', 'KRW-STX'
+
+        # XRP는 골든크로스 30%대 나머지는 별로다.
+        # GRT는 골든크로스만 엄청 높고 나머지는 별로다.
+        # XLM은 전체가 별로다. 제외할 것.
+
     ]
 
 

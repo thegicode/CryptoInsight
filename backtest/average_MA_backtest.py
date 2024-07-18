@@ -58,7 +58,7 @@ def backtest(ticker, start_date, end_date, initial_investment=1000000):
 ticker = "KRW-BTC"  # 업비트의 비트코인 티커
 start_date = "2020-01-01"
 end_date = "2023-12-31"
-initial_investment = 10000  # 100만원
+initial_investment = 10000
 
 result = backtest(ticker, start_date, end_date, initial_investment)
 
