@@ -70,7 +70,7 @@ def fetch_order_open(params=None):
 # 테스트 코드
 if __name__ == "__main__":
     params = {
-        'market':'KRW-BTC'
+        'market':'KRW-SHIB'
     }
     order_open_info = fetch_order_open(params)
     print(json.dumps(order_open_info, indent=4))
