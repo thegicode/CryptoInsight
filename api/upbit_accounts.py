@@ -1,9 +1,16 @@
 import os
+import sys
+
+# 프로젝트 루트 디렉토리를 Python 경로에 추가
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
+
 from dotenv import load_dotenv
 import uuid
 import requests
 import jwt
 import json
+from api.constants import UPBIT_SERVER_URL
 
 # .env 파일 로드
 load_dotenv()
@@ -12,8 +19,7 @@ load_dotenv()
 access_key = os.getenv('UPBIT_ACCESS_KEY')
 secret_key = os.getenv('UPBIT_SECRET_KEY')
 
-def upbit_accounts():
-    server_url = 'https://api.upbit.com'
+def get_upbit_balance():
     payload = {
         'access_key': access_key,
         'nonce': str(uuid.uuid4()),
@@ -24,7 +30,7 @@ def upbit_accounts():
     authorize_token = f'Bearer {jwt_token}'
     headers = {"Authorization": authorize_token}
 
-    res = requests.get(server_url + "/v1/accounts", headers=headers)
+    res = requests.get(f"{UPBIT_SERVER_URL}/v1/accounts", headers=headers)
 
     # 응답이 성공적인지 확인
     if res.status_code != 200:
@@ -48,13 +54,5 @@ def upbit_accounts():
 
 # 테스트 코드
 if __name__ == "__main__":
-    balances = upbit_accounts()
+    balances = get_upbit_balance()
     print(json.dumps(balances, indent=2))
-
-
-# currency	화폐를 의미하는 영문 대문자 코드	String
-# balance	주문가능 금액/수량	NumberString
-# locked	주문 중 묶여있는 금액/수량	NumberString
-# avg_buy_price	매수평균가	NumberString
-# avg_buy_price_modified	매수평균가 수정 여부	Boolean
-# unit_currency	평단가 기준 화폐	String

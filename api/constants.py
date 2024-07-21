@@ -1,0 +1,1 @@
+UPBIT_SERVER_URL = 'https://api.upbit.com'

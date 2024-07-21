@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+from api.constants import UPBIT_SERVER_URL
 
 
 def get_daily_candles(market: str, count: int = 200):
@@ -10,7 +11,7 @@ def get_daily_candles(market: str, count: int = 200):
     :param count: 가져올 일봉 데이터의 수
     :return: Pandas DataFrame으로 변환된 일봉 데이터
     """
-    url = "https://api.upbit.com/v1/candles/days"
+    url = f"{UPBIT_SERVER_URL}/v1/candles/days"
     params = {
         "market": market,
         "count": count
@@ -33,7 +34,7 @@ def get_daily_candles(market: str, count: int = 200):
     return df
 
 def get_minute_candles(market, interval, count, to):
-    url = f"https://api.upbit.com/v1/candles/minutes/{interval}"
+    url = f"{UPBIT_SERVER_URL}/v1/candles/minutes/{interval}"
     params = {
         "market": market,
         "count": count,
@@ -60,7 +61,7 @@ def get_minute_candles(market, interval, count, to):
 
 
 def get_markets():
-    url = "https://api.upbit.com/v1/market/all"
+    url = f"{UPBIT_SERVER_URL}/v1/market/all"
     headers = {"Accept": "application/json"}
     response = requests.get(url, headers=headers)
     response.raise_for_status()  # 요청 실패 시 예외 발생
