@@ -6,5 +6,6 @@
 종료된 주문 조회         python3 api/upbit_order_closed.py      https://docs.upbit.com/reference/종료-주문-조회
 채결 대기 주문 조회      python3 api/upbit_order_open.py         https://docs.upbit.com/reference/대기-주문-조회
 id로 주문리스트 조회     python3 api/upbit_order_uuids.py        https://docs.upbit.com/reference/id로-주문-조회
+개별 주문 조회          python3 api/upbit_order.py              https://docs.upbit.com/reference/개별-주문-조회
 토큰                  python3 api/upbit_token.py
 """
