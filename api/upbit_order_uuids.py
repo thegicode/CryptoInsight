@@ -12,11 +12,29 @@ sys.path.append(project_root)
 from api.constants import UPBIT_SERVER_URL
 from upbit_token import generate_jwt_token
 
-def fetch_order_uuids(market):
-    params = {
-        'uuids[]': uuids
-    }
-    query_string = unquote(urlencode(params, doseq=True)).encode("utf-8")
+def fetch_order_uuids(params):
+    query_params = {}
+
+    if 'uuids' in params and 'identifiers' in params:
+        print("Error: 'uuids'와 'identifiers' 필드는 동시에 사용할 수 없습니다.")
+        return None
+    elif 'uuids' in params:
+        query_params['uuids[]'] = params.get('uuids')
+    elif 'identifiers' in params:
+        query_params['identifiers[]'] = params.get('identifiers')
+    else:
+        print("Error: 'uuids' 또는 'identifiers' 필드 중 하나는 반드시 포함되어야 합니다.")
+        return None
+
+    if 'market' in params:
+        query_params['market'] = params.get('market')
+
+    if 'order_by' in params:
+        query_params['order_by'] = params.get('order_by')
+        # desc : 내림차순 (default), asc : 오름차순
+
+
+    query_string = unquote(urlencode(query_params, doseq=True)).encode("utf-8")
 
     m = hashlib.sha512()
     m.update(query_string)
@@ -32,7 +50,7 @@ def fetch_order_uuids(market):
 
     url = UPBIT_SERVER_URL + '/v1/orders/uuids'
 
-    response = requests.get(url, params=params, headers=headers)
+    response = requests.get(url, params=query_params, headers=headers)
 
     if response.status_code == 200:
         return response.json()
@@ -43,7 +61,9 @@ def fetch_order_uuids(market):
 
 # 테스트 코드
 if __name__ == "__main__":
-    uuids = [""]
-    order_uuids = fetch_order_uuids(uuids)
+    params = {
+        'uuids' : ["d88cfa3d-201b-4341-92ff-0f3e6be02922", "e8463681-8fe3-4ef3-bab1-d0e4e3f1f9eb"],
+    }
+    order_uuids = fetch_order_uuids(params)
     print(json.dumps(order_uuids, indent=4))
 
