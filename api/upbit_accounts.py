@@ -5,29 +5,15 @@ import sys
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_root)
 
-from dotenv import load_dotenv
-import uuid
 import requests
-import jwt
 import json
 from api.constants import UPBIT_SERVER_URL
+from api.upbit_token import get_authorize_token
 
-# .env 파일 로드
-load_dotenv()
-
-# Upbit API 키 설정
-access_key = os.getenv('UPBIT_ACCESS_KEY')
-secret_key = os.getenv('UPBIT_SECRET_KEY')
 
 def get_upbit_balance():
-    payload = {
-        'access_key': access_key,
-        'nonce': str(uuid.uuid4()),
-    }
 
-    jwt_token = jwt.encode(payload, secret_key, algorithm="HS256")
-
-    authorize_token = f'Bearer {jwt_token}'
+    authorize_token = get_authorize_token()
     headers = {"Authorization": authorize_token}
 
     res = requests.get(f"{UPBIT_SERVER_URL}/v1/accounts", headers=headers)
