@@ -32,7 +32,8 @@ def get_authorize_token(additional_payload=None):
     if additional_payload:
         payload.update(additional_payload)
 
-    jwt_token = jwt.encode(payload, secret_key, algorithm="HS256")
+    jwt_token = jwt.encode(payload, secret_key)
+    # jwt_token = jwt.encode(payload, secret_key, algorithm="HS256")
     authorize_token = f'Bearer {jwt_token}'
 
     return authorize_token

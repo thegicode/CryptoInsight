@@ -41,4 +41,4 @@ def get_upbit_balance():
 # 테스트 코드
 if __name__ == "__main__":
     balances = get_upbit_balance()
-    print(json.dumps(balances, indent=2))
+    print(json.dumps(balances, indent=4))
