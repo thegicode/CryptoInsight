@@ -43,7 +43,7 @@ def fetch_order_uuids(market):
 
 # 테스트 코드
 if __name__ == "__main__":
-    uuids = ["378853be-c2af-48dc-8c06-c1ce12406c91"]
+    uuids = [""]
     order_uuids = fetch_order_uuids(uuids)
     print(json.dumps(order_uuids, indent=4))
 
