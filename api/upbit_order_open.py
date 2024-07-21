@@ -1,10 +1,7 @@
 import json
-import os
-import sys
-import requests
-
 import hashlib
 import os
+import sys
 import requests
 from urllib.parse import urlencode, unquote
 
@@ -15,10 +12,10 @@ sys.path.append(project_root)
 from api.constants import UPBIT_SERVER_URL
 from upbit_token import generate_jwt_token
 
-def fetch_order_chance(market):
-
+def fetch_order_open(market):
     params = {
-        'market': market
+        'market': market,
+        'states[]': ['wait', 'watch']
     }
     query_string = unquote(urlencode(params, doseq=True)).encode("utf-8")
 
@@ -34,10 +31,9 @@ def fetch_order_chance(market):
     authorize_token = generate_jwt_token(payload)
     headers = {"Authorization": authorize_token}
 
-    url = f"{UPBIT_SERVER_URL}/v1/orders/chance"
-    params = {"market": market}
+    url = UPBIT_SERVER_URL + '/v1/orders/open'
 
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.get(url, params=params, headers=headers)
 
     if response.status_code == 200:
         return response.json()
@@ -49,5 +45,6 @@ def fetch_order_chance(market):
 # 테스트 코드
 if __name__ == "__main__":
     market = "KRW-BTC"
-    order_chance_info = fetch_order_chance(market)
-    print(json.dumps(order_chance_info, indent=4))
+    order_open_info = fetch_order_open(market)
+    print(json.dumps(order_open_info, indent=4))
+

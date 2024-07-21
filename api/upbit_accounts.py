@@ -8,12 +8,12 @@ sys.path.append(project_root)
 import requests
 import json
 from api.constants import UPBIT_SERVER_URL
-from api.upbit_token import get_authorize_token
+from api.upbit_token import generate_jwt_token
 
 
-def get_upbit_balance():
+def fetch_upbit_accounts():
 
-    authorize_token = get_authorize_token()
+    authorize_token = generate_jwt_token()
     headers = {"Authorization": authorize_token}
 
     res = requests.get(f"{UPBIT_SERVER_URL}/v1/accounts", headers=headers)
@@ -40,5 +40,8 @@ def get_upbit_balance():
 
 # 테스트 코드
 if __name__ == "__main__":
-    balances = get_upbit_balance()
-    print(json.dumps(balances, indent=4))
+    upbit_accounts = fetch_upbit_accounts()
+    print(json.dumps(upbit_accounts, indent=4))
+
+
+# https://docs.upbit.com/reference/전체-계좌-조회

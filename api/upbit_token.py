@@ -23,7 +23,7 @@ secret_key = os.getenv('UPBIT_SECRET_KEY')
 def default_token():
     return access_key, secret_key
 
-def get_authorize_token(additional_payload=None):
+def generate_jwt_token(additional_payload=None):
     payload = {
         'access_key': access_key,
         'nonce': str(uuid.uuid4()),
@@ -45,5 +45,5 @@ if __name__ == "__main__":
     print("access_key", access_key)
     print("\nsecret_key", secret_key)
 
-    authorize_token = get_authorize_token()
+    authorize_token = generate_jwt_token()
     print("\nauthorize_token", authorize_token)
