@@ -62,7 +62,7 @@ def fetch_order_uuids(params):
 # 테스트 코드
 if __name__ == "__main__":
     params = {
-        'uuids' : ["d88cfa3d-201b-4341-92ff-0f3e6be02922", "e8463681-8fe3-4ef3-bab1-d0e4e3f1f9eb"],
+        'uuids' : ["", ""],
     }
     order_uuids = fetch_order_uuids(params)
     print(json.dumps(order_uuids, indent=4))
