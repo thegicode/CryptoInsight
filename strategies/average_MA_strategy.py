@@ -1,5 +1,16 @@
 """
 strategies/average_MA_strategy.py
+
+5일, 20일, 60일, 120일 이동평균선을 각각 구한다.
+가격이 해당 이동평균선 위에 있으면 이동평균선당 0.2점, 아래에 있으면 0점을 부여한다.
+다섯 개 이동평균선의 점수를 더한 후 이 비율에 따라 투자 비중을 결정한다.
+(예: 0.6점의 경우 투자 비중은 60%)
+
+1. 5일선 돌파 : 0.2
+2. 5일선 & 20일선 돌파 : 0.4
+3. 5일선 & 20일선 & 60일선 돌파 : 0.6
+4. 5일선 & 20일선 & 60일선 돌파 & 120일선 돌파 : 0.8
+5. 5일선 & 20일선 & 60일선 돌파 & 120일선 & 200일선 돌파 : 1
 """
 
 import asyncio
@@ -17,8 +28,8 @@ from utils.api_helpers import fetch_latest_data_with_retry
 
 def calculate_moving_averages(df, windows):
     df = df.sort_index()  # 오래된 데이터가 위로 오게 정렬
-    for window in windows:
-        df[f'MA_{window}'] = df['close'].rolling(window=window, min_periods=1).mean()
+    for period in windows:
+        df[f'MA_{period}'] = df['close'].rolling(window=period, min_periods=1).mean()
     return df
 
 def calculate_score(df, windows):
@@ -40,6 +51,7 @@ async def check_signals(market, windows, investment_amount):
     df = await fetch_latest_data_with_retry(market, windows[-1] + 1)
     df = calculate_moving_averages(df, windows)
     df = calculate_score(df, windows)
+    print(df)
     df = generate_signals(df)
 
     latest_data = df.iloc[-1]
@@ -59,6 +71,7 @@ async def check_signals(market, windows, investment_amount):
     else:
         message = f"{market}: No signal at {latest_price}"
     return message
+
 
 
 async def average_MA_strategy(markets=["KRW-BTC"], windows = [5, 20, 60, 120, 200], investment_amount = 10000):

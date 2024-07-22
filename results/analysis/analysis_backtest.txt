@@ -1,18 +1,18 @@
 === KRW-BTC ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  48.16         30.00            -12.30
-  Daily Average 120                  41.44         25.00            -20.21
-       Golden Cross                  44.92         33.33            -14.19
-Volatility Breakout                  32.79         50.00            -11.97
-       + (MA Check)                  31.51         50.00            -11.56
+    Daily Average 5                  60.72         33.33            -12.30
+  Daily Average 120                  48.29         50.00            -20.21
+       Golden Cross                  55.62         40.00            -14.19
+Volatility Breakout                  38.03         53.33            -11.97
+       + (MA Check)                  36.70         53.57            -11.56
    + (Volume Check)                   5.60         50.00            -11.20
           Afternoon                  -4.64          0.00             -4.64
 
 === KRW-ETH ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  66.17         30.43            -18.66
-  Daily Average 120                  16.99         33.33            -32.06
-       Golden Cross                  38.59         50.00            -25.36
+    Daily Average 5                  78.39         31.82            -18.66
+  Daily Average 120                  22.89         40.00            -32.06
+       Golden Cross                  59.32         50.00            -25.36
 Volatility Breakout                  27.84         63.64             -9.91
        + (MA Check)                  27.26         64.52             -6.95
    + (Volume Check)                  10.24         75.00             -2.06
@@ -20,29 +20,29 @@ Volatility Breakout                  27.84         63.64             -9.91
 
 === KRW-SOL ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  63.11         40.91            -25.45
-  Daily Average 120                  32.40         40.00            -38.33
-       Golden Cross                  62.29         66.67            -21.26
-Volatility Breakout                 -20.06         43.90            -40.58
-       + (MA Check)                 -14.82         48.65            -37.15
+    Daily Average 5                  80.52         40.91            -25.45
+  Daily Average 120                  55.39         40.00            -38.33
+       Golden Cross                  63.03         62.50            -21.26
+Volatility Breakout                 -13.07         45.24            -40.58
+       + (MA Check)                  -7.38         50.00            -37.15
    + (Volume Check)                  -6.87         50.00            -19.98
           Afternoon                   3.52        100.00              0.00
 
 === KRW-DOGE ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  62.01         29.63            -32.21
-  Daily Average 120                  63.22         33.33            -40.84
-       Golden Cross                  47.68         60.00            -34.45
-Volatility Breakout                  27.67         39.39            -24.98
-       + (MA Check)                  47.80         43.33            -21.62
+    Daily Average 5                  73.05         29.63            -32.21
+  Daily Average 120                  50.59         16.67            -40.84
+       Golden Cross                  55.73         50.00            -34.45
+Volatility Breakout                  35.56         41.18            -24.98
+       + (MA Check)                  56.93         45.16            -21.62
    + (Volume Check)                  -7.41         45.45            -14.46
           Afternoon                   0.00          0.00              0.00
 
 === KRW-SHIB ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                 171.64         37.50            -31.80
-  Daily Average 120                 131.38         25.00            -37.92
-       Golden Cross                 109.36         20.00            -46.74
+    Daily Average 5                 174.90         37.50            -31.80
+  Daily Average 120                 138.23         33.33            -37.92
+       Golden Cross                 111.34         20.00            -46.74
 Volatility Breakout                  41.11         43.33            -28.84
        + (MA Check)                  62.20         50.00            -16.55
    + (Volume Check)                  27.17         46.15            -18.96
@@ -50,71 +50,61 @@ Volatility Breakout                  41.11         43.33            -28.84
 
 === KRW-NEAR ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  99.78         28.00            -38.32
-  Daily Average 120                  72.14         25.00            -37.86
-       Golden Cross                 113.18         20.00            -43.49
-Volatility Breakout                 -40.11         30.77            -56.87
-       + (MA Check)                 -25.04         31.43            -46.01
+    Daily Average 5                 132.32         30.43            -38.32
+  Daily Average 120                 102.85         50.00            -37.86
+       Golden Cross                 109.26         16.67            -43.49
+Volatility Breakout                 -39.95         30.77            -56.87
+       + (MA Check)                 -24.84         31.43            -46.01
    + (Volume Check)                 -16.05         20.00            -16.81
           Afternoon                 -10.85          0.00            -10.85
 
 === KRW-TFUEL ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  50.78         34.62            -39.37
-  Daily Average 120                  65.15         20.00            -37.06
-       Golden Cross                  44.54         33.33            -41.10
-Volatility Breakout                 -34.83         41.18            -43.47
-       + (MA Check)                 -25.09         46.67            -35.02
+    Daily Average 5                  57.03         36.00            -39.37
+  Daily Average 120                  74.88         25.00            -37.06
+       Golden Cross                  62.72         40.00            -41.05
+Volatility Breakout                 -30.66         44.12            -43.47
+       + (MA Check)                 -20.30         50.00            -35.02
    + (Volume Check)                 -12.95         44.44            -23.10
           Afternoon                   3.67        100.00              0.00
 
 === KRW-THETA ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  28.99         19.23            -52.74
-  Daily Average 120                  85.32         66.67            -41.75
-       Golden Cross                 108.97         33.33            -40.40
-Volatility Breakout                 -20.77         41.18            -26.58
-       + (MA Check)                 -11.55         40.62            -25.57
+    Daily Average 5                  47.85         20.00            -52.74
+  Daily Average 120                  89.48         50.00            -41.75
+       Golden Cross                 128.06         33.33            -39.94
+Volatility Breakout                 -17.35         42.86            -26.58
+       + (MA Check)                  -7.73         42.42            -25.57
    + (Volume Check)                 -13.13         33.33            -17.59
           Afternoon                  -3.16          0.00             -3.16
 
 === KRW-GRT ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                   6.14         24.00            -50.57
-  Daily Average 120                   7.82         22.22            -58.28
-       Golden Cross                 144.22        100.00            -23.34
-Volatility Breakout                  -7.25         38.89            -37.81
-       + (MA Check)                   7.96         41.94            -32.92
+    Daily Average 5                   8.66         24.00            -50.57
+  Daily Average 120                  18.03         25.00            -58.28
+       Golden Cross                 164.18        100.00            -23.34
+Volatility Breakout                  -7.13         40.54            -37.81
+       + (MA Check)                   8.11         43.75            -32.92
    + (Volume Check)                   9.34         50.00            -13.40
           Afternoon                   0.00          0.00              0.00
 
-=== KRW-XRP ===
-               Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  -6.93          8.33            -37.23
-  Daily Average 120                  -7.85          0.00            -29.57
-       Golden Cross                  31.36         25.00            -14.77
-Volatility Breakout                   2.44         35.71            -25.43
-       + (MA Check)                   2.86         34.62            -24.52
-   + (Volume Check)                  -5.98         28.57             -8.78
-          Afternoon                  -1.80         50.00             -3.39
-
 === KRW-STX ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  28.54         30.77            -45.67
-  Daily Average 120                  23.87         40.00            -44.57
-       Golden Cross                  36.61         50.00            -38.85
+    Daily Average 5                  31.91         32.00            -45.67
+  Daily Average 120                  31.60         66.67            -44.57
+       Golden Cross                  23.87         25.00            -38.85
 Volatility Breakout                  58.17         50.00            -22.64
        + (MA Check)                  58.47         50.00            -22.33
    + (Volume Check)                  18.56         60.00             -9.69
           Afternoon                   3.61        100.00              0.00
 
-=== KRW-XLM ===
+=== KRW-XRP ===
                Name  Cumulative Return (%)  Win Rate (%)  Max Drawdown (%)
-    Daily Average 5                  -9.41         21.43            -33.43
-  Daily Average 120                   3.63         33.33            -21.97
-       Golden Cross                  -0.38         25.00            -26.38
-Volatility Breakout                   6.34         39.13            -21.50
-       + (MA Check)                   9.05         40.91            -21.50
-   + (Volume Check)                   5.98         55.56             -8.59
-          Afternoon                  -3.71          0.00             -3.71
+    Daily Average 5                  -8.07         11.54            -37.23
+  Daily Average 120                  -6.36          0.00            -29.57
+       Golden Cross                  23.47         25.00            -14.77
+Volatility Breakout                   1.19         34.48            -25.43
+       + (MA Check)                   1.61         33.33            -24.52
+   + (Volume Check)                  -5.75         28.57             -8.55
+          Afternoon                  -1.80         50.00             -3.39
 

@@ -58,7 +58,7 @@ def fetch_order_open(params=None):
 
     url = UPBIT_SERVER_URL + '/v1/orders/open'
 
-    response = requests.get(url, params=params, headers=headers)
+    response = requests.get(url, params=query_params, headers=headers)
 
     if response.status_code == 200:
         return response.json()
@@ -70,7 +70,7 @@ def fetch_order_open(params=None):
 # 테스트 코드
 if __name__ == "__main__":
     params = {
-        'market':'KRW-SHIB'
+        # 'market':'KRW-SHIB'
     }
     order_open_info = fetch_order_open(params)
     print(json.dumps(order_open_info, indent=4))

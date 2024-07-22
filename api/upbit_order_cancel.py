@@ -1,10 +1,8 @@
+import json
 import os
 import sys
-import uuid
 import requests
-from dotenv import load_dotenv
 from urllib.parse import urlencode, unquote
-import jwt
 import hashlib
 
 # 프로젝트 루트 디렉토리를 Python 경로에 추가
@@ -60,4 +58,4 @@ if __name__ == "__main__":
         'uuid' : ""
     }
     cancel_result = cancel_order(params)
-    print(cancel_result)
+    print(json.dumps(cancel_result, indent=4))

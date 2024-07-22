@@ -3,97 +3,74 @@ import datetime
 import os
 import subprocess
 import json
-from strategies import golden_dead_cross_signals, daily_average_signals, volatility_strategy, noise_strategy, afternoon_strategy
+from typing import List, Dict
+from strategies import (
+    golden_dead_cross_signals,
+    daily_average_signals,
+    volatility_strategy,
+    noise_strategy,
+    afternoon_strategy
+)
 from coins import coin_list
 from utils.telegram import get_chat_ids, send_telegram_message
 
-chat_group_id = get_chat_ids()
+CHAT_GROUP_ID = get_chat_ids()
+ANALYSIS_SCRIPT_PATH = os.path.join('analysis', 'best_strategy.py')
+ANALYSIS_RESULTS_PATH = 'results/analysis/best_strategy.txt'
+OUTPUT_FILE_PATH = 'results/trade/strategies.txt'
 
-def run_analysis_script(coin_list):
-    """
-    Run the best strategy analysis script and return the output.
-
-    Parameters:
-    coin_list (list): List of coin symbols to analyze.
-
-    Returns:
-    str: The output of the analysis script.
-    """
-
-    # print(coin_list)
-
-    script_path = os.path.join('analysis', 'best_strategy.py')
-    result = subprocess.run(['python3', script_path, ','.join(coin_list)], capture_output=True, text=True)
+def run_analysis_script(coins: List[str]) -> str:
+    """Run the best strategy analysis script and return the output."""
+    result = subprocess.run(['python3', ANALYSIS_SCRIPT_PATH, ','.join(coins)], capture_output=True, text=True)
     return result.stdout
 
+def read_analysis_results() -> Dict[str, List[str]]:
+    """Read and parse the analysis results from the generated file."""
+    with open(ANALYSIS_RESULTS_PATH, 'r', encoding='utf-8') as f:
+        return {
+            strategy: json.loads(markets)
+            for line in f
+            for strategy, markets in [line.strip().split(' : ', 1)]
+        }
 
+async def execute_strategies(strategy_to_markets: Dict[str, List[str]]) -> List[str]:
+    """Execute trading strategies based on the analysis results."""
+    tasks = [
+        asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average_5', []))),
+        asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average_120', []), 120)),
+        asyncio.create_task(golden_dead_cross_signals(strategy_to_markets.get('golden_cross', []))),
+        asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
+        asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
+        asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
+        asyncio.create_task(afternoon_strategy(strategy_to_markets.get('afternoon', []))),
+        asyncio.create_task(noise_strategy(coin_list)),
+    ]
+    return await asyncio.gather(*tasks)
+
+def write_and_print_results(execution_datetime: str, results: List[str]):
+    """Write the execution results to the output file and print to console."""
+    output = f"Execution Date: {execution_datetime}\n"
+    output += "\n".join(results)
+
+    # Write to file
+    with open(OUTPUT_FILE_PATH, 'w') as f:
+        f.write(output)
+
+    # Print to console
+    print(output)
 
 async def main():
-    """
-    Main function to execute the trading strategies and save the results.
-    """
-
-    # Run the analysis script and generate the strategy-to-markets mapping
+    """Main function to execute the trading strategies and save the results."""
     run_analysis_script(coin_list)
+    strategy_to_markets = read_analysis_results()
 
-    # Read the results from the generated file
-    with open('results/analysis/best_strategy.txt', 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-
-    # Create a dictionary mapping strategies to their respective markets
-    strategy_to_markets = {}
-    for line in lines:
-        strategy, markets = line.strip().split(' : ', 1)
-        strategy_to_markets[strategy] = json.loads(markets)
-
-    # Get the current execution date and time
     execution_datetime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    output_file = 'results/trade/strategies.txt'
+    results = await execute_strategies(strategy_to_markets)
 
-    # Remove the existing output file if it exists
-    if os.path.exists(output_file):
-        os.remove(output_file)
+    write_and_print_results(execution_datetime, results)
 
-    # Open the output file for writing
-    with open(output_file, 'w') as f:
-        def print_and_save(msg):
-            print(msg)
-            f.write(msg + "\n")
-
-        # Write the execution date and time to the file
-        date_str = f"Execution Date: {execution_datetime}\n"
-        print_and_save(date_str)
-
-        # Gather the results of each strategy asynchronously
-        # tasks = [
-        #     asyncio.create_task(daily_average_signals(coin_list, 120)),
-        #     asyncio.create_task(daily_average_signals(coin_list)),
-        #     asyncio.create_task(golden_dead_cross_signals(coin_list)),
-        #     asyncio.create_task(volatility_strategy(coin_list)),
-        # ]
-
-        tasks = [
-            asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average_5', []))),
-            asyncio.create_task(daily_average_signals(strategy_to_markets.get('daily_average_120', []), 120)),
-            asyncio.create_task(golden_dead_cross_signals(strategy_to_markets.get('golden_cross', []))),
-            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility', []))),
-            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_ma', []), check_ma=True)),
-            asyncio.create_task(volatility_strategy(strategy_to_markets.get('volatility_volume', []), check_ma=True, check_volume=True)),
-            asyncio.create_task(afternoon_strategy(strategy_to_markets.get('afternoon', []))),
-            asyncio.create_task(noise_strategy(coin_list)),
-        ]
-
-        results = await asyncio.gather(*tasks)
-
-        # Write each result to the output file
-        for result in results:
-            print_and_save(result)
-
-        # results 내용을 문자열로 변환합니다.
-        results_str = date_str
-        results_str += '\n'.join(map(str, results))
-        # send_telegram_message(results_str) #chat_group_id
-
+    # Uncomment the following line to send results via Telegram
+    # send_telegram_message(f"Execution Date: {execution_datetime}\n" + '\n'.join(map(str, results)))
 
 if __name__ == "__main__":
     asyncio.run(main())

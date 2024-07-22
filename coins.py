@@ -11,12 +11,15 @@ coin_list = [
         'KRW-NEAR', 'KRW-TFUEL', 'KRW-THETA', 'KRW-GRT',
 
         # 듀얼 모멘텀
-        'KRW-STX', 'KRW-AVAX', 'KRW-XRP',
+        'KRW-STX',
+        'KRW-XRP',
+        # 'KRW-BCH'
 
 
-        # XRP는 골든크로스 30%대 나머지는 별로다.
+        # XRP는 골든크로스 30%대 나머지는 별로다. 더 좋은 코인 있으면 대체
         # GRT는 골든크로스만 엄청 높고 나머지는 별로다.
         # XLM은 전체가 별로다. 제외할 것.
+        # ADA, AAVE, AVAX 수익률이 좋지 않다. 제외
 
     ]
 
