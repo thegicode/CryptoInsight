@@ -51,8 +51,6 @@ def run_backtest(file_path, initial_capital, short_window, long_window, trading_
 
     # Save trades to CSV
     trades_df = pd.DataFrame(trades)
-    output_dir = 'results/binance/trades/golden_cross'
-    os.makedirs(output_dir, exist_ok=True)
     output_file_path = os.path.join(output_dir, f'{short_window}_{long_window}.csv')
     trades_df.to_csv(output_file_path, index=False)
 
@@ -76,6 +74,10 @@ def run_backtest(file_path, initial_capital, short_window, long_window, trading_
 file_path = 'data/binance/daily_candles_BTCUSDT.csv'
 initial_capital = 10000
 
+# Define output directory for results
+output_dir = 'results/binance/trades/golden_cross'
+os.makedirs(output_dir, exist_ok=True)
+
 # Run backtests for different window combinations
 results = []
 window_combinations = [(5, 20), (10, 20), (5, 40), (10, 40)]
@@ -85,3 +87,7 @@ for short_window, long_window in window_combinations:
 # Display results
 results_df = pd.DataFrame(results)
 print(results_df.to_string(index=False))
+
+# Save the performance summary to CSV
+performance_summary_path = os.path.join(output_dir, 'performance_summary.csv')
+results_df.to_csv(performance_summary_path, index=False)
