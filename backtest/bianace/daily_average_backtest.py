@@ -27,15 +27,16 @@ def simulate_trading(df, window, initial_capital=10000, fee_rate=0.001):
             quantity = capital / buy_price  # 매수 수량 결정
             capital -= buy_price * quantity
             in_position = True
-            trades.append(('buy', df['Close Time'][i], buy_price, capital, quantity))
+            trades.append(('buy', df['Close Time'][i], buy_price, capital, None, None))  # profit과 rate 없음
 
         elif df['Close'][i] < df[ma_column][i] and df['Close'][i-1] >= df[ma_column][i-1] and in_position:
             # 매도: 전체 수량 매도
             sell_price = df['Close'][i] * (1 - fee_rate)  # 매도 시 수수료 적용
             profit = (sell_price - buy_price) * quantity
+            rate_of_return = (profit / (buy_price * quantity)) * 100  # 수익률 계산
             capital += sell_price * quantity  # 매도 후 자본금 추가
             in_position = False
-            trades.append(('sell', df['Close Time'][i], sell_price, capital, profit))
+            trades.append(('sell', df['Close Time'][i], sell_price, capital, profit, rate_of_return))
 
     return trades
 
@@ -78,7 +79,7 @@ def save_trades_to_file(trades, window, result_dir):
     file_path = os.path.join(result_dir, f'trades_{window}MA.csv')
 
     # Create DataFrame from trades
-    trades_df = pd.DataFrame(trades, columns=['Action', 'Time', 'Price', 'Capital', 'Quantity'])
+    trades_df = pd.DataFrame(trades, columns=['Action', 'Time', 'Price', 'Capital', 'Profit', 'Rate of Return (%)'])
 
     # Save to CSV
     trades_df.to_csv(file_path, index=False)
@@ -104,7 +105,7 @@ def run_backtest(file_path, initial_capital):
     first_date = df['Open Time'].iloc[0].strftime('%Y-%m-%d')
     last_date = df['Open Time'].iloc[-1].strftime('%Y-%m-%d')
 
-    for window in [5, 10, 20, 50, 100, 200]:
+    for window in [5, 10, 20, 30, 40, 50, 60, 100, 200]:
         calculate_moving_average(df, window)
         trades = simulate_trading(df, window, initial_capital)
         performance = calculate_performance(trades, window, initial_capital)
