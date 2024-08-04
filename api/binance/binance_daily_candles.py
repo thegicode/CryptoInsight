@@ -18,6 +18,14 @@ def fetch_daily_candles(market_name):
         ])
         df['Open Time'] = pd.to_datetime(df['Open Time'], unit='ms')
         df['Close Time'] = pd.to_datetime(df['Close Time'], unit='ms')
+
+        # 인덱스 번호 추가
+        df.reset_index(inplace=True)
+        df.rename(columns={'index': 'Index Number'}, inplace=True)
+
+        # 캔들의 수 출력
+        print(f"Candle size: {len(df)}")
+
         return df
     else:
         raise Exception("Failed to fetch data from API")
@@ -31,3 +39,6 @@ def save_to_csv(df, market_name):
 market_name = 'BTCUSDT'
 df = fetch_daily_candles(market_name)
 save_to_csv(df, market_name)
+
+# 데이터프레임 출력
+print(df.head())
