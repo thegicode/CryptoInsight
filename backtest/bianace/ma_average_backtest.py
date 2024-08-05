@@ -116,10 +116,10 @@ def run_backtest(file_path, periods, initial_capital):
         'Trade Records': trade_records
     }
 
-def save_trade_records(trade_records, output_dir):
+def save_trade_records(trade_records, output_dir, periods):
     """거래 데이터를 CSV 파일로 저장합니다."""
     os.makedirs(output_dir, exist_ok=True)
-    file_path = os.path.join(output_dir, 'trade_records.csv')
+    file_path = os.path.join(output_dir, f'trade_records_{",".join(map(str, periods))}.csv')
     df = pd.DataFrame(trade_records)
     df.to_csv(file_path, index=False)
     print(f"Trade records saved to {file_path}")
@@ -129,15 +129,15 @@ def main():
     # 설정
     file_path = 'data/binance/daily_candles_BTCUSDT.csv'  # CSV 파일 경로
     initial_capital = 10000  # 초기 자본
+    output_dir = 'results/binance/trades/ma_average/'  # 결과 저장 경로
 
-    # 두 개의 기간 세트에 대해 백테스트 실행
+    # 여러 기간 세트에 대해 백테스트 실행
     periods_sets = [
         [5, 20, 60, 120, 200],
         [5, 40, 50, 120, 200],
         [10, 40, 50, 120, 200],
         [10, 20, 50, 120, 200],
         [10, 20, 50, 100, 200],
-
     ]
 
     # 각 세트에 대해 백테스트 실행 및 결과 저장
@@ -148,13 +148,17 @@ def main():
         backtest_results.append(result)
 
         # 거래 기록 저장
-        output_dir = f'results/binance/trades/ma_average_{",".join(map(str, periods))}'
-        save_trade_records(result['Trade Records'], output_dir)
+        save_trade_records(result['Trade Records'], output_dir, periods)
 
     # 백테스트 결과 DataFrame으로 변환 및 출력
     results_df = pd.DataFrame(backtest_results)
     print("\nBacktest Summary Results:")
     print(results_df.drop(columns=['Trade Records']).to_string(index=False))
+
+    # 백테스트 요약 결과 저장
+    summary_file_path = os.path.join(output_dir, 'ma_average_backtest.csv')
+    results_df.drop(columns=['Trade Records']).to_csv(summary_file_path, index=False)
+    print(f"Backtest summary saved to {summary_file_path}")
 
 if __name__ == "__main__":
     main()

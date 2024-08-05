@@ -89,7 +89,7 @@ def save_trades_to_file(trades, window, result_dir):
 def save_performance_to_file(performance_df, result_dir):
     # Ensure the result directory exists
     os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, 'performance_summary.csv')
+    file_path = os.path.join(result_dir, 'daily_average_backtest.csv')
 
     # Save to CSV
     performance_df.to_csv(file_path, index=False)

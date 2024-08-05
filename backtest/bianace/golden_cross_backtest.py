@@ -17,8 +17,8 @@ def run_backtest(file_path, initial_capital, short_window, long_window, trading_
     data.loc[data['SMA_Short'] > data['SMA_Long'], 'Signal'] = 1  # Buy signal
     data.loc[data['SMA_Short'] < data['SMA_Long'], 'Signal'] = -1 # Sell signal
 
-    # Initialize positions
-    data['Position'] = data['Signal'].shift()
+    # Initialize positions without shifting
+    data['Position'] = data['Signal']
 
     # Initialize variables
     cash = initial_capital
@@ -80,7 +80,7 @@ os.makedirs(output_dir, exist_ok=True)
 
 # Run backtests for different window combinations
 results = []
-window_combinations = [(5, 20), (10, 20), (5, 40), (10, 40)]
+window_combinations = [(5, 20), (5, 40), (10, 20), (10, 40)]
 for short_window, long_window in window_combinations:
     results.append(run_backtest(file_path, initial_capital, short_window, long_window))
 
@@ -89,5 +89,5 @@ results_df = pd.DataFrame(results)
 print(results_df.to_string(index=False))
 
 # Save the performance summary to CSV
-performance_summary_path = os.path.join(output_dir, 'performance_summary.csv')
+performance_summary_path = os.path.join(output_dir, 'golden_cross_backtest.csv')
 results_df.to_csv(performance_summary_path, index=False)
