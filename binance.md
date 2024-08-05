@@ -11,6 +11,7 @@
 -   이동평균 백테스트 : backtest/bianace/daily_average_backtest.py
 -   평균 이동평균 백테스트 : backtest/bianace/ma_average_backtest.py
 -   골든크로스 백테스트 : backtest/bianace/golden_cross_backtest.py
+-   이동평균 강화 백테스트 : backtest/bianace/daily_enhanced.py
 
 ### Strategy
 
