@@ -105,7 +105,7 @@ def run_backtest(file_path, initial_capital):
     first_date = df['Open Time'].iloc[0].strftime('%Y-%m-%d')
     last_date = df['Open Time'].iloc[-1].strftime('%Y-%m-%d')
 
-    for window in [5, 10, 20, 30, 40, 50, 60, 100, 200]:
+    for window in [5, 10, 20, 30, 40, 50, 60, 100, 120, 200]:
         calculate_moving_average(df, window)
         trades = simulate_trading(df, window, initial_capital)
         performance = calculate_performance(trades, window, initial_capital)
