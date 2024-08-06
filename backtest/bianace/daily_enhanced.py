@@ -120,65 +120,71 @@ def calculate_performance(trades, initial_capital=1000000):
     }
 
 # 거래 데이터 저장
-def save_trades_to_file(trades, result_dir):
+def save_trades_to_file(trades, result_dir, symbol):
     if not trades:
         return
 
     # Ensure the result directory exists
     os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, 'daily_enhanced_trade.csv')  # 파일명 변경
+    file_path = os.path.join(result_dir, f'daily_enhanced_trade_{symbol}.csv')  # 파일명에 심볼 추가
 
     # Create DataFrame from trades
     trades_df = pd.DataFrame(trades, columns=['Action', 'Time', 'Price', 'Capital', 'Investment', 'Profit', 'Rate of Return (%)', '40_MA'])
 
     # Save to CSV
     trades_df.to_csv(file_path, index=False)
-    print(f"Trades saved to {file_path}")
+    print(f"Trades for {symbol} saved to {file_path}")
 
 # 성과 결과 저장
-def save_performance_to_file(performance_df, result_dir):
+def save_performance_to_file(performance_df, result_dir, symbol):
     # Ensure the result directory exists
     os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, 'daily_enhanced.csv')  # 파일명 변경
+    file_path = os.path.join(result_dir, f'daily_enhanced_{symbol}.csv')  # 파일명에 심볼 추가
 
     # Save to CSV
     performance_df.to_csv(file_path, index=False)
-    print(f"Performance summary saved to {file_path}")
+    print(f"Performance summary for {symbol} saved to {file_path}")
 
 # 백테스트 실행
-def run_backtest(file_path, initial_capital):
-    df = load_data(file_path)
+def run_backtest(symbols, initial_capital):
     results = []
-    result_dir = 'results/binance/trades/daily_enhanced/'
+    for symbol in symbols:
+        file_path = f'data/binance/daily_candles_{symbol}.csv'
+        df = load_data(file_path)
+        result_dir = f'results/binance/trades/daily_enhanced_{symbol}/'
 
-    # 40일 이동평균선 계산
-    calculate_moving_average(df, 40)
+        # 40일 이동평균선 계산
+        calculate_moving_average(df, 40)
 
-    # 매매 전략 실행
-    trades = simulate_moving_average_trading(df, 40, initial_capital)
-    performance = calculate_performance(trades, initial_capital)
+        # 매매 전략 실행
+        trades = simulate_moving_average_trading(df, 40, initial_capital)
+        performance = calculate_performance(trades, initial_capital)
 
-    # 데이터셋의 첫 번째 및 마지막 날짜
-    first_date = df['Open Time'].iloc[0].strftime('%Y-%m-%d')
-    last_date = df['Open Time'].iloc[-1].strftime('%Y-%m-%d')
+        # 데이터셋의 첫 번째 및 마지막 날짜
+        first_date = df['Open Time'].iloc[0].strftime('%Y-%m-%d')
+        last_date = df['Open Time'].iloc[-1].strftime('%Y-%m-%d')
 
-    performance['First Date'] = first_date
-    performance['Last Date'] = last_date
-    results.append(performance)
+        performance['First Date'] = first_date
+        performance['Last Date'] = last_date
+        performance['Symbol'] = symbol
+        results.append(performance)
 
-    # 거래 결과 저장
-    save_trades_to_file(trades, result_dir)
+        # 거래 결과 저장
+        save_trades_to_file(trades, result_dir, symbol)
 
-    # 성과 결과 저장
-    performance_df = pd.DataFrame(results)
-    save_performance_to_file(performance_df, result_dir)
+        # 성과 결과 저장
+        performance_df = pd.DataFrame([performance])
+        save_performance_to_file(performance_df, result_dir, symbol)
+
     return results
 
-# 파일 경로, 초기값
-file_path = 'data/binance/daily_candles_BTCUSDT.csv'
-initial_capital = 1000000  # 초기 자본금 100만원
-
-# 결과 출력 및 저장
-backtest_results = run_backtest(file_path, initial_capital)
+# 백테스트 실행 예시
+symbols = ['BTCUSDT', 'SOLUSDT']
+backtest_results = run_backtest(symbols, 1000000)
 results_df = pd.DataFrame(backtest_results)
-print(results_df.to_string(index=False))
+
+# 심볼별로 출력 구분
+for symbol in symbols:
+    symbol_results = results_df[results_df['Symbol'] == symbol]
+    print(f"\nMarket: {symbol}")
+    print(symbol_results.drop(columns=['Symbol']).to_string(index=False))

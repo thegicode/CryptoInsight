@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 # Function to perform backtest
-def run_backtest(file_path, initial_capital, short_window, long_window, trading_fee=0.001):
+def run_backtest(symbol, file_path, initial_capital, short_window, long_window, symbol_output_dir, trading_fee=0.001):
     # Load data
     data = pd.read_csv(file_path)
     data['Open Time'] = pd.to_datetime(data['Open Time'])
@@ -49,9 +49,9 @@ def run_backtest(file_path, initial_capital, short_window, long_window, trading_
         # Update portfolio value
         data.loc[i, 'Portfolio Value'] = cash + position * data.loc[i, 'Close']
 
-    # Save trades to CSV
+    # Save trades to CSV in the symbol-specific directory
     trades_df = pd.DataFrame(trades)
-    output_file_path = os.path.join(output_dir, f'{short_window}_{long_window}.csv')
+    output_file_path = os.path.join(symbol_output_dir, f'{symbol}_{short_window}_{long_window}.csv')
     trades_df.to_csv(output_file_path, index=False)
 
     # Calculate performance metrics
@@ -63,6 +63,7 @@ def run_backtest(file_path, initial_capital, short_window, long_window, trading_
 
     # Return the results
     return {
+        'Symbol': symbol,
         'Window': f'{short_window}, {long_window}',
         'Total Trades': trades_count / 2,
         'Total Return (%)': total_return,
@@ -70,24 +71,43 @@ def run_backtest(file_path, initial_capital, short_window, long_window, trading_
         'Max Drawdown (%)': max_drawdown
     }
 
-# Define initial settings
-file_path = 'data/binance/daily_candles_BTCUSDT.csv'
-initial_capital = 10000
+# Function to run backtests for multiple symbols
+def run_backtests_for_symbols(symbols, initial_capital, window_combinations, data_dir, output_dir):
+    for symbol in symbols:
+        # Create a directory for each symbol
+        symbol_output_dir = os.path.join(output_dir, f'golden_cross_{symbol}')
+        os.makedirs(symbol_output_dir, exist_ok=True)
 
-# Define output directory for results
-output_dir = 'results/binance/trades/golden_cross'
-os.makedirs(output_dir, exist_ok=True)
+        file_path = os.path.join(data_dir, f'daily_candles_{symbol}.csv')
+        results = []  # Collect results for this symbol
+        for short_window, long_window in window_combinations:
+            results.append(run_backtest(symbol, file_path, initial_capital, short_window, long_window, symbol_output_dir))
 
-# Run backtests for different window combinations
-results = []
-window_combinations = [(5, 20), (5, 40), (10, 20), (10, 40)]
-for short_window, long_window in window_combinations:
-    results.append(run_backtest(file_path, initial_capital, short_window, long_window))
+        # Convert results to DataFrame
+        results_df = pd.DataFrame(results)
 
-# Display results
-results_df = pd.DataFrame(results)
-print(results_df.to_string(index=False))
+        # Save the performance summary to CSV in the symbol's directory
+        performance_summary_path = os.path.join(symbol_output_dir, 'golden_cross_backtest_summary.csv')
+        results_df.to_csv(performance_summary_path, index=False)
 
-# Save the performance summary to CSV
-performance_summary_path = os.path.join(output_dir, 'golden_cross_backtest.csv')
-results_df.to_csv(performance_summary_path, index=False)
+        # Display results for the symbol
+        print(f"\nMarket: {symbol}")
+        print(results_df.to_string(index=False))
+
+# Main execution function
+def main():
+    # Define initial settings
+    symbols = ['BTCUSDT', 'SOLUSDT']
+    initial_capital = 10000
+    data_dir = 'data/binance'
+    output_dir = 'results/binance/trades'
+
+    # Window combinations to test
+    window_combinations = [(5, 20), (5, 40), (10, 20), (10, 40)]
+
+    # Run backtests for multiple symbols
+    run_backtests_for_symbols(symbols, initial_capital, window_combinations, data_dir, output_dir)
+
+# Run the main function
+if __name__ == "__main__":
+    main()

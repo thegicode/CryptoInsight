@@ -1,10 +1,11 @@
 import requests
 import pandas as pd
 
-def fetch_daily_candles(market_name):
+def fetch_daily_candles(symbol):
+    """주어진 심볼의 일간 캔들 데이터를 가져옵니다."""
     url = 'https://api.binance.com/api/v3/klines'
     params = {
-        'symbol': market_name,
+        'symbol': symbol,
         'interval': '1d'
     }
 
@@ -24,21 +25,30 @@ def fetch_daily_candles(market_name):
         df.rename(columns={'index': 'Index Number'}, inplace=True)
 
         # 캔들의 수 출력
-        print(f"Candle size: {len(df)}")
+        print(f"Candle size for {symbol}: {len(df)}")
 
         return df
     else:
         raise Exception("Failed to fetch data from API")
 
-def save_to_csv(df, market_name):
-    file_path = f"data/binance/daily_candles_{market_name}.csv"
+def save_to_csv(df, symbol):
+    """데이터프레임을 CSV 파일로 저장합니다."""
+    file_path = f"data/binance/daily_candles_{symbol}.csv"
     df.to_csv(file_path, index=False)
     print(f"Data saved to {file_path}")
 
-# 사용 예
-market_name = 'BTCUSDT'
-df = fetch_daily_candles(market_name)
-save_to_csv(df, market_name)
+def process_market_data(market_name):
+    """주어진 시장 심볼의 데이터를 처리하여 CSV로 저장하고 출력합니다."""
+    # 데이터 가져오기
+    df = fetch_daily_candles(market_name)
 
-# 데이터프레임 출력
-print(df.head())
+    # 데이터 저장
+    save_to_csv(df, market_name)
+
+    # 데이터프레임 출력
+    print("\nDataframe head:")
+    print(df.head())
+
+# 함수 호출 예시
+process_market_data('BTCUSDT')
+process_market_data('SOLUSDT')
