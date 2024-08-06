@@ -97,7 +97,7 @@ def run_backtests_for_symbols(symbols, initial_capital, window_combinations, dat
 # Main execution function
 def main():
     # Define initial settings
-    symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'SHIBUSDT']
+    symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'SHIBUSDT', 'BNBUSDT']
     initial_capital = 10000
     data_dir = 'data/binance'
     output_dir = 'results/binance/trades'

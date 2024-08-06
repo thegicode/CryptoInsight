@@ -49,6 +49,8 @@ def simulate_moving_average_trading(df, window, initial_capital=1000000, fee_rat
     capital = initial_capital
     quantity = 0
     investment = 0  # 투자금 변수 추가
+    peak = initial_capital
+    drawdowns = []
 
     for i in range(1, len(df)):
         # 40일 이동평균선 전략 매수 (잔액 전액 매수)
@@ -59,8 +61,8 @@ def simulate_moving_average_trading(df, window, initial_capital=1000000, fee_rat
             investment = capital  # 투자금 = 현재 자본금
             capital -= buy_price * buy_quantity
             quantity += buy_quantity
-            trades.append(('buy', df['Close Time'][i], buy_price, capital, investment, None, None, df[ma_column][i]))
             in_position = True
+            trades.append(('buy', df['Close Time'][i], buy_price, capital, investment, None, None, df[ma_column][i]))
 
         # 상승장에서 추가 매수 (40일 조건에 들지 않았을 때만)
         elif not in_position and df['Close'][i] > df['Close'][i-1] and df['Volume'][i] > df['Volume'][i-1]:
@@ -72,7 +74,10 @@ def simulate_moving_average_trading(df, window, initial_capital=1000000, fee_rat
                 investment += additional_investment_amount  # 추가 매수에 따른 투자금 증가
                 capital -= additional_buy_price * additional_quantity
                 quantity += additional_quantity
-                trades.append(('additional_buy', df['Close Time'][i], additional_buy_price, capital, investment, None, None, df[ma_column][i]))
+                current_value = df['Close'][i] * quantity
+                profit = current_value - investment
+                rate_of_return = (profit / investment) * 100 if investment != 0 else 0
+                trades.append(('additional_buy', df['Close Time'][i], additional_buy_price, capital, investment, profit, rate_of_return, df[ma_column][i]))
 
         # 40일 이동평균선 전략 매도
         elif df['Close'][i] < df[ma_column][i] and df['Close'][i-1] >= df[ma_column][i-1] and in_position:
@@ -88,10 +93,20 @@ def simulate_moving_average_trading(df, window, initial_capital=1000000, fee_rat
             quantity = 0
             investment = 0
 
-    return trades
+        # 손익과 MDD 계산을 위해 자본금 업데이트
+        if in_position:
+            current_value = df['Close'][i] * quantity
+            total_assets = capital + current_value
+            peak = max(peak, total_assets)
+            drawdown = (peak - total_assets) / peak * 100
+            drawdowns.append(drawdown)
+
+    max_drawdown = max(drawdowns) if drawdowns else 0
+
+    return trades, max_drawdown
 
 # 성과 지표 계산
-def calculate_performance(trades, initial_capital=1000000):
+def calculate_performance(trades, max_drawdown, initial_capital=1000000):
     if not trades:
         return {}
 
@@ -99,17 +114,6 @@ def calculate_performance(trades, initial_capital=1000000):
     total_returns = sum(profits)
     percent_return = (total_returns / initial_capital) * 100
     win_rate = (len([p for p in profits if p > 0]) / len(profits)) * 100 if profits else 0
-    drawdowns = []
-    peak = initial_capital
-    for trade in trades:
-        if trade[0] == 'buy':
-            peak = max(peak, trade[3])  # capital after buy
-        elif trade[0] == 'sell':
-            drawdown = (peak - trade[3]) / peak if peak != 0 else 0  # capital after sell
-            drawdown = max(drawdown, 0)  # Ensure drawdown is non-negative
-            drawdowns.append(drawdown)
-
-    max_drawdown = (max(drawdowns) * 100) if drawdowns else 0
 
     return {
         'Total Trades': len(profits),
@@ -156,8 +160,8 @@ def run_backtest(symbols_with_windows, initial_capital):
         calculate_moving_average(df, window)
 
         # 매매 전략 실행
-        trades = simulate_moving_average_trading(df, window, initial_capital)
-        performance = calculate_performance(trades, initial_capital)
+        trades, max_drawdown = simulate_moving_average_trading(df, window, initial_capital)
+        performance = calculate_performance(trades, max_drawdown, initial_capital)
 
         # 데이터셋의 첫 번째 및 마지막 날짜
         first_date = df['Open Time'].iloc[0].strftime('%Y-%m-%d')
@@ -178,7 +182,7 @@ def run_backtest(symbols_with_windows, initial_capital):
     return results
 
 # 백테스트 실행 예시
-symbols_with_windows = [('BTCUSDT', 40), ('SOLUSDT', 40), ('ETHUSDT', 5), ('XRPUSDT', 30), ('SHIBUSDT', 30)]
+symbols_with_windows = [('BTCUSDT', 40), ('SOLUSDT', 40), ('ETHUSDT', 5), ('XRPUSDT', 30), ('SHIBUSDT', 30), ('BNBUSDT', 100)]
 backtest_results = run_backtest(symbols_with_windows, 1000000)
 results_df = pd.DataFrame(backtest_results)
 

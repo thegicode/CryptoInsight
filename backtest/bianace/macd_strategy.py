@@ -117,7 +117,7 @@ def run_backtest(symbols, initial_capital):
     return results
 
 # 멀티 심볼 백테스트 실행 예시
-symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT' ,'SHIBUSDT']
+symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT' ,'SHIBUSDT', 'BNBUSDT']
 backtest_results = run_backtest(symbols, 10000)
 results_df = pd.DataFrame(backtest_results)
 
