@@ -56,4 +56,6 @@ def process_market_data(market_name):
 # process_market_data('XRPUSDT')
 # process_market_data('SHIBUSDT')
 # process_market_data('BNBUSDT')
+process_market_data('DOGEUSDT')
+
 

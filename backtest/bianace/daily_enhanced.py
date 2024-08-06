@@ -182,7 +182,7 @@ def run_backtest(symbols_with_windows, initial_capital):
     return results
 
 # 백테스트 실행 예시
-symbols_with_windows = [('BTCUSDT', 40), ('SOLUSDT', 40), ('ETHUSDT', 5), ('XRPUSDT', 30), ('SHIBUSDT', 30), ('BNBUSDT', 100)]
+symbols_with_windows = [('BTCUSDT', 40), ('SOLUSDT', 40), ('ETHUSDT', 5), ('XRPUSDT', 30), ('SHIBUSDT', 30), ('BNBUSDT', 100), ('DOGEUSDT', 40)]
 backtest_results = run_backtest(symbols_with_windows, 1000000)
 results_df = pd.DataFrame(backtest_results)
 

@@ -127,7 +127,7 @@ def save_trade_records(trade_records, output_dir, symbol, periods):
 def main():
     """주요 실행 로직"""
     # 설정
-    symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'SHIBUSDT','BNBUSDT']  # 심볼 리스트
+    symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'SHIBUSDT','BNBUSDT', 'DOGEUSDT']  # 심볼 리스트
     initial_capital = 10000  # 초기 자본
     output_dir_base = 'results/binance/trades/ma_average/'  # 결과 저장 경로 기본값
 
