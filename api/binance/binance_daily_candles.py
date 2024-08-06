@@ -52,3 +52,7 @@ def process_market_data(market_name):
 # 함수 호출 예시
 process_market_data('BTCUSDT')
 process_market_data('SOLUSDT')
+process_market_data('ETHUSDT')
+process_market_data('XRPUSDT')
+process_market_data('SHIBUSDT')
+

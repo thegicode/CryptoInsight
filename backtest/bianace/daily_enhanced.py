@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 
 # 전략 설명
@@ -43,7 +42,7 @@ def calculate_moving_average(df, window):
     df[f'{window}MA'] = df['Close'].rolling(window=window).mean()
 
 # 매매 전략 시뮬레이션
-def simulate_moving_average_trading(df, window=40, initial_capital=1000000, fee_rate=0.001):
+def simulate_moving_average_trading(df, window, initial_capital=1000000, fee_rate=0.001):
     ma_column = f'{window}MA'
     in_position = False
     trades = []
@@ -146,18 +145,18 @@ def save_performance_to_file(performance_df, result_dir, symbol):
     print(f"Performance summary for {symbol} saved to {file_path}")
 
 # 백테스트 실행
-def run_backtest(symbols, initial_capital):
+def run_backtest(symbols_with_windows, initial_capital):
     results = []
-    for symbol in symbols:
+    for symbol, window in symbols_with_windows:
         file_path = f'data/binance/daily_candles_{symbol}.csv'
         df = load_data(file_path)
         result_dir = f'results/binance/trades/daily_enhanced_{symbol}/'
 
-        # 40일 이동평균선 계산
-        calculate_moving_average(df, 40)
+        # 사용자 지정 이동평균선 계산
+        calculate_moving_average(df, window)
 
         # 매매 전략 실행
-        trades = simulate_moving_average_trading(df, 40, initial_capital)
+        trades = simulate_moving_average_trading(df, window, initial_capital)
         performance = calculate_performance(trades, initial_capital)
 
         # 데이터셋의 첫 번째 및 마지막 날짜
@@ -179,12 +178,12 @@ def run_backtest(symbols, initial_capital):
     return results
 
 # 백테스트 실행 예시
-symbols = ['BTCUSDT', 'SOLUSDT']
-backtest_results = run_backtest(symbols, 1000000)
+symbols_with_windows = [('BTCUSDT', 40), ('SOLUSDT', 40), ('ETHUSDT', 5), ('XRPUSDT', 30), ('SHIBUSDT', 30)]
+backtest_results = run_backtest(symbols_with_windows, 1000000)
 results_df = pd.DataFrame(backtest_results)
 
 # 심볼별로 출력 구분
-for symbol in symbols:
+for symbol, _ in symbols_with_windows:
     symbol_results = results_df[results_df['Symbol'] == symbol]
     print(f"\nMarket: {symbol}")
     print(symbol_results.drop(columns=['Symbol']).to_string(index=False))

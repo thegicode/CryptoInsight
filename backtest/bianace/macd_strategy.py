@@ -3,6 +3,7 @@ import numpy as np
 import os
 
 def load_data(file_path):
+    """CSV 파일에서 데이터 로드"""
     df = pd.read_csv(file_path, parse_dates=['Open Time', 'Close Time'])
     df['Close'] = df['Close'].astype(float)
     return df
@@ -43,6 +44,7 @@ def simulate_trading(df, initial_capital=10000, fee_rate=0.001):
     return trades
 
 def calculate_performance(trades, initial_capital=10000):
+    """거래 기록으로부터 성과 지표를 계산합니다."""
     if not trades:
         return {}
 
@@ -69,46 +71,58 @@ def calculate_performance(trades, initial_capital=10000):
         'Max Drawdown (%)': max_drawdown
     }
 
-def save_trades_to_file(trades, result_dir):
+def save_trades_to_file(trades, result_dir, symbol):
+    """거래 데이터를 CSV 파일로 저장합니다."""
     if not trades:
         return
 
     os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, 'trades_macd.csv')
+    file_path = os.path.join(result_dir, f'trades_macd_{symbol}.csv')
 
     trades_df = pd.DataFrame(trades, columns=['Action', 'Time', 'Price', 'Capital', 'Profit', 'Rate of Return (%)'])
     trades_df.to_csv(file_path, index=False)
-    print(f"Trades saved to {file_path}")
+    print(f"Trades for {symbol} saved to {file_path}")
 
-def save_performance_to_file(performance, result_dir):
+def save_performance_to_file(performance, result_dir, symbol):
+    """성과 데이터를 CSV 파일로 저장합니다."""
     os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, 'macd_backtest.csv')
+    file_path = os.path.join(result_dir, f'macd_backtest_{symbol}.csv')
 
     performance_df = pd.DataFrame([performance])
     performance_df.to_csv(file_path, index=False)
-    print(f"Performance summary saved to {file_path}")
+    print(f"Performance summary for {symbol} saved to {file_path}")
 
-def run_backtest(file_path, initial_capital):
-    df = load_data(file_path)
-    result_dir = 'results/binance/trades/macd_strategy/'
+def run_backtest(symbols, initial_capital):
+    """백테스트를 여러 심볼에 대해 실행하고 결과를 반환합니다."""
+    results = []
+    for symbol in symbols:
+        file_path = f'data/binance/daily_candles_{symbol}.csv'
+        df = load_data(file_path)
+        result_dir = f'results/binance/trades/macd_strategy/{symbol}/'
 
-    # MACD 계산
-    calculate_macd(df)
+        # MACD 계산
+        calculate_macd(df)
 
-    # 거래 시뮬레이션 실행
-    trades = simulate_trading(df, initial_capital)
-    performance = calculate_performance(trades, initial_capital)
+        # 거래 시뮬레이션 실행
+        trades = simulate_trading(df, initial_capital)
+        performance = calculate_performance(trades, initial_capital)
 
-    # 거래 및 성과 저장
-    save_trades_to_file(trades, result_dir)
-    save_performance_to_file(performance, result_dir)
+        # 거래 및 성과 저장
+        save_trades_to_file(trades, result_dir, symbol)
+        save_performance_to_file(performance, result_dir, symbol)
 
-    return performance
+        performance['Symbol'] = symbol
+        results.append(performance)
 
-# 파일 경로, 초기값
-file_path = 'data/binance/daily_candles_BTCUSDT.csv'
-initial_capital = 10000
+    return results
 
-# 결과 출력 및 저장
-backtest_results = run_backtest(file_path, initial_capital)
-print(pd.DataFrame([backtest_results]).to_string(index=False))
+# 멀티 심볼 백테스트 실행 예시
+symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT' ,'SHIBUSDT']
+backtest_results = run_backtest(symbols, 10000)
+results_df = pd.DataFrame(backtest_results)
+
+# 심볼별로 출력 구분
+for symbol in symbols:
+    symbol_results = results_df[results_df['Symbol'] == symbol]
+    print(f"\nMarket: {symbol}")
+    print(symbol_results.drop(columns=['Symbol']).to_string(index=False))
