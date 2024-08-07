@@ -50,7 +50,9 @@ def load_environment_variables():
     return api_key, secret_key
 
 # 바이낸스 거래소 객체 생성 함수
-def create_exchange(api_key, secret_key):
+def create_exchange():
+    api_key, secret_key = load_environment_variables()
+
     """바이낸스 거래소 객체를 생성합니다."""
     return ccxt.binance({
         'apiKey': api_key,
@@ -198,18 +200,14 @@ def generate_recent_signals(df, window, fee_rate):
     return recent_signals
 
 # 메인 거래 실행 함수
-def run_daily_trading(symbol='BTC/USDT', initial_capital=1000000):
+def daily_SMA_enhanced(symbol='BTC/USDT', window=40,  initial_capital=1000000):
     strategy_name = "40일 이동평균선 전략"
-    window = 40
     capital = initial_capital
     last_trade_date = None
     fee_rate = 0.001  # 거래 수수료 0.1%
 
-    # 환경 변수 로드
-    api_key, secret_key = load_environment_variables()
-
     # 거래소 객체 생성
-    exchange = create_exchange(api_key, secret_key)
+    exchange = create_exchange()
 
     # 데이터 수집
     df = fetch_binance_data(exchange, symbol)
@@ -221,7 +219,8 @@ def run_daily_trading(symbol='BTC/USDT', initial_capital=1000000):
     trades = process_signals(signals)
 
     # 거래 내역 출력 및 메시지 전송
-    send_trade_report(strategy_name, trades, df, window, fee_rate)
+    # send_trade_report(strategy_name, trades, df, window, fee_rate)
 
-# 거래 실행
-run_daily_trading(symbol='BTC/USDT', initial_capital=1000000)
+
+if __name__ == "__main__":
+    daily_SMA_enhanced()
