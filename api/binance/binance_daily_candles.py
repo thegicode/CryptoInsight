@@ -37,7 +37,7 @@ def save_to_csv(df, symbol):
     df.to_csv(file_path, index=False)
     print(f"Data saved to {file_path}")
 
-def process_market_data(market_name):
+def fetch_binanace_daily_candles(market_name):
     """주어진 시장 심볼의 데이터를 처리하여 CSV로 저장하고 출력합니다."""
     # 데이터 가져오기
     df = fetch_daily_candles(market_name)
@@ -50,12 +50,12 @@ def process_market_data(market_name):
     print(df.head())
 
 # 함수 호출 예시
-# process_market_data('BTCUSDT')
-# process_market_data('SOLUSDT')
-# process_market_data('ETHUSDT')
-# process_market_data('XRPUSDT')
-# process_market_data('SHIBUSDT')
-# process_market_data('BNBUSDT')
-process_market_data('DOGEUSDT')
+# fetch_binanace_daily_candles('BTCUSDT')
+fetch_binanace_daily_candles('SOLUSDT')
+# fetch_binanace_daily_candles('ETHUSDT')
+# fetch_binanace_daily_candles('XRPUSDT')
+# fetch_binanace_daily_candles('SHIBUSDT')
+# fetch_binanace_daily_candles('BNBUSDT')
+# fetch_binanace_daily_candles('DOGEUSDT')
 
 

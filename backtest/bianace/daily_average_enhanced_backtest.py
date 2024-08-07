@@ -123,30 +123,30 @@ def calculate_performance(trades, max_drawdown, initial_capital=1000000):
     }
 
 # 거래 데이터 저장
-def save_trades_to_file(trades, result_dir, symbol):
+def save_trades_to_file(trades, result_dir, symbol, window):
     if not trades:
         return
 
     # Ensure the result directory exists
     os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, f'daily_enhanced_trade_{symbol}.csv')  # 파일명에 심볼 추가
+    file_path = os.path.join(result_dir, f'daily_enhanced_trade_{symbol}_{window}MA.csv')  # 파일명에 심볼과 이동평균 지수 추가
 
     # Create DataFrame from trades
-    trades_df = pd.DataFrame(trades, columns=['Action', 'Time', 'Price', 'Capital', 'Investment', 'Profit', 'Rate of Return (%)', '40_MA'])
+    trades_df = pd.DataFrame(trades, columns=['Action', 'Time', 'Price', 'Capital', 'Investment', 'Profit', 'Rate of Return (%)', f'{window}_MA'])
 
     # Save to CSV
     trades_df.to_csv(file_path, index=False)
-    print(f"Trades for {symbol} saved to {file_path}")
+    print(f"Trades for {symbol} with {window}MA saved to {file_path}")
 
 # 성과 결과 저장
-def save_performance_to_file(performance_df, result_dir, symbol):
+def save_performance_to_file(performance_df, result_dir, symbol, window):
     # Ensure the result directory exists
     os.makedirs(result_dir, exist_ok=True)
-    file_path = os.path.join(result_dir, f'daily_enhanced_{symbol}.csv')  # 파일명에 심볼 추가
+    file_path = os.path.join(result_dir, f'daily_enhanced_summary_{symbol}_{window}MA.csv')  # 파일명에 심볼과 이동평균 지수 추가
 
     # Save to CSV
     performance_df.to_csv(file_path, index=False)
-    print(f"Performance summary for {symbol} saved to {file_path}")
+    print(f"Performance summary for {symbol} with {window}MA saved to {file_path}")
 
 # 백테스트 실행
 def run_backtest(symbols_with_windows, initial_capital):
@@ -173,11 +173,11 @@ def run_backtest(symbols_with_windows, initial_capital):
         results.append(performance)
 
         # 거래 결과 저장
-        save_trades_to_file(trades, result_dir, symbol)
+        save_trades_to_file(trades, result_dir, symbol, window)
 
         # 성과 결과 저장
         performance_df = pd.DataFrame([performance])
-        save_performance_to_file(performance_df, result_dir, symbol)
+        save_performance_to_file(performance_df, result_dir, symbol, window)
 
     return results
 
@@ -189,9 +189,9 @@ def daily_average_enhanced(symbols_with_windows=None, initial_capital=10000):
     results_df = pd.DataFrame(backtest_results)
 
     # 심볼별로 출력 구분
-    for symbol, _ in symbols_with_windows:
+    for symbol, window in symbols_with_windows:
         symbol_results = results_df[results_df['Symbol'] == symbol]
-        print(f"\nMarket: {symbol}")
+        print(f"\nMarket: {symbol} with {window}MA")
         print(symbol_results.drop(columns=['Symbol']).to_string(index=False))
 
 if __name__ == "__main__":
