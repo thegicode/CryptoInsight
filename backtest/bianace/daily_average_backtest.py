@@ -134,13 +134,19 @@ def run_backtest(symbols, initial_capital, windows=[5, 10, 20, 30, 40, 50, 60, 1
 
     return all_results
 
-# 백테스트 실행 예시
-symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'SHIBUSDT', 'BNBUSDT', 'DOGEUSDT']
-backtest_results = run_backtest(symbols, 10000)
-results_df = pd.DataFrame(backtest_results)
+def daily_average_backtest(symbols=None, initial_capital=10000):
+    if symbols is None:
+        symbols = ['BTCUSDT', 'SOLUSDT']
 
-# 심볼별로 출력 구분
-for symbol in symbols:
-    symbol_results = results_df[results_df['Symbol'] == symbol]
-    print(f"\nMarket: {symbol}")
-    print(symbol_results.drop(columns=['Symbol']).to_string(index=False))
+    backtest_results = run_backtest(symbols, initial_capital)
+    results_df = pd.DataFrame(backtest_results)
+
+    # 심볼별로 출력 구분
+    for symbol in symbols:
+        symbol_results = results_df[results_df['Symbol'] == symbol]
+        print(f"\nMarket: {symbol}")
+        print(symbol_results.drop(columns=['Symbol']).to_string(index=False))
+
+if __name__ == "__main__":
+    # Example usage: run the backtest for default symbols
+    daily_average_backtest()

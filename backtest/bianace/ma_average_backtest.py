@@ -124,10 +124,11 @@ def save_trade_records(trade_records, output_dir, symbol, periods):
     df.to_csv(file_path, index=False)
     print(f"Trade records saved to {file_path}")
 
-def main():
+def ma_average_backtest(symbols=None, initial_capital = 10000):
     """주요 실행 로직"""
     # 설정
-    symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'SHIBUSDT','BNBUSDT', 'DOGEUSDT']  # 심볼 리스트
+    if symbols is None:
+        symbols = ['BTCUSDT', 'SOLUSDT']  # 심볼 리스트
     initial_capital = 10000  # 초기 자본
     output_dir_base = 'results/binance/trades/ma_average/'  # 결과 저장 경로 기본값
 
@@ -165,4 +166,4 @@ def main():
         print(f"Backtest summary saved to {summary_file_path}")
 
 if __name__ == "__main__":
-    main()
+    ma_average_backtest()

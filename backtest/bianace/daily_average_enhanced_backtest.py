@@ -181,13 +181,19 @@ def run_backtest(symbols_with_windows, initial_capital):
 
     return results
 
-# 백테스트 실행 예시
-symbols_with_windows = [('BTCUSDT', 40), ('SOLUSDT', 40), ('ETHUSDT', 5), ('XRPUSDT', 30), ('SHIBUSDT', 30), ('BNBUSDT', 100), ('DOGEUSDT', 40)]
-backtest_results = run_backtest(symbols_with_windows, 1000000)
-results_df = pd.DataFrame(backtest_results)
+def daily_average_enhanced(symbols_with_windows=None, initial_capital=10000):
+    if symbols_with_windows is None:
+        symbols_with_windows = [('BTCUSDT', 40), ('SOLUSDT', 40)]
 
-# 심볼별로 출력 구분
-for symbol, _ in symbols_with_windows:
-    symbol_results = results_df[results_df['Symbol'] == symbol]
-    print(f"\nMarket: {symbol}")
-    print(symbol_results.drop(columns=['Symbol']).to_string(index=False))
+    backtest_results = run_backtest(symbols_with_windows, initial_capital)
+    results_df = pd.DataFrame(backtest_results)
+
+    # 심볼별로 출력 구분
+    for symbol, _ in symbols_with_windows:
+        symbol_results = results_df[results_df['Symbol'] == symbol]
+        print(f"\nMarket: {symbol}")
+        print(symbol_results.drop(columns=['Symbol']).to_string(index=False))
+
+if __name__ == "__main__":
+    # Example usage: run the backtest for default symbols
+    daily_average_enhanced()

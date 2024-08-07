@@ -94,20 +94,19 @@ def run_backtests_for_symbols(symbols, initial_capital, window_combinations, dat
         print(f"\nMarket: {symbol}")
         print(results_df.to_string(index=False))
 
-# Main execution function
-def main():
-    # Define initial settings
-    symbols = ['BTCUSDT', 'SOLUSDT', 'ETHUSDT', 'XRPUSDT', 'SHIBUSDT', 'BNBUSDT', 'DOGEUSDT']
-    initial_capital = 10000
-    data_dir = 'data/binance'
-    output_dir = 'results/binance/trades'
 
-    # Window combinations to test
-    window_combinations = [(5, 20), (5, 40), (10, 20), (10, 40)]
+def golden_cross_backtest(symbols=None, initial_capital=10000):
+        if symbols is None:
+            symbols = ['BTCUSDT', 'SOLUSDT']
+        data_dir = 'data/binance'
+        output_dir = 'results/binance/trades'
 
-    # Run backtests for multiple symbols
-    run_backtests_for_symbols(symbols, initial_capital, window_combinations, data_dir, output_dir)
+        # Window combinations to test
+        window_combinations = [(5, 20), (5, 40), (10, 20), (10, 40)]
 
-# Run the main function
+        # Run backtests for multiple symbols
+        run_backtests_for_symbols(symbols, initial_capital, window_combinations, data_dir, output_dir)
+
 if __name__ == "__main__":
-    main()
+    # Example usage: run the backtest for default symbols
+    golden_cross_backtest()
