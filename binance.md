@@ -5,6 +5,17 @@
 ### Api
 
 -   일캔들 받기 : api/binance/binance_daily_candles.py
+-   분캔들 받기 : api/binance/binance_minutes_candles.py
+
+-   내 계좌 잔고 : api/binance/binance_account.py
+-   거래 내역 : api/binance/binance_my_trades.py
+-   미체결 주문 : api/binance/binance_open_orders.py
+
+-   주문 : api/binance/binance_buy_order.py
+-   주문 취소 : api/binance/binance_cancel_order.py
+-   주문 정보 : api/binance/binance_fetch_oder.py
+
+-   hepers: api/binance/binance_api_helpers.py
 
 ### Backtest
 

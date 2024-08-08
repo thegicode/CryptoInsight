@@ -1,5 +1,3 @@
-import pandas as pd
-import numpy as np
 import ccxt  # 암호화폐 거래소 API를 위한 라이브러리
 from dotenv import load_dotenv
 import os
