@@ -26,6 +26,13 @@
 
 ---
 
+## 미완성
+
+-   backtest/bianace/bollinger_band_backtest.py
+-   strategies/binance/bollinger_strategy.py
+
+---
+
 ### API
 
 https://binance-docs.github.io/apidocs/spot/en/#general-info
