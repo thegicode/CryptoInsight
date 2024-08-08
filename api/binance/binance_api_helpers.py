@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import ccxt  # 암호화폐 거래소 API를 위한 라이브러리
 from dotenv import load_dotenv
-import sys
 import os
 
 # 환경 변수 로드 함수
@@ -23,4 +22,7 @@ def create_exchange():
         'apiKey': api_key,
         'secret': secret_key,
         'enableRateLimit': True,
+        'options': {
+            'defaultType': 'spot',  # 현물 거래용
+        },
     })
